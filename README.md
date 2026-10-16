@@ -1,4 +1,4 @@
-# Peter need to do
+# waht Peter need to do
 我把标注工具放到 GitHub 上了，已经邀请你进仓库，先去邮箱接受邀请。
 
 然后在终端里运行（需要先装好 Python）：

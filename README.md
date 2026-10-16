@@ -2,11 +2,12 @@
 我把标注工具放到 GitHub 上了，已经邀请你进仓库，先去邮箱接受邀请。
 
 然后在终端里运行（需要先装好 Python）：
-
+```bash
 git clone https://github.com/MaaadSpike/ai-job-countdown.git
 cd ai-job-countdown/annotate
 pip install -r requirements.txt
 streamlit run label_app.py
+```
 
 浏览器会自动打开标注页面。开始之前先读一下 annotate/GUIDELINES.md 里的标注规则，大概 3 分钟。
 

@@ -1,3 +1,24 @@
+# Peter need to do
+我把标注工具放到 GitHub 上了，已经邀请你进仓库，先去邮箱接受邀请。
+
+然后在终端里运行（需要先装好 Python）：
+
+git clone https://github.com/MaaadSpike/ai-job-countdown.git
+cd ai-job-countdown/annotate
+pip install -r requirements.txt
+streamlit run label_app.py
+
+浏览器会自动打开标注页面。开始之前先读一下 annotate/GUIDELINES.md 里的标注规则，大概 3 分钟。
+
+步骤：
+1. 输入你的名字（英文，和我的不一样就行）
+2. 保持「只看试标集」开关打开，先标前 20 条。自己独立判断，不要查资料，也不要问 AI
+3. 标完 20 条告诉我，我们约个时间一起对答案、统一标准
+4. 之后关掉开关，继续标到第 100 条
+
+结果会存在 annotate 文件夹里的 labels_你的名字.csv，直接发给我就行，不要 push 到仓库。
+页面右上角的 Deploy 不用管。
+
 # AI Job Countdown
 
 输入一个职业，按 AI agent 能力的增长趋势，估算 AI 能独立完成这个职业一半工作时间的时间点。

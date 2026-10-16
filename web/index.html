@@ -1,0 +1,571 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI 工作倒计时</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Stencil+Display:wght@700;900&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: an industrial alarm console. Hazard stripe and a breaking-news ticker on top, the red seven-segment countdown as the main display, then assumptions beside the evidence feed, the per-task timeline, and the method. Single committed dark look. */
+:root{
+  --bg:#0F1113; --panel:#181B1F; --panel-2:#1F2328; --line:#2D3238; --ink:#ECEDEE; --muted:#9AA1A9;
+  --red:#FF3B30; --red-off:#2A1513; --red-soft:#3A1916; --amber:#F5B700; --amber-ink:#171200; --amber-soft:#2D2508;
+  --f-stencil:"Big Shoulders Stencil Display","Impact","PingFang SC","Microsoft YaHei",sans-serif;
+  --f-body:"IBM Plex Sans","PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans SC",sans-serif;
+  --f-mono:"IBM Plex Mono","SFMono-Regular",Menlo,Consolas,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.6;padding-inline:16px;padding-block:0 56px}
+a{color:inherit}
+.hazard{height:12px;margin-inline:-16px;background:repeating-linear-gradient(-45deg,var(--amber) 0 14px,var(--amber-ink) 14px 28px)}
+.ticker{margin-inline:-16px;background:var(--panel);border-bottom:1px solid var(--line);display:flex;align-items:stretch;overflow:hidden}
+.ticker-label{flex:none;background:var(--red);color:#fff;font-family:var(--f-stencil);font-weight:900;letter-spacing:.06em;font-size:16px;padding:7px 14px;display:flex;align-items:center;gap:8px}
+.ticker-label::before{content:"";width:8px;height:8px;border-radius:50%;background:#fff;animation:blink 1s steps(2,start) infinite}
+.ticker-viewport{flex:1;min-width:0;overflow:hidden;display:flex;align-items:center}
+.ticker-track{display:flex;gap:36px;white-space:nowrap;padding-left:24px;animation:scroll 70s linear infinite}
+.ticker:hover .ticker-track{animation-play-state:paused}
+.ticker-track a{text-decoration:none;font-size:13.5px;color:var(--ink)}
+.ticker-track a:hover{text-decoration:underline}
+.ticker-track b{font-family:var(--f-mono);font-weight:600;font-size:11.5px;margin-right:8px;padding:1px 6px;border-radius:2px}
+.k-signal{background:var(--red);color:#fff}
+.k-check{background:var(--amber);color:var(--amber-ink)}
+@keyframes scroll{to{transform:translateX(-50%)}}
+@keyframes blink{to{visibility:hidden}}
+.wrap{max-width:1080px;margin:0 auto;display:flex;flex-direction:column;gap:20px;padding-top:24px}
+header{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;flex-wrap:wrap}
+.brand{font-family:var(--f-stencil);font-weight:900;font-size:clamp(34px,6vw,54px);line-height:.95;letter-spacing:.01em;text-transform:uppercase}
+.brand small{display:block;font-family:var(--f-body);font-weight:700;font-size:clamp(20px,3.4vw,28px);letter-spacing:0;text-transform:none;margin-top:4px}
+.brand small span{color:var(--red)}
+.proto{font-family:var(--f-mono);font-size:12px;color:var(--amber);border:1.5px dashed var(--amber);padding:4px 10px;border-radius:2px;letter-spacing:.05em}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:4px}
+.search{padding:14px;display:flex;flex-direction:column;gap:10px}
+.search form{display:flex;gap:10px;flex-wrap:wrap}
+.search input,.search select{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:3px;padding:11px 12px;min-width:0}
+#occ-input{flex:1 1 260px}
+#region{flex:0 1 190px}
+button{font:inherit;cursor:pointer}
+.go{background:var(--red);color:#fff;border:0;border-radius:3px;padding:11px 20px;font-weight:700;letter-spacing:.02em}
+.go:hover{filter:brightness(1.1)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{background:transparent;border:1px solid var(--line);color:var(--muted);border-radius:2px;padding:4px 11px;font-size:13px}
+.chip[aria-pressed="true"]{border-color:var(--red);color:var(--ink);background:var(--red-soft)}
+.msg{font-size:13px;color:var(--amber);min-height:1em;margin:0}
+.region-note{font-size:12px;color:var(--muted);margin:0}
+.console{position:relative;padding:22px 22px 18px;border:1px solid var(--line);border-radius:4px;background:var(--panel);overflow:hidden}
+.console::before{content:"";position:absolute;inset:0 0 auto 0;height:4px;background:repeating-linear-gradient(-45deg,var(--red) 0 10px,transparent 10px 20px)}
+.console-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.eyebrow{font-family:var(--f-stencil);font-weight:700;font-size:15px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;margin:0}
+.occ-name{font-weight:700;font-size:clamp(24px,4.2vw,34px);margin:2px 0 4px;line-height:1.2;text-wrap:balance}
+.level{font-family:var(--f-mono);font-weight:600;font-size:13px;padding:6px 12px;border-radius:2px;letter-spacing:.04em;white-space:nowrap}
+.lv-red{background:var(--red);color:#fff;animation:pulse 1.2s ease-in-out infinite}
+.lv-orange{background:#FF7A1A;color:#1A0A00}
+.lv-yellow{background:var(--amber);color:var(--amber-ink)}
+.lv-out{background:var(--panel-2);color:var(--muted);border:1px solid var(--line)}
+@keyframes pulse{50%{opacity:.6}}
+.lead{margin:6px 0 14px;font-size:15.5px;color:var(--ink);max-width:62ch}
+.lead em{font-style:normal;color:var(--red);font-weight:600}
+.led{display:flex;flex-wrap:wrap;align-items:flex-end;gap:10px 22px;padding:18px 16px;background:#0A0B0C;border:1px solid var(--line);border-radius:3px}
+.grp{display:flex;align-items:flex-end;gap:4px}
+.grp svg{width:clamp(20px,5vw,50px);height:auto;transform:skewX(-6deg);overflow:visible}
+.grp svg polygon{fill:var(--red-off);transition:fill .08s}
+.grp svg polygon.on{fill:var(--red);filter:drop-shadow(0 0 4px rgba(255,59,48,.55))}
+.grp.small svg{width:clamp(14px,3.2vw,32px)}
+.unit{font-weight:700;font-size:clamp(14px,2.4vw,20px);color:var(--muted);padding-bottom:4px;margin-left:4px}
+.sep{font-family:var(--f-mono);font-size:clamp(20px,4vw,40px);color:var(--red);line-height:1;padding-bottom:4px}
+.led-status{width:100%;font-family:var(--f-mono);font-size:13px;color:var(--amber);margin:0}
+.dates{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:14px}
+.dates div{display:flex;flex-direction:column;gap:2px;padding:10px 12px;background:var(--panel-2);border-radius:3px}
+.dates b{font-family:var(--f-mono);font-weight:600;font-size:18px;font-variant-numeric:tabular-nums}
+.dates small{color:var(--muted);font-size:12px}
+.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:20px}
+@media (max-width:860px){.grid2{grid-template-columns:1fr}}
+.box{padding:18px;display:flex;flex-direction:column;gap:16px}
+.box h2{font-size:18px;font-weight:700;margin:0;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.box h2 .eyebrow{font-size:13px}
+.ctl{display:flex;flex-direction:column;gap:6px}
+.ctl-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:14px}
+.ctl-head output{font-family:var(--f-mono);font-variant-numeric:tabular-nums;color:var(--amber);font-weight:600}
+.ctl small{color:var(--muted);font-size:12px;line-height:1.45}
+input[type=range]{width:100%;accent-color:var(--red)}
+.seg-group{display:flex;border:1px solid var(--line);border-radius:3px;overflow:hidden}
+.seg-group button{flex:1;background:transparent;border:0;color:var(--muted);padding:8px 6px;font-size:13px}
+.seg-group button+button{border-left:1px solid var(--line)}
+.seg-group button[aria-pressed="true"]{background:var(--red-soft);color:var(--ink);font-weight:600}
+.presets{display:flex;gap:6px;flex-wrap:wrap}
+.presets button{background:transparent;border:1px solid var(--line);color:var(--muted);border-radius:2px;padding:2px 8px;font-size:12px;font-family:var(--f-mono)}
+.presets button:hover{color:var(--ink);border-color:var(--muted)}
+button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+.news{display:flex;flex-direction:column;gap:10px}
+.news-item{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 12px;padding:12px;border:1px solid var(--line);border-radius:3px;background:var(--panel-2)}
+.news-item .kind{grid-row:span 3;align-self:start;font-family:var(--f-mono);font-weight:600;font-size:11.5px;padding:2px 7px;border-radius:2px;white-space:nowrap}
+.news-item.signal{border-left:3px solid var(--red);border-radius:0 3px 3px 0}
+.news-item.check{border-left:3px solid var(--amber);border-radius:0 3px 3px 0}
+.news-item strong{font-size:14.5px;font-weight:600;line-height:1.45}
+.news-item p{margin:0;font-size:13.5px;color:var(--muted)}
+.news-item .src{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.news-item .src a{color:var(--amber)}
+.empty{font-size:13.5px;color:var(--muted);padding:14px;border:1px dashed var(--line);border-radius:3px;margin:0}
+.section-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--muted)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:-1px}
+.lg-cap{background:var(--red)}
+.lg-lag{width:22px!important;height:6px!important;border-radius:2px!important;background:var(--red-soft);border:1px solid var(--red)}
+.lg-out{border-radius:2px!important;background:repeating-linear-gradient(45deg,var(--line) 0 3px,transparent 3px 6px);border:1px solid var(--line)}
+.tl{display:flex;flex-direction:column}
+.tl-axis,.tl-row{display:grid;grid-template-columns:minmax(0,270px) minmax(0,1fr);gap:16px;align-items:center}
+.tl-axis{padding-bottom:6px;border-bottom:1px solid var(--line)}
+.ticks{position:relative;height:18px;font-family:var(--f-mono);font-size:11px;color:var(--muted)}
+.ticks span{position:absolute;transform:translateX(-50%);white-space:nowrap}
+.ticks span:first-child{transform:none;color:var(--red)}
+.ticks span:last-child{transform:translateX(-100%)}
+.tl-row{padding:8px 0;border-bottom:1px dashed var(--line)}
+.task{display:flex;flex-direction:column;min-width:0}
+.task strong{font-weight:500;font-size:14px}
+.task small{font-family:var(--f-mono);font-size:11.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.track{position:relative;height:34px;background:linear-gradient(to right,var(--line) 1px,transparent 1px) 0 0/20% 100%}
+.bar{position:absolute;top:22px;height:6px;border-radius:2px;background:var(--red-soft);border:1px solid var(--red)}
+.dot{position:absolute;top:19px;width:12px;height:12px;margin-left:-6px;border-radius:50%;background:var(--red);border:2px solid var(--panel)}
+.dot.now{animation:pulse 1.2s ease-in-out infinite}
+.tag{position:absolute;top:0;font-family:var(--f-mono);font-size:11px;line-height:16px;color:var(--red);white-space:nowrap}
+.out{position:absolute;inset:6px 0;border-radius:2px;background:repeating-linear-gradient(45deg,var(--line) 0 4px,transparent 4px 9px);border:1px solid var(--line);display:flex;align-items:center;padding-left:10px;font-size:12px;color:var(--muted)}
+@media (max-width:620px){.tl-axis{grid-template-columns:1fr}.tl-axis>div:first-child{display:none}.tl-row{grid-template-columns:1fr;gap:4px}}
+.share{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px;align-items:center}
+@media (max-width:620px){.share{grid-template-columns:1fr}}
+#share-text{width:100%;font:inherit;font-size:14px;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:3px;padding:10px 12px;resize:none;min-height:70px}
+.copy{background:var(--red);color:#fff;border:0;border-radius:3px;padding:11px 20px;font-weight:700;white-space:nowrap}
+.method{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 28px}
+@media (max-width:720px){.method{grid-template-columns:1fr}}
+.method h3{font-size:14px;font-weight:600;margin:0 0 4px}
+.method p,.method li{font-size:13.5px;color:var(--muted);margin:0}
+.method ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px}
+.method a{color:var(--amber)}
+code{font-family:var(--f-mono);font-size:12.5px;background:var(--panel-2);padding:1px 4px;border-radius:2px}
+@media (max-width:520px){.dates{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){
+  .ticker-track{animation:none;flex-wrap:wrap;white-space:normal;gap:8px 24px;padding:8px 14px}
+  .ticker-track [aria-hidden="true"]{display:none}
+  .lv-red,.dot.now,.ticker-label::before{animation:none}
+  .grp svg polygon{transition:none}
+}
+.range-note{font-family:var(--f-mono);font-size:12.5px;color:var(--muted);margin:10px 0 0}
+.more{margin-top:12px;background:var(--panel-2);border:1px solid var(--line);color:var(--ink);font:inherit;font-size:13px;padding:7px 14px;border-radius:3px;cursor:pointer}
+.more:hover{border-color:var(--amber)}
+.ty{font-family:var(--f-mono);font-size:11px;padding:0 5px;border-radius:2px;border:1px solid var(--line);margin-left:6px;color:var(--muted)}
+.loading{color:var(--muted);font-size:13px}
+</style>
+
+<div class="hazard" aria-hidden="true"></div>
+<div class="ticker" aria-label="最新信号">
+  <div class="ticker-label">最新信号</div>
+  <div class="ticker-viewport"><div class="ticker-track" id="ticker"></div></div>
+</div>
+
+<div class="wrap">
+  <header>
+    <div class="brand">Countdown<small>你的工作，<span>还剩多久</span></small></div>
+    <div class="proto">第一期 · 876 个职业 · 时长为模型估计</div>
+  </header>
+
+  <section class="panel search" aria-label="选择职业">
+    <form id="occ-form">
+      <input id="occ-input" list="occ-list" placeholder="输入职业：会计、数学家、生信、translator、nurse…" autocomplete="off" aria-label="你的职业">
+      <datalist id="occ-list"></datalist>
+      <select id="region" aria-label="地区">
+        <option value="BC">British Columbia</option>
+        <option value="AB">Alberta</option>
+        <option value="ON">Ontario</option>
+        <option value="QC">Québec</option>
+        <option value="CA">加拿大其他省份</option>
+        <option value="CN">中国大陆</option>
+        <option value="US">美国</option>
+      </select>
+      <button class="go" type="submit">启动倒计时</button>
+    </form>
+    <div class="chips" id="chips"></div>
+    <p class="msg" id="msg" role="status"></p>
+  </section>
+
+  <section class="console" aria-live="polite">
+    <div class="console-top">
+      <div>
+        <p class="eyebrow" id="hero-eyebrow">Occupation</p>
+        <h1 class="occ-name" id="occ-name">会计</h1>
+      </div>
+      <div class="level" id="level">—</div>
+    </div>
+    <p class="lead" id="hero-lead"></p>
+    <div class="led" id="led" role="timer" aria-label="倒计时"></div>
+    <div class="dates">
+      <div><small>能力到位</small><b id="d-cap">—</b><small id="d-cap-note"></small></div>
+      <div><small>实际落地（加上落地期）</small><b id="d-adopt">—</b><small id="d-adopt-note"></small></div>
+    </div>
+    <p class="range-note" id="range-note"></p>
+  </section>
+
+  <div class="grid2">
+    <section class="panel box" aria-label="假设">
+      <h2><span class="eyebrow">Assumptions</span>你来定假设</h2>
+      <div class="ctl">
+        <div class="ctl-head"><span>可靠度要求</span><output id="o-rel">80%</output></div>
+        <div class="seg-group" id="rel-group">
+          <button type="button" data-v="50" aria-pressed="false">一半时候能做对</button>
+          <button type="button" data-v="80" aria-pressed="true">十次对八次</button>
+        </div>
+        <small>真要把工作交给 AI，至少得 80% 做对。METR 两个口径都公布。</small>
+      </div>
+      <div class="ctl">
+        <div class="ctl-head"><span>能力翻倍周期</span><output id="o-dbl">4.3 个月</output></div>
+        <input type="range" id="dbl" min="2.5" max="14" step="0.1" value="4.3" aria-label="能力翻倍周期（月）">
+        <div class="presets">
+          <button type="button" data-dbl="2.9">2.9 · 2024 年后</button>
+          <button type="button" data-dbl="4.3">4.3 · 2023 年后</button>
+          <button type="button" data-dbl="6.5">6.5 · 全部历史</button>
+          <button type="button" data-dbl="12">12 · 放缓</button>
+        </div>
+        <small>METR Time Horizon 1.1 不同时间段拟合出的翻倍周期。</small>
+      </div>
+      <div class="ctl">
+        <div class="ctl-head"><span>真实工作难度折扣</span><output id="o-mess">×4</output></div>
+        <input type="range" id="mess" min="0" max="5" step="1" value="2" aria-label="真实工作难度折扣（倍数，以 2 为底）">
+        <small>METR 的题目定义清楚、能自动评分，真实工作做不到。×4 表示把每项任务当作长 4 倍来算。这个系数还没校准，是本项目接下来要估计的核心参数。</small>
+      </div>
+      <div class="ctl">
+        <div class="ctl-head"><span>落地期</span><output id="o-lag">2.0 年</output></div>
+        <input type="range" id="lag" min="0" max="5" step="0.5" value="2" aria-label="落地期（年）">
+        <small>AI 能做到之后，公司真正用起来要多久：采购、合规、改流程。</small>
+      </div>
+      <div class="ctl">
+        <div class="ctl-head"><span>人际信任类任务额外落地期</span><output id="o-tlag">+3.0 年</output></div>
+        <input type="range" id="tlag" min="0" max="10" step="0.5" value="3" aria-label="人际信任类任务额外落地期（年）">
+        <small>和客户沟通、谈判、安抚情绪这类任务，AI 技术上能做，但人们愿不愿意交给 AI 是另一回事。</small>
+      </div>
+      <div class="ctl">
+        <div class="ctl-head"><span>倒计时指的是</span><output id="o-thr">一半工作</output></div>
+        <div class="seg-group" id="thr-group">
+          <button type="button" data-v="50" aria-pressed="true">一半工作时间</button>
+          <button type="button" data-v="75" aria-pressed="false">四分之三</button>
+        </div>
+      </div>
+      <p class="region-note" id="region-note"></p>
+    </section>
+
+    <section class="panel box" aria-label="新闻证据">
+      <h2><span class="eyebrow">Evidence</span>这个行业发生了什么</h2>
+      <div class="news" id="news"></div>
+    </section>
+  </div>
+
+  <section class="panel box" aria-label="任务时间线">
+    <div class="section-head">
+      <h2><span class="eyebrow">Task by task</span>哪项工作先被 AI 接手</h2>
+      <div class="legend">
+        <span><i class="lg-cap"></i>能力到位</span>
+        <span><i class="lg-lag"></i>落地期</span>
+        <span><i class="lg-out"></i>趋势线不覆盖（需要现场操作）</span>
+      </div>
+    </div>
+    <div class="tl" id="tl"></div>
+    <button type="button" class="more" id="tl-more" hidden></button>
+  </section>
+
+  <section class="panel box" aria-label="分享">
+    <h2><span class="eyebrow">Share</span>发给同行</h2>
+    <div class="share">
+      <textarea id="share-text" readonly aria-label="分享文案"></textarea>
+      <button class="copy" type="button" id="copy-btn">复制文案</button>
+    </div>
+  </section>
+
+  <section class="panel box" aria-label="怎么算的">
+    <h2><span class="eyebrow">Method</span>怎么算的</h2>
+    <div class="method">
+      <div>
+        <h3>1 · 把职业拆成任务</h3>
+        <p>任务清单来自 O*NET 30.2（876 个职业，17,517 项任务）。每项任务占工作时间的比例用 Stanford Hatgis-Kessell 等（2026）的估计。</p>
+      </div>
+      <div>
+        <h3>2 · 估计每项任务做一次要多久</h3>
+        <p>让 Qwen2.5-32B 估计一位熟练从业者从开始到交付、不用 AI，做一次这项任务的总工时，并判断它是电脑上能完成的、依赖现场操作的，还是依赖人际信任的。每项采样 5 次取中位数。和 Stanford 的任务长短排序相比，Spearman 相关 0.66。</p>
+      </div>
+      <div>
+        <h3>3 · 套上 METR 的能力曲线</h3>
+        <p>METR 测量 AI agent 能独立完成多长的任务：目前 80% 可靠度下约 3 小时，50% 可靠度下约 16 小时。一项任务要等的时间是 <code>翻倍周期 × log₂(任务时长 × 难度折扣 ÷ 当前上限)</code>。按到位先后累加时间占比，到你选的比例就是「能力到位」，再加落地期。</p>
+      </div>
+      <div>
+        <h3>这个数字不能说明什么</h3>
+        <ul>
+          <li>能做到不等于会被取代：工作通常是被重组，而不是消失。</li>
+          <li>需要现场操作的任务不计入；依赖人际信任的任务计入，但落地期更长。</li>
+          <li>METR 的题目以软件工程为主，推到其他行业要打折扣，折扣多大还没校准。</li>
+          <li>任务时长是模型估计，人工校验正在进行；英文任务描述直接来自 O*NET。</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+const NEWS = {
+  "Mathematicians":[
+    {k:"signal",date:"2026-05",t:"OpenAI 称其通用推理模型推翻了 Erdős 一个 80 年的几何猜想",p:"问题关于平面上等距点对的数量；OpenAI 称外部数学家审核了证明，这个模型并非专为数学训练。",src:"eWeek",url:"https://www.eweek.com/news/openai-ai-erdos-geometry-conjecture/"},
+    {k:"check",date:"2026-05",t:"推翻的是「上界已最优」的猜想，正确的界仍然未知",p:"构造用到的思路文献里已有，Princeton 的 Will Sawin 很快改进了它。2025 年 10 月 OpenAI 还曾把文献里已有的 Erdős 解答当成新成果。",src:"INESC TEC",url:"https://bip.inesctec.pt/en/inesctecwatch/does-artificial-intelligence-finally-understand-mathematics-openai-believes-so-but-doubts-remain-over-both-the-result-and-the-conduct/"}
+  ],
+  "Bioinformatics Scientists":[
+    {k:"signal",date:"2026-09",t:"Anthropic 称 Claude 在 DNA 数据库里自主找到一个类 CRISPR 的酶系统",p:"Claude 检索了 21 小时，研究人员只给了高层方向；这个系统被命名为 ART，可能是一种新的基因编辑机制。",src:"Al Jazeera",url:"https://www.aljazeera.com/news/2026/9/24/ai-model-claude-discovers-crispr-like-enzyme-system-anthropic-says"},
+    {k:"check",date:"2026-09",t:"功能还没确定，哥本哈根的团队说他们一年前就发现了它",p:"这个系统还没有湿实验验证。哥本哈根大学一位生物学家称其团队约一年前已发现该酶，用过 Claude，只是尚未发表；Anthropic 否认用用户对话训练。",src:"ThePrint",url:"https://theprint.in/science/did-claude-discover-a-new-enzyme-or-stole-a-biologists-work-anthropic-responds/3057122/"}
+  ],
+  "Software Developers":[
+    {k:"signal",date:"2026-01",t:"AI agent 能独立完成的任务长度，2023 年后约每 4.3 个月翻一倍",p:"METR 用人类专家完成任务的时长衡量 AI 能力；2026 年 1 月的更新显示进展在加速。这正是本页倒计时用的曲线。",src:"Wikipedia · METR",url:"https://en.wikipedia.org/wiki/METR"},
+    {k:"check",date:"2025-07",t:"随机对照实验：资深开发者用 AI 工具后反而慢了 19%",p:"16 位资深开源开发者在自己的仓库里做真实任务；他们事前以为会快 24%，事后仍以为快了 20%。",src:"DX · METR",url:"https://getdx.com/blog/metr-study-on-how-ai-affects-developer-productivity/"}
+  ],
+  "Customer Service Representatives":[
+    {k:"signal",date:"2024-02",t:"Klarna 称 AI 助手承担了 700 人的工作量",p:"高峰时 AI 处理了约 75% 的客服对话，覆盖 35 种以上语言。",src:"Tech.co",url:"https://tech.co/news/klarna-reverses-ai-overhaul"},
+    {k:"check",date:"2025-05",t:"服务质量下滑后，Klarna 重新招聘人工客服",p:"CEO 承认之前偏重 AI 的做法不对，客户往往更想和人沟通，现在改成 AI 加人工的双轨模式。",src:"Tech.co",url:"https://tech.co/news/klarna-reverses-ai-overhaul"}
+  ],
+  "Paralegals and Legal Assistants":[
+    {k:"check",date:"2026-06",t:"美国联邦法院同时处罚原被告双方律师：文书引用了 AI 编造的判例",p:"密西西比北区法院对 4 名律师罚款，其中两人被禁止在该法院执业两年，原定的庭审也被取消。",src:"Lawyer Monthly",url:"https://www.lawyer-monthly.com/2026/06/judge-aycock-ai-hallucinations-sanctions-mississippi-2026/"}
+  ]
+};
+NEWS["Lawyers"] = NEWS["Paralegals and Legal Assistants"];
+const FEATURED = ["Accountants and Auditors","Software Developers","Mathematicians","Bioinformatics Scientists","Business Intelligence Analysts","Interpreters and Translators","Graphic Designers","Customer Service Representatives","Paralegals and Legal Assistants","Lawyers","Registered Nurses","Electricians"];
+const H0 = {50:16, 80:3.1};
+const MESS = [1,2,4,8,16,32];
+const DBL_RANGE = [2.9, 6.5];
+const TYPE_TXT = ["电脑可完成","依赖人际信任","需要现场操作"];
+const REGIONS = {BC:"British Columbia",AB:"Alberta",ON:"Ontario",QC:"Québec",CA:"加拿大其他省份",CN:"中国大陆",US:"美国"};
+const state = {occ:null, rel:80, dbl:4.3, mess:2, lag:2, trustLag:3, thr:50, region:"BC", showAll:false};
+const MS_MONTH = 30.4375*864e5, MS_YEAR = 365.25*864e5;
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+let OCC = [], BY_CODE = {};
+
+const SEG = {a:"10,3 40,3 45,8 40,13 10,13 5,8", b:"37,10 42,5 47,10 47,38 42,43 37,38", c:"37,52 42,47 47,52 47,80 42,85 37,80",
+  d:"10,77 40,77 45,82 40,87 10,87 5,82", e:"3,52 8,47 13,52 13,80 8,85 3,80", f:"3,10 8,5 13,10 13,38 8,43 3,38", g:"10,40 40,40 45,45 40,50 10,50 5,45"};
+const DIG = {"0":"abcdef","1":"bc","2":"abged","3":"abgcd","4":"fgbc","5":"afgcd","6":"afgedc","7":"abc","8":"abcdefg","9":"abcdfg","-":"g"," ":""};
+const groups = [];
+function buildLED(){
+  const spec=[{n:2,unit:"年"},{n:3,unit:"天"},{n:2,sep:":"},{n:2,sep:":"},{n:2,sep:"."},{n:2,small:true}];
+  const led=$("led"); led.innerHTML="";
+  const row1=document.createElement("div"); row1.style.cssText="display:flex;align-items:flex-end;gap:10px 22px;flex-wrap:wrap";
+  const row2=document.createElement("div"); row2.style.cssText="display:flex;align-items:flex-end;gap:6px";
+  spec.forEach((s,i)=>{
+    const g=document.createElement("div"); g.className="grp"+(s.small?" small":""); const digits=[];
+    for(let k=0;k<s.n;k++){
+      const svg=document.createElementNS("http://www.w3.org/2000/svg","svg"); svg.setAttribute("viewBox","0 0 50 90"); svg.setAttribute("aria-hidden","true");
+      const polys={}; for(const key in SEG){ const p=document.createElementNS("http://www.w3.org/2000/svg","polygon"); p.setAttribute("points",SEG[key]); svg.appendChild(p); polys[key]=p; }
+      g.appendChild(svg); digits.push({polys,cur:null});
+    }
+    if(s.unit){ const u=document.createElement("span"); u.className="unit"; u.textContent=s.unit; g.appendChild(u); }
+    groups.push(digits);
+    (i<2?row1:row2).appendChild(g);
+    if(s.sep){ const sp=document.createElement("span"); sp.className="sep"; sp.textContent=s.sep; row2.appendChild(sp); }
+  });
+  led.appendChild(row1); led.appendChild(row2);
+  const st=document.createElement("p"); st.className="led-status"; st.id="led-status"; led.appendChild(st);
+}
+function setGroup(i,str){
+  const digits=groups[i];
+  str=str.padStart(digits.length," ").slice(-digits.length);
+  digits.forEach((d,k)=>{ const ch=str[k]; if(d.cur===ch) return; d.cur=ch; const on=DIG[ch]||""; for(const key in d.polys) d.polys[key].classList.toggle("on",on.includes(key)); });
+}
+function setAll(ch){ groups.forEach((g,i)=>setGroup(i,ch.repeat(g.length))); }
+
+const pctTxt = v => (v>=10||v===0? Math.round(v) : v.toFixed(1))+"%";
+function monthsFor(h, dbl){ const H=H0[state.rel], x=h*MESS[state.mess]; return x<=H?0:dbl*Math.log2(x/H); }
+function fmtDate(d){ return d.getFullYear()+" 年 "+(d.getMonth()+1)+" 月"; }
+function fmtHours(h){ return h<1 ? Math.max(1,Math.round(h*60))+" 分钟" : (h<10? +h.toFixed(1) : Math.round(h))+" 小时"; }
+function spanText(ms){ if(ms<=0) return "0 天"; const y=Math.floor(ms/MS_YEAR), d=Math.floor((ms-y*MS_YEAR)/864e5); return (y?y+" 年 ":"")+d+" 天"; }
+const label = o => o.zh ? o.zh+" · "+o.en : o.en;
+
+const extraLag = t => state.lag*12 + (t.type===1 ? state.trustLag*12 : 0);
+function crossing(items){
+  items.sort((a,b)=>a.v-b.v);
+  let cum=0; for(const t of items){ cum+=t.share; if(cum>=state.thr-1e-6) return t.v; }
+  return null;
+}
+function capMonths(occ, dbl){
+  return crossing(occ.tasks.filter(t=>t.type!==2).map(t=>({share:t.share,v:monthsFor(t.h,dbl)})));
+}
+function compute(){
+  const occ = BY_CODE[state.occ];
+  const tasks = occ.tasks.map(t=>({...t, m: t.type!==2 ? monthsFor(t.h,state.dbl) : null}));
+  const sum = ty => occ.tasks.filter(t=>t.type===ty).reduce((s,t)=>s+t.share,0);
+  const covShare = sum(0), trustShare = sum(1), physShare = sum(2);
+  const T = capMonths(occ, state.dbl);
+  const A = T==null?null:crossing(tasks.filter(t=>t.m!=null).map(t=>({share:t.share,v:t.m+extraLag(t)})));
+  const now = new Date();
+  const cap = T==null?null:new Date(now.getTime()+T*MS_MONTH);
+  const adopt = A==null?null:new Date(now.getTime()+A*MS_MONTH);
+  const range = DBL_RANGE.map(d=>capMonths(occ,d));
+  return {occ,tasks,covShare,trustShare,physShare,T,cap,adopt,now,range};
+}
+
+let target=null, raf=null, iv=null, lastStatus="";
+function tick(){
+  if(target==null) return;
+  const ms = target - Date.now();
+  if(ms<=0){ setAll("0"); setStatus("按这组假设，这一刻已经到了"); return; }
+  let y=Math.floor(ms/MS_YEAR); const d=Math.floor((ms-y*MS_YEAR)/864e5);
+  const rest=ms-y*MS_YEAR-d*864e5;
+  const hh=Math.floor(rest/36e5), mm=Math.floor(rest%36e5/6e4), ss=Math.floor(rest%6e4/1e3), cs=reduce?0:Math.floor(rest%1e3/10);
+  const p=n=>String(n).padStart(2,"0");
+  setGroup(0,String(Math.min(y,99)).padStart(2,"0")); setGroup(1,String(d).padStart(3,"0"));
+  setGroup(2,p(hh)); setGroup(3,p(mm)); setGroup(4,p(ss)); setGroup(5,p(cs));
+  setStatus(y>99?"超过 99 年":"");
+}
+function setStatus(s){ if(s!==lastStatus){ $("led-status").textContent=s; lastStatus=s; } }
+function loop(){ tick(); raf=requestAnimationFrame(loop); }
+function startClock(){ stopClock(); if(reduce){ tick(); iv=setInterval(tick,1000); } else loop(); }
+function stopClock(){ if(raf) cancelAnimationFrame(raf); if(iv) clearInterval(iv); raf=iv=null; }
+
+function level(r){
+  if(r.cap==null) return ["lv-out","曲线外"];
+  const yrs=(r.adopt-r.now)/MS_YEAR;
+  if(yrs<2) return ["lv-red","红色警报 · 2 年内"];
+  if(yrs<5) return ["lv-orange","橙色警报 · 5 年内"];
+  return ["lv-yellow","黄色预警 · 5 年以上"];
+}
+
+function renderNews(){
+  const items = NEWS[BY_CODE[state.occ].en]||[];
+  if(!items.length){ $("news").innerHTML='<p class="empty">这个职业还没有收录新闻。后续会按职业自动抓取，每条「AI 进展」都配一条「现实检验」。</p>'; return; }
+  $("news").innerHTML = items.map(n=>'<article class="news-item '+n.k+'"><span class="kind '+(n.k==="signal"?"k-signal":"k-check")+'">'+(n.k==="signal"?"AI 进展":"现实检验")+'</span>'+
+    '<strong>'+esc(n.t)+'</strong><p>'+esc(n.p)+'</p><span class="src">'+n.date+' · <a href="'+n.url+'" target="_blank" rel="noopener">'+esc(n.src)+' ↗</a></span></article>').join("");
+}
+
+function render(){
+  const r = compute();
+  const thrTxt = state.thr===50?"一半":"四分之三";
+  $("occ-name").textContent = label(r.occ);
+  $("hero-eyebrow").textContent = "O*NET "+r.occ.code+" · "+REGIONS[state.region];
+  $("o-rel").textContent = state.rel+"%";
+  $("o-dbl").textContent = state.dbl.toFixed(1)+" 个月";
+  $("o-mess").textContent = "×"+MESS[state.mess];
+  $("o-lag").textContent = state.lag.toFixed(1)+" 年";
+  $("o-tlag").textContent = "+"+state.trustLag.toFixed(1)+" 年";
+  $("o-thr").textContent = state.thr===50?"一半工作":"四分之三";
+  $("region-note").textContent = "地区："+REGIONS[state.region]+"。第一期地区还不影响计算，之后会接入当地按职业的就业人数。";
+  const [lvCls,lvTxt]=level(r); $("level").className="level "+lvCls; $("level").textContent=lvTxt;
+  const outTxt = "现场操作占 "+pctTxt(r.physShare)+"，人际信任占 "+pctTxt(r.trustShare);
+
+  let share;
+  if(r.cap==null){
+    target=null; stopClock(); setAll("-");
+    $("hero-lead").innerHTML = "按这条趋势线，AI <em>接不住</em>你"+thrTxt+"的工作时间：需要现场操作的工作占 "+pctTxt(r.physShare)+"，不在曲线覆盖范围内。";
+    setStatus("到不了 "+state.thr+"%");
+    $("d-cap").textContent="趋势线不覆盖"; $("d-cap-note").textContent="不需要到现场的工作只占 "+pctTxt(r.covShare+r.trustShare);
+    $("d-adopt").textContent="—"; $("d-adopt-note").textContent=outTxt;
+    $("range-note").textContent = "";
+    share = "我的职业「"+(r.occ.zh||r.occ.en)+"」：按当前 AI 能力趋势，AI 接不住我"+thrTxt+"的工作，因为 "+pctTxt(r.physShare)+" 要在现场完成。你的职业还剩多久？";
+  } else {
+    target = r.adopt.getTime();
+    const capNow = r.T===0;
+    $("hero-lead").innerHTML = "AI 能以 "+state.rel+"% 的成功率独立接手你<em>"+thrTxt+"的工作时间</em>，再加上 "+state.lag+" 年落地期，还剩：";
+    $("d-cap").textContent = capNow?"现在":fmtDate(r.cap);
+    $("d-cap-note").textContent = capNow?"按这组假设，能力已经够了":"还要 "+spanText(r.cap-r.now);
+    $("d-adopt").textContent = fmtDate(r.adopt);
+    $("d-adopt-note").textContent = r.adopt<=r.now?"按这组假设，已经越过":("落地期 "+state.lag+" 年"+(r.trustShare>0?"；人际信任类任务再加 "+state.trustLag+" 年":""));
+    const [fast,slow] = r.range.map(m=>fmtDate(new Date(r.now.getTime()+m*MS_MONTH)));
+    $("range-note").textContent = "翻倍周期在 "+DBL_RANGE[0]+"–"+DBL_RANGE[1]+" 个月之间（METR 不同时间段的拟合）时，能力到位在 "+fast+" 到 "+slow+" 之间。";
+    startClock();
+    share = "我的职业「"+(r.occ.zh||r.occ.en)+"」：按当前 AI 能力趋势（每 "+state.dbl.toFixed(1)+" 个月翻倍，难度折扣 ×"+MESS[state.mess]+"），加上 "+state.lag+" 年落地期，AI 接手我"+thrTxt+"工作的倒计时还剩 "+spanText(r.adopt-r.now)+"。你的职业还剩多久？";
+  }
+  $("share-text").value = share;
+  renderNews();
+
+  const MAXY=10, pct = m => Math.min(100, m/12/MAXY*100);
+  let html = '<div class="tl-axis"><div></div><div class="ticks">'+[0,2,4,6,8,10].map(y=>'<span style="left:'+(y/MAXY*100)+'%">'+(y===0?"现在":"+"+y+" 年")+'</span>').join("")+'</div></div>';
+  const ordered = r.tasks.slice().sort((a,b)=>(a.m==null)-(b.m==null)||(a.m??0)-(b.m??0)||b.share-a.share);
+  const LIMIT=12, shown = state.showAll?ordered:ordered.slice(0,LIMIT);
+  for(const t of shown){
+    const meta = "占 "+pctTxt(t.share)+" · 人类做一次约 "+fmtHours(t.h)+'<span class="ty">'+TYPE_TXT[t.type]+'</span>';
+    let track;
+    if(t.m==null){ track='<div class="out">趋势线不覆盖 · '+TYPE_TXT[t.type]+'</div>'; }
+    else{
+      const x=pct(t.m), x2=pct(t.m+extraLag(t));
+      const lab = t.m===0?"现在就能":(t.m/12>MAXY?"10 年以上":fmtDate(new Date(r.now.getTime()+t.m*MS_MONTH)));
+      const tagPos = x>70?'right:'+(100-x)+'%':'left:'+x+'%';
+      track='<div class="bar" style="left:'+x+'%;width:'+Math.max(0,x2-x)+'%"></div><div class="dot'+(t.m===0?' now':'')+'" style="left:'+x+'%"></div><span class="tag" style="'+tagPos+'">'+lab+'</span>';
+    }
+    html += '<div class="tl-row"><div class="task"><strong lang="en">'+esc(t.name)+'</strong><small>'+meta+'</small></div><div class="track">'+track+'</div></div>';
+  }
+  $("tl").innerHTML = html;
+  const more=$("tl-more");
+  if(ordered.length>LIMIT){ more.hidden=false; more.textContent = state.showAll?"收起":"展开全部 "+ordered.length+" 项任务"; } else more.hidden=true;
+
+  document.querySelectorAll("#chips .chip").forEach(c=>c.setAttribute("aria-pressed", c.dataset.id===state.occ?"true":"false"));
+  document.querySelectorAll("#rel-group button").forEach(b=>b.setAttribute("aria-pressed", +b.dataset.v===state.rel?"true":"false"));
+  document.querySelectorAll("#thr-group button").forEach(b=>b.setAttribute("aria-pressed", +b.dataset.v===state.thr?"true":"false"));
+  try{ history.replaceState(null,"","#"+state.occ); }catch(_){}
+}
+
+function match(q){
+  q=q.trim().toLowerCase(); if(!q) return null;
+  const exact = OCC.find(o=>o.keys.includes(q)); if(exact) return exact;
+  const zhHit = OCC.find(o=>o.keys.some(k=>k.length>1 && (k.includes(q)||q.includes(k)) && /[^\x00-\x7f]/.test(k))); if(zhHit && /[^\x00-\x7f]/.test(q)) return zhHit;
+  const words=q.split(/\s+/).filter(Boolean);
+  let best=null, bestScore=0;
+  for(const o of OCC){
+    const hay=o.keys.join(" | ");
+    let sc=0; for(const w of words) if(hay.includes(w)) sc+=w.length;
+    if(o.zh) sc+=0.5;
+    if(sc>bestScore){ best=o; bestScore=sc; }
+  }
+  return bestScore>=2?best:null;
+}
+
+function buildTicker(){
+  const all=[]; for(const en in NEWS) for(const n of NEWS[en]){ const o=OCC.find(x=>x.en===en); if(o && en!=="Lawyers") all.push({...n,occ:o.zh||o.en}); }
+  all.sort((a,b)=>b.date.localeCompare(a.date));
+  const item=n=>'<a href="'+n.url+'" target="_blank" rel="noopener"><b class="'+(n.k==="signal"?"k-signal":"k-check")+'">'+(n.k==="signal"?"AI 进展":"现实检验")+'</b>'+esc(n.occ)+'｜'+esc(n.t)+'</a>';
+  $("ticker").innerHTML = all.map(item).join("")+'<span aria-hidden="true" style="display:contents">'+all.map(item).join("").replace(/<a /g,'<a tabindex="-1" ')+'</span>';
+}
+
+function init(data){
+  OCC = data.occ.map(([code,en,zh,aliases,tasks])=>({code,en,zh,aliases,
+    tasks: tasks.map(([name,h,share,type])=>({name,h,share,type})),
+    keys: [en,zh,...aliases].filter(Boolean).map(s=>s.toLowerCase())}));
+  BY_CODE = Object.fromEntries(OCC.map(o=>[o.code,o]));
+  const fromHash = decodeURIComponent(location.hash.slice(1));
+  state.occ = BY_CODE[fromHash] ? fromHash : OCC.find(o=>o.en==="Accountants and Auditors").code;
+  buildTicker();
+  $("chips").innerHTML = FEATURED.map(en=>OCC.find(o=>o.en===en)).filter(Boolean).map(o=>'<button type="button" class="chip" data-id="'+o.code+'">'+esc(o.zh||o.en)+'</button>').join("");
+  const opts = OCC.filter(o=>o.zh).map(o=>'<option value="'+esc(o.zh)+'">'+esc(o.en)+'</option>').join("") + OCC.map(o=>'<option value="'+esc(o.en)+'"></option>').join("");
+  $("occ-list").innerHTML = opts;
+  render();
+}
+
+buildLED(); setAll("-");
+$("hero-lead").innerHTML = '<span class="loading">正在载入 876 个职业的数据…</span>';
+$("chips").addEventListener("click",e=>{ const b=e.target.closest(".chip"); if(!b) return; state.occ=b.dataset.id; state.showAll=false; $("occ-input").value=""; $("msg").textContent=""; render(); });
+$("occ-form").addEventListener("submit",e=>{
+  e.preventDefault();
+  if(!OCC.length) return;
+  if(!$("occ-input").value.trim()){ $("msg").textContent="先输入一个职业。"; return; }
+  const o=match($("occ-input").value);
+  if(!o){ $("msg").textContent="没找到这个职业。试试英文职业名，比如 nurse、accountant、translator。"; return; }
+  $("msg").textContent = "匹配到："+label(o); state.occ=o.code; state.showAll=false; render();
+});
+$("occ-input").addEventListener("input",()=>{ $("msg").textContent=""; });
+$("region").addEventListener("change",e=>{ state.region=e.target.value; if(OCC.length) render(); });
+$("rel-group").addEventListener("click",e=>{ const b=e.target.closest("button"); if(!b||!OCC.length) return; state.rel=+b.dataset.v; render(); });
+$("thr-group").addEventListener("click",e=>{ const b=e.target.closest("button"); if(!b||!OCC.length) return; state.thr=+b.dataset.v; render(); });
+$("dbl").addEventListener("input",e=>{ state.dbl=+e.target.value; if(OCC.length) render(); });
+$("mess").addEventListener("input",e=>{ state.mess=+e.target.value; if(OCC.length) render(); });
+$("lag").addEventListener("input",e=>{ state.lag=+e.target.value; if(OCC.length) render(); });
+$("tlag").addEventListener("input",e=>{ state.trustLag=+e.target.value; if(OCC.length) render(); });
+$("tl-more").addEventListener("click",()=>{ state.showAll=!state.showAll; render(); });
+document.querySelectorAll(".presets button").forEach(b=>b.addEventListener("click",()=>{ state.dbl=+b.dataset.dbl; $("dbl").value=state.dbl; if(OCC.length) render(); }));
+$("copy-btn").addEventListener("click",()=>{
+  const t=$("share-text"), btn=$("copy-btn");
+  const fallback=()=>{ t.select(); btn.textContent="已选中，按 Ctrl/⌘+C"; };
+  try{ navigator.clipboard.writeText(t.value).then(()=>{ btn.textContent="已复制"; setTimeout(()=>btn.textContent="复制文案",1600); }).catch(fallback); }
+  catch(_){ fallback(); }
+});
+fetch("occupations.json").then(r=>{ if(!r.ok) throw new Error(r.status); return r.json(); }).then(init)
+  .catch(err=>{ $("hero-lead").textContent="数据载入失败（"+err.message+"），请刷新页面重试。"; });
+
+</script>

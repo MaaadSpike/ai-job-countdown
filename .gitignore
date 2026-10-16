@@ -1,0 +1,19 @@
+# 标注结果：各自发给对方，不要提交（避免标注时看到对方答案）
+labels_*.csv
+disagreements.csv
+eval_labels.csv
+
+# 模型输出和生成的数据：标注完成前不要提交，避免看到 M2 的答案
+runs/
+web/occupations.json
+
+# 第三方数据：仓库没有 LICENSE，按 README 自行下载
+data/
+*.xlsx
+eval_sample_meta.csv
+
+__pycache__/
+*.pyc
+.venv/
+venv/
+.DS_Store

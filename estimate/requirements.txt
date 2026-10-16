@@ -1,0 +1,6 @@
+vllm
+openai
+pandas
+numpy
+openpyxl
+huggingface_hub

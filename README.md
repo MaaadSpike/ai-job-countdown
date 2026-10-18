@@ -1,86 +1,135 @@
 # AI Job Countdown
 
-输入一个职业，按 AI agent 能力的增长趋势，估算 AI 能独立完成这个职业一半工作时间的时间点。
+**English** | [中文](README.zh-CN.md)
 
-做法：把职业拆成 O*NET 任务，估计每项任务人做一次要多久，再套上 [METR](https://metr.org) 测得的 AI 时间跨度（time horizon）增长曲线。
+Type in an occupation and see when AI agents could independently handle half of its work time, if AI capability keeps growing at its measured rate.
 
-> 进行中的研究项目。数字是基于明确假设的推算，不是预测，也不代表某个职业会消失。
+The method breaks each occupation into its O\*NET tasks, estimates how long a skilled person needs for one instance of each task, and applies the growth curve of AI agents' *time horizon* measured by [METR](https://metr.org).
 
-## 目录
+> Research in progress. The countdown is a projection under stated assumptions, not a prediction. Being able to do a task is not the same as replacing the people who do it.
 
-| 目录 | 内容 |
+## How it works
+
+```
+O*NET 30.2 task list ─┬─► estimate/  (Qwen2.5-32B on vLLM) ─► hours per instance + task type
+                      │                                              │
+                      │       annotate/ (human labels) ──► validates ┘
+                      │                                              │
+O*NET task ratings ───┴─► web/own_shares.py ─► share of work time ◄──┘
+                                                     │
+METR time-horizon trend (forecast/) ─────────────────┤
+                                                     ▼
+                              web/build_data.py ─► web/occupations.json ─► web/index.html
+```
+
+For each task, the waiting time until AI can do it is
+
+```
+months = doubling_time × log2(task_hours × difficulty_factor ÷ current_horizon)
+```
+
+The tasks are sorted by that waiting time, and their shares of work time are added up. The date at which the total reaches the chosen threshold (50% by default) is "AI capable". Adding an adoption lag gives "in practice".
+
+## Data strategy
+
+| Quantity | Source | Notes |
+|---|---|---|
+| Tasks and occupations | [O\*NET 30.2](https://www.onetcenter.org) (CC BY 4.0) | 876 occupations, 17,525 tasks. Phase 1 uses the same task subset as Hatgis-Kessell et al. (2026). |
+| Hours for one instance of each task | **Our estimates**: Qwen2.5-32B-Instruct-AWQ on vLLM (`estimate/`) | End to end, by a skilled worker, without AI. Median of 5 samples. |
+| Task type | Same model run | Computer-based, trust-based (needs in-person communication), or on-site. |
+| Share of work time | **Our formula** (`web/own_shares.py`) | O\*NET frequency × O\*NET relevance × min(hours, 7), normalized within each occupation |
+| AI capability | METR Time Horizon 1.1 | About 3.1 hours at 80% reliability and 16 hours at 50%. Doubling time 2.9–6.5 months depending on the fitting period. |
+| Validation | Human labels (`annotate/`) | 8 duration bins and 3 task types, on a stratified sample of 300 tasks |
+
+**Why we estimate durations ourselves.** No public dataset gives end-to-end durations for all O\*NET tasks. The closest one, Hatgis-Kessell et al. (2026), estimates a per-instance time *w* that is capped at 7 hours. That cap is fine for time shares but too short for comparing against AI time horizons. Their release is used here only as a comparison and is not part of the website data.
+
+**Why the time-share formula caps hours at one workday.** O\*NET asks how *often* workers perform a task, for example "daily", not how often they *finish* one. A 300-hour research project that is worked on daily would otherwise count as 300 hours per day. The cap avoids that, at the cost of underweighting long tasks (see Limitations).
+
+## Results so far
+
+**Duration estimates.** 17,525 tasks on one A100 40GB took 3.96 hours at 1,261 output tokens/s, about $0.45 per 1,000 tasks at $1.99/hour.
+
+Agreement with 51 human-labeled tasks (single annotator, 8 duration bins):
+
+| Prompt | Within 1 bin | Quadratic weighted κ | Spearman | Bias on long tasks (≥4 h) | Type agreement |
+|---|---|---|---|---|---|
+| v2 | 75% | 0.58 | 0.69 | +0.22 bins | 84% |
+| v3 | 94% | 0.70 | 0.64 | −0.50 bins | 86% |
+| **v3.1 (used)** | 86% | 0.70 | 0.72 | 0.00 bins | 86% |
+
+These 51 tasks were used to tune the prompt, so they are a development set. The final accuracy will be reported on a separate held-out set.
+
+- v2 inflated short tasks. v3 fixed that but halved long tasks, which would have made countdowns look earlier. v3.1 restricts the "don't inflate" rule to quick routine actions.
+- Hatgis-Kessell et al.'s *w* is within one bin of the same human labels only 51% of the time and is 1.45 bins too short on average. For the 214 tasks sitting at their 7-hour cap, our median estimate is 38 hours, and 86% are above 7 hours.
+- Switching between our time shares and Hatgis-Kessell et al.'s changes the countdown by less than half a year for 85% of occupations (Spearman 0.87 across occupations).
+
+## Website
+
+A static site: one HTML file and one JSON data file (`web/occupations.json`, about 2 MB). No backend; all calculations run in the browser.
+
+- **Search** in Chinese or English, with Chinese aliases for about 120 common occupations.
+- **Seven-segment countdown** to the "in practice" date, with "AI capable" and "in practice" dates, plus the range across METR's doubling-time fits.
+- **Assumption controls**: reliability (50% or 80%), doubling time, real-world difficulty factor, adoption lag, extra lag for trust-based tasks, and the threshold (half or three quarters of work time).
+- **Task timeline**: each task's capability date and adoption lag. On-site tasks are marked as not covered by the trend.
+- **Evidence**: each "AI progress" news item is paired with a "reality check".
+- **Bilingual**: Chinese and English. The language follows `?lang=zh|en`, then the last choice, then the browser language.
+
+## Repository layout
+
+| Directory | Contents |
 |---|---|
-| `annotate/` | 人工标注工具和规则（Streamlit），检验模型估计的准确度 |
-| `estimate/` | 用 vLLM 批量估计 17,525 项任务的端到端时长和类型 |
-| `forecast/` | METR 时间跨度的趋势拟合、回测，以及按任务累加的倒计时算法 |
-| `web/` | 静态网站和生成网站数据的脚本 |
-| `data/` | 第三方数据，不提交，按下文下载 |
-| `runs/` | 模型输出，不提交 |
+| `annotate/` | Streamlit labeling tool, guidelines, agreement metrics |
+| `estimate/` | vLLM batch inference, prompt, evaluation against labels |
+| `forecast/` | METR trend fitting, backtests, countdown algorithm |
+| `web/` | Website, data build script, time-share formula |
+| `tests/` | pytest suite |
+| `data/`, `runs/` | Third-party data and model outputs; not committed |
 
-## 数据流
-
-```
-O*NET 任务 + 时间占比 (data/)
-        │
-        ▼
-estimate/  ──► runs/<run>/estimates.jsonl ──► web/build_data.py ──► web/occupations.json ──► web/index.html
-        ▲                                             ▲
-annotate/ ──► eval_labels.csv ──► estimate/evaluate.py │
-                                                      │
-forecast/  ── METR 趋势参数 ───────────────────────────┘
-```
-
-## 运行
+## Running it
 
 ```bash
-# 1. 数据（data/ 和 runs/ 不在仓库里，自己建）：
-#    data/Task Ratings.xlsx               ← O*NET 30.2：https://www.onetcenter.org/dl_files/database/db_30_2_excel.zip（必需）
-#    data/task_time_share_estimates.xlsx  ← https://github.com/Stephanehk/Estimating-Time-Spent-On-Work（可选，只用于对照）
-#    runs/full-v3.1/estimates.jsonl       ← 第 2 步的输出
+# 1. Data (data/ and runs/ are not in the repo; create them):
+#    data/Task Ratings.xlsx               <- O*NET 30.2: https://www.onetcenter.org/dl_files/database/db_30_2_excel.zip
+#    data/task_time_share_estimates.xlsx  <- https://github.com/Stephanehk/Estimating-Time-Spent-On-Work
+#                                            (task list for step 2, and the optional comparison)
 
-# 2. 估计任务时长（需要 GPU，A100 40GB 上约 3.3 小时、4 美元）
+# 2. Estimate task durations (needs a GPU; ~4 hours on one A100 40GB)
 cd estimate
 bash setup.sh
 python prepare_tasks.py --xlsx ../data/task_time_share_estimates.xlsx --out tasks.jsonl
-python estimate.py --tasks tasks.jsonl --out ../runs/full-v2 --max-tokens 600
+python estimate.py --tasks tasks.jsonl --out ../runs/full-v3.1 --max-tokens 600
 
-# 3. 生成网站数据，本地预览
+# 3. Build the website data and preview
 cd ../web
-python build_data.py                   # 时间占比：O*NET 频率 × M2 时长，需要 data/Task Ratings.xlsx
-# 或：python build_data.py --shares stanford  # 对照：用 Hatgis-Kessell et al. 的时间占比
-python -m http.server 8000   # 打开 http://localhost:8000
+python build_data.py                     # our time shares (default)
+python build_data.py --shares stanford   # comparison: Hatgis-Kessell et al.'s time shares
+python -m http.server 8000               # open http://localhost:8000
 ```
 
-## 当前结果（第一期）
+**Labeling.** See [`annotate/README.md`](annotate/README.md) and [`annotate/GUIDELINES.md`](annotate/GUIDELINES.md). Each annotator runs `streamlit run label_app.py` on their own computer and sends their `labels_<name>.csv` directly. Labels are not committed, so annotators stay independent.
 
-**任务时长估计**（`estimate/`，Qwen2.5-32B-Instruct-AWQ，vLLM，每条任务采样 5 次取中位数）
-
-- 17,525 项任务，A100 40GB 上 3.96 小时，输出 1,261 tokens/s
-- 和 51 条人工标注（单人）比较，8 档时长：
-
-| prompt | 相差 ≤1 档 | 二次加权 kappa | Spearman | 长任务（≥4 小时）偏差 | 类型一致 |
-|---|---|---|---|---|---|
-| v2 | 75% | 0.58 | 0.69 | +0.22 档 | 84% |
-| v3 | 94% | 0.70 | 0.64 | −0.50 档 | 86% |
-| **v3.1（采用）** | 86% | 0.70 | 0.72 | 0.00 档 | 86% |
-
-  这 51 条用于调 prompt（开发集），最终准确度要在另外一批没参与调参的标注上报告。
-- 对比现有数据：Hatgis-Kessell et al. (2026) 的单次时长 w 与同一批人工标注相差 ≤1 档的只有 51%，平均偏短 1.45 档；其中 214 条顶在 7 小时上限的任务，M2 估计的中位数是 38 小时，86% 超过 7 小时。
-- 已知局限：1 小时以内的短任务平均偏长约 1 档。这些任务本来就在 AI 当前能力范围内，对倒计时几乎没有影响。
-
-## 测试与部署
+## Tests and CI/CD
 
 ```bash
 pip install -r requirements-dev.txt
-pytest -q          # prompt 解析、mock 后端端到端、倒计时算法、时间占比、网站数据格式
+pytest -q
 ```
 
-- `.github/workflows/ci.yml`：每次 push 和 PR 自动跑 lint 和测试
-- `.github/workflows/deploy.yml`：把 `web/` 部署到 Cloudflare Pages，目前只能手动触发，网站公开后改成 push 时自动部署
+The tests cover prompt parsing, an end-to-end run with a mock backend (including resuming), the countdown algorithm, the time-share formula, and the website data schema.
 
-## 数据来源
+- `.github/workflows/ci.yml` runs lint and tests on every push and pull request.
+- `.github/workflows/deploy.yml` deploys `web/` to Cloudflare Pages. For now it only runs when triggered by hand.
 
-- 任务清单：[O*NET 30.2](https://www.onetcenter.org)（CC BY 4.0）
-- 任务时间占比：O*NET 30.2 任务评分里的执行频率和相关度，乘以 M2 估计的单次时长（`web/own_shares.py`）
-- 对照数据：Hatgis-Kessell et al. (2026), *Estimating Time Spent on Work Tasks*（只用于比较，不进入网站数据）
-- AI 时间跨度：METR Time Horizon 1.1
+## Limitations
+
+- **Long tasks are underweighted in time shares**, because each occurrence counts at most one workday. For occupations heavy in long work, such as software and research, the countdown may run about a year early.
+- **METR's tasks are mostly software engineering.** The real-world difficulty factor is not calibrated yet; calibrating it is the main research question for the next phase.
+- **Short tasks (under an hour) are overestimated** by about one bin. They are already within AI's current range, so the countdown is barely affected.
+- **Task types are imperfect**, especially for supervising and evaluating staff, and for in-person care tasks that are labeled trust-based.
+- **Human validation** so far uses one annotator. A second annotator and a held-out set are in progress.
+
+## Data sources
+
+- O\*NET 30.2 Database, U.S. Department of Labor, Employment and Training Administration (CC BY 4.0)
+- METR, *Time Horizon 1.1*
+- Comparison only: Hatgis-Kessell, Aguirre, Wan & Bommasani (2026), *Estimating Time Spent on Work Tasks*, arXiv:2608.05172

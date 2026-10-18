@@ -154,34 +154,47 @@ code{font-family:var(--f-mono);font-size:12.5px;background:var(--panel-2);paddin
 .more:hover{border-color:var(--amber)}
 .ty{font-family:var(--f-mono);font-size:11px;padding:0 5px;border-radius:2px;border:1px solid var(--line);margin-left:6px;color:var(--muted)}
 .loading{color:var(--muted);font-size:13px}
+.head-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.lang{display:flex;border:1px solid var(--line);border-radius:3px;overflow:hidden}
+.lang button{background:transparent;border:0;color:var(--muted);font-family:var(--f-mono);font-size:12px;padding:5px 12px;cursor:pointer}
+.lang button+button{border-left:1px solid var(--line)}
+.lang button[aria-pressed="true"]{background:var(--red-soft);color:var(--ink);font-weight:600}
+.lang button:focus-visible{outline:2px solid var(--amber);outline-offset:-2px}
+@media (max-width:520px){.head-right{align-items:flex-start}}
 </style>
 
 <div class="hazard" aria-hidden="true"></div>
-<div class="ticker" aria-label="最新信号">
-  <div class="ticker-label">最新信号</div>
+<div class="ticker" data-i18n-aria="tickerLabel" aria-label="最新信号">
+  <div class="ticker-label" data-i18n="tickerLabel">最新信号</div>
   <div class="ticker-viewport"><div class="ticker-track" id="ticker"></div></div>
 </div>
 
 <div class="wrap">
   <header>
-    <div class="brand">Countdown<small>你的工作，<span>还剩多久</span></small></div>
-    <div class="proto">第一期 · 876 个职业 · 时长为模型估计</div>
+    <div class="brand">Countdown<small data-i18n-html="tagline">你的工作，<span>还剩多久</span></small></div>
+    <div class="head-right">
+      <div class="lang" role="group" aria-label="Language / 语言">
+        <button type="button" data-lang="zh" aria-pressed="true">中文</button>
+        <button type="button" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+      <div class="proto" data-i18n="proto">第一期 · 876 个职业 · 时长为模型估计</div>
+    </div>
   </header>
 
-  <section class="panel search" aria-label="选择职业">
+  <section class="panel search" data-i18n-aria="searchAria" aria-label="选择职业">
     <form id="occ-form">
-      <input id="occ-input" list="occ-list" placeholder="输入职业：会计、数学家、生信、translator、nurse…" autocomplete="off" aria-label="你的职业">
+      <input id="occ-input" list="occ-list" data-i18n-ph="placeholder" placeholder="输入职业：会计、数学家、生信、translator、nurse…" autocomplete="off" data-i18n-aria="occAria" aria-label="你的职业">
       <datalist id="occ-list"></datalist>
-      <select id="region" aria-label="地区">
+      <select id="region" data-i18n-aria="regionAria" aria-label="地区">
         <option value="BC">British Columbia</option>
         <option value="AB">Alberta</option>
         <option value="ON">Ontario</option>
         <option value="QC">Québec</option>
-        <option value="CA">加拿大其他省份</option>
-        <option value="CN">中国大陆</option>
-        <option value="US">美国</option>
+        <option value="CA" data-i18n="regCA">加拿大其他省份</option>
+        <option value="CN" data-i18n="regCN">中国大陆</option>
+        <option value="US" data-i18n="regUS">美国</option>
       </select>
-      <button class="go" type="submit">启动倒计时</button>
+      <button class="go" type="submit" data-i18n="go">启动倒计时</button>
     </form>
     <div class="chips" id="chips"></div>
     <p class="msg" id="msg" role="status"></p>
@@ -191,116 +204,116 @@ code{font-family:var(--f-mono);font-size:12.5px;background:var(--panel-2);paddin
     <div class="console-top">
       <div>
         <p class="eyebrow" id="hero-eyebrow">Occupation</p>
-        <h1 class="occ-name" id="occ-name">会计</h1>
+        <h1 class="occ-name" id="occ-name">—</h1>
       </div>
       <div class="level" id="level">—</div>
     </div>
     <p class="lead" id="hero-lead"></p>
-    <div class="led" id="led" role="timer" aria-label="倒计时"></div>
+    <div class="led" id="led" role="timer" data-i18n-aria="ledAria" aria-label="倒计时"></div>
     <div class="dates">
-      <div><small>能力到位</small><b id="d-cap">—</b><small id="d-cap-note"></small></div>
-      <div><small>实际落地（加上落地期）</small><b id="d-adopt">—</b><small id="d-adopt-note"></small></div>
+      <div><small data-i18n="capLabel">能力到位</small><b id="d-cap">—</b><small id="d-cap-note"></small></div>
+      <div><small data-i18n="adoptLabel">实际落地（加上落地期）</small><b id="d-adopt">—</b><small id="d-adopt-note"></small></div>
     </div>
     <p class="range-note" id="range-note"></p>
   </section>
 
   <div class="grid2">
-    <section class="panel box" aria-label="假设">
-      <h2><span class="eyebrow">Assumptions</span>你来定假设</h2>
+    <section class="panel box" data-i18n-aria="assumptionsAria" aria-label="假设">
+      <h2><span class="eyebrow">Assumptions</span><span data-i18n="assumptionsTitle">你来定假设</span></h2>
       <div class="ctl">
-        <div class="ctl-head"><span>可靠度要求</span><output id="o-rel">80%</output></div>
+        <div class="ctl-head"><span data-i18n="relLabel">可靠度要求</span><output id="o-rel">80%</output></div>
         <div class="seg-group" id="rel-group">
-          <button type="button" data-v="50" aria-pressed="false">一半时候能做对</button>
-          <button type="button" data-v="80" aria-pressed="true">十次对八次</button>
+          <button type="button" data-v="50" aria-pressed="false" data-i18n="rel50">一半时候能做对</button>
+          <button type="button" data-v="80" aria-pressed="true" data-i18n="rel80">十次对八次</button>
         </div>
-        <small>真要把工作交给 AI，至少得 80% 做对。METR 两个口径都公布。</small>
+        <small data-i18n="relHelp">真要把工作交给 AI，至少得 80% 做对。METR 两个口径都公布。</small>
       </div>
       <div class="ctl">
-        <div class="ctl-head"><span>能力翻倍周期</span><output id="o-dbl">4.3 个月</output></div>
-        <input type="range" id="dbl" min="2.5" max="14" step="0.1" value="4.3" aria-label="能力翻倍周期（月）">
+        <div class="ctl-head"><span data-i18n="dblLabel">能力翻倍周期</span><output id="o-dbl">4.3 个月</output></div>
+        <input type="range" id="dbl" min="2.5" max="14" step="0.1" value="4.3" data-i18n-aria="dblAria" aria-label="能力翻倍周期（月）">
         <div class="presets">
-          <button type="button" data-dbl="2.9">2.9 · 2024 年后</button>
-          <button type="button" data-dbl="4.3">4.3 · 2023 年后</button>
-          <button type="button" data-dbl="6.5">6.5 · 全部历史</button>
-          <button type="button" data-dbl="12">12 · 放缓</button>
+          <button type="button" data-dbl="2.9" data-i18n="pre29">2.9 · 2024 年后</button>
+          <button type="button" data-dbl="4.3" data-i18n="pre43">4.3 · 2023 年后</button>
+          <button type="button" data-dbl="6.5" data-i18n="pre65">6.5 · 全部历史</button>
+          <button type="button" data-dbl="12" data-i18n="pre12">12 · 放缓</button>
         </div>
-        <small>METR Time Horizon 1.1 不同时间段拟合出的翻倍周期。</small>
+        <small data-i18n="dblHelp">METR Time Horizon 1.1 不同时间段拟合出的翻倍周期。</small>
       </div>
       <div class="ctl">
-        <div class="ctl-head"><span>真实工作难度折扣</span><output id="o-mess">×4</output></div>
-        <input type="range" id="mess" min="0" max="5" step="1" value="2" aria-label="真实工作难度折扣（倍数，以 2 为底）">
-        <small>METR 的题目定义清楚、能自动评分，真实工作做不到。×4 表示把每项任务当作长 4 倍来算。这个系数还没校准，是本项目接下来要估计的核心参数。</small>
+        <div class="ctl-head"><span data-i18n="messLabel">真实工作难度折扣</span><output id="o-mess">×4</output></div>
+        <input type="range" id="mess" min="0" max="5" step="1" value="2" data-i18n-aria="messAria" aria-label="真实工作难度折扣（倍数，以 2 为底）">
+        <small data-i18n="messHelp">METR 的题目定义清楚、能自动评分，真实工作做不到。×4 表示把每项任务当作长 4 倍来算。这个系数还没校准，是本项目接下来要估计的核心参数。</small>
       </div>
       <div class="ctl">
-        <div class="ctl-head"><span>落地期</span><output id="o-lag">2.0 年</output></div>
-        <input type="range" id="lag" min="0" max="5" step="0.5" value="2" aria-label="落地期（年）">
-        <small>AI 能做到之后，公司真正用起来要多久：采购、合规、改流程。</small>
+        <div class="ctl-head"><span data-i18n="lagLabel">落地期</span><output id="o-lag">2.0 年</output></div>
+        <input type="range" id="lag" min="0" max="5" step="0.5" value="2" data-i18n-aria="lagAria" aria-label="落地期（年）">
+        <small data-i18n="lagHelp">AI 能做到之后，公司真正用起来要多久：采购、合规、改流程。</small>
       </div>
       <div class="ctl">
-        <div class="ctl-head"><span>人际信任类任务额外落地期</span><output id="o-tlag">+3.0 年</output></div>
-        <input type="range" id="tlag" min="0" max="10" step="0.5" value="3" aria-label="人际信任类任务额外落地期（年）">
-        <small>和客户沟通、谈判、安抚情绪这类任务，AI 技术上能做，但人们愿不愿意交给 AI 是另一回事。</small>
+        <div class="ctl-head"><span data-i18n="tlagLabel">人际信任类任务额外落地期</span><output id="o-tlag">+3.0 年</output></div>
+        <input type="range" id="tlag" min="0" max="10" step="0.5" value="3" data-i18n-aria="tlagAria" aria-label="人际信任类任务额外落地期（年）">
+        <small data-i18n="tlagHelp">和客户沟通、谈判、安抚情绪这类任务，AI 技术上能做，但人们愿不愿意交给 AI 是另一回事。</small>
       </div>
       <div class="ctl">
-        <div class="ctl-head"><span>倒计时指的是</span><output id="o-thr">一半工作</output></div>
+        <div class="ctl-head"><span data-i18n="thrLabel">倒计时指的是</span><output id="o-thr">一半工作</output></div>
         <div class="seg-group" id="thr-group">
-          <button type="button" data-v="50" aria-pressed="true">一半工作时间</button>
-          <button type="button" data-v="75" aria-pressed="false">四分之三</button>
+          <button type="button" data-v="50" aria-pressed="true" data-i18n="thr50">一半工作时间</button>
+          <button type="button" data-v="75" aria-pressed="false" data-i18n="thr75">四分之三</button>
         </div>
       </div>
       <p class="region-note" id="region-note"></p>
     </section>
 
-    <section class="panel box" aria-label="新闻证据">
-      <h2><span class="eyebrow">Evidence</span>这个行业发生了什么</h2>
+    <section class="panel box" data-i18n-aria="newsAria" aria-label="新闻证据">
+      <h2><span class="eyebrow">Evidence</span><span data-i18n="newsTitle">这个行业发生了什么</span></h2>
       <div class="news" id="news"></div>
     </section>
   </div>
 
-  <section class="panel box" aria-label="任务时间线">
+  <section class="panel box" data-i18n-aria="tlAria" aria-label="任务时间线">
     <div class="section-head">
-      <h2><span class="eyebrow">Task by task</span>哪项工作先被 AI 接手</h2>
+      <h2><span class="eyebrow">Task by task</span><span data-i18n="tlTitle">哪项工作先被 AI 接手</span></h2>
       <div class="legend">
-        <span><i class="lg-cap"></i>能力到位</span>
-        <span><i class="lg-lag"></i>落地期</span>
-        <span><i class="lg-out"></i>趋势线不覆盖（需要现场操作）</span>
+        <span><i class="lg-cap"></i><span data-i18n="lgCap">能力到位</span></span>
+        <span><i class="lg-lag"></i><span data-i18n="lgLag">落地期</span></span>
+        <span><i class="lg-out"></i><span data-i18n="lgOut">趋势线不覆盖（需要现场操作）</span></span>
       </div>
     </div>
     <div class="tl" id="tl"></div>
     <button type="button" class="more" id="tl-more" hidden></button>
   </section>
 
-  <section class="panel box" aria-label="分享">
-    <h2><span class="eyebrow">Share</span>发给同行</h2>
+  <section class="panel box" data-i18n-aria="shareAria" aria-label="分享">
+    <h2><span class="eyebrow">Share</span><span data-i18n="shareTitle">发给同行</span></h2>
     <div class="share">
-      <textarea id="share-text" readonly aria-label="分享文案"></textarea>
-      <button class="copy" type="button" id="copy-btn">复制文案</button>
+      <textarea id="share-text" readonly data-i18n-aria="shareTextAria" aria-label="分享文案"></textarea>
+      <button class="copy" type="button" id="copy-btn" data-i18n="copy">复制文案</button>
     </div>
   </section>
 
-  <section class="panel box" aria-label="怎么算的">
-    <h2><span class="eyebrow">Method</span>怎么算的</h2>
+  <section class="panel box" data-i18n-aria="methodAria" aria-label="怎么算的">
+    <h2><span class="eyebrow">Method</span><span data-i18n="methodTitle">怎么算的</span></h2>
     <div class="method">
       <div>
-        <h3>1 · 把职业拆成任务</h3>
-        <p>任务清单来自 O*NET 30.2（876 个职业，17,517 项任务）。每项任务占工作时间的比例 = O*NET 调查里从业者报告的执行频率 × 相关度 × 做一次的时长（一次最多按一个工作日算），再在职业内部归一化。</p>
+        <h3 data-i18n="m1h">1 · 把职业拆成任务</h3>
+        <p data-i18n="m1p">任务清单来自 O*NET 30.2（876 个职业，17,517 项任务）。每项任务占工作时间的比例 = O*NET 调查里从业者报告的执行频率 × 相关度 × 做一次的时长（一次最多按一个工作日算），再在职业内部归一化。</p>
       </div>
       <div>
-        <h3>2 · 估计每项任务做一次要多久</h3>
-        <p>让 Qwen2.5-32B 估计一位熟练从业者从开始到交付、不用 AI，做一次这项任务的总工时，并判断它是电脑上能完成的、依赖现场操作的，还是依赖人际信任的。每项采样 5 次取中位数。在 51 条人工标注的任务上，86% 的估计与人工判断相差不超过一档（8 档时长），任务类型一致率 86%。</p>
+        <h3 data-i18n="m2h">2 · 估计每项任务做一次要多久</h3>
+        <p data-i18n="m2p">让 Qwen2.5-32B 估计一位熟练从业者从开始到交付、不用 AI，做一次这项任务的总工时，并判断它是电脑上能完成的、依赖现场操作的，还是依赖人际信任的。每项采样 5 次取中位数。在 51 条人工标注的任务上，86% 的估计与人工判断相差不超过一档（8 档时长），任务类型一致率 86%。</p>
       </div>
       <div>
-        <h3>3 · 套上 METR 的能力曲线</h3>
-        <p>METR 测量 AI agent 能独立完成多长的任务：目前 80% 可靠度下约 3 小时，50% 可靠度下约 16 小时。一项任务要等的时间是 <code>翻倍周期 × log₂(任务时长 × 难度折扣 ÷ 当前上限)</code>。按到位先后累加时间占比，到你选的比例就是「能力到位」，再加落地期。</p>
+        <h3 data-i18n="m3h">3 · 套上 METR 的能力曲线</h3>
+        <p data-i18n-html="m3p">METR 测量 AI agent 能独立完成多长的任务：目前 80% 可靠度下约 3 小时，50% 可靠度下约 16 小时。一项任务要等的时间是 <code>翻倍周期 × log₂(任务时长 × 难度折扣 ÷ 当前上限)</code>。按到位先后累加时间占比，到你选的比例就是「能力到位」，再加落地期。</p>
       </div>
       <div>
-        <h3>这个数字不能说明什么</h3>
+        <h3 data-i18n="m4h">这个数字不能说明什么</h3>
         <ul>
-          <li>能做到不等于会被取代：工作通常是被重组，而不是消失。</li>
-          <li>需要现场操作的任务不计入；依赖人际信任的任务计入，但落地期更长。</li>
-          <li>时间占比里，每次执行最多按一个工作日算，耗时几百小时的长任务分量会偏小。所以软件、研究这类长任务多的职业，倒计时可能偏早约一年。</li>
-          <li>METR 的题目以软件工程为主，推到其他行业要打折扣，折扣多大还没校准。</li>
-          <li>任务时长是模型估计。短任务（1 小时以内）往往被估长，但它们本来就在 AI 当前能力范围内，不影响倒计时；人工校验仍在扩大样本。英文任务描述直接来自 O*NET。</li>
+          <li data-i18n="m4a">能做到不等于会被取代：工作通常是被重组，而不是消失。</li>
+          <li data-i18n="m4b">需要现场操作的任务不计入；依赖人际信任的任务计入，但落地期更长。</li>
+          <li data-i18n="m4c">时间占比里，每次执行最多按一个工作日算，耗时几百小时的长任务分量会偏小。所以软件、研究这类长任务多的职业，倒计时可能偏早约一年。</li>
+          <li data-i18n="m4d">METR 的题目以软件工程为主，推到其他行业要打折扣，折扣多大还没校准。</li>
+          <li data-i18n="m4e">任务时长是模型估计。短任务（1 小时以内）往往被估长，但它们本来就在 AI 当前能力范围内，不影响倒计时；人工校验仍在扩大样本。英文任务描述直接来自 O*NET。</li>
         </ul>
       </div>
     </div>
@@ -308,25 +321,153 @@ code{font-family:var(--f-mono);font-size:12.5px;background:var(--panel-2);paddin
 </div>
 
 <script>
+const STR = {
+  zh: {
+    title:"AI 工作倒计时", tickerLabel:"最新信号", tagline:"你的工作，<span>还剩多久</span>", proto:"第一期 · 876 个职业 · 时长为模型估计",
+    searchAria:"选择职业", placeholder:"输入职业：会计、数学家、生信、translator、nurse…", occAria:"你的职业", regionAria:"地区",
+    regCA:"加拿大其他省份", regCN:"中国大陆", regUS:"美国", go:"启动倒计时", ledAria:"倒计时",
+    capLabel:"能力到位", adoptLabel:"实际落地（加上落地期）",
+    assumptionsAria:"假设", assumptionsTitle:"你来定假设", relLabel:"可靠度要求", rel50:"一半时候能做对", rel80:"十次对八次",
+    relHelp:"真要把工作交给 AI，至少得 80% 做对。METR 两个口径都公布。",
+    dblLabel:"能力翻倍周期", dblAria:"能力翻倍周期（月）", pre29:"2.9 · 2024 年后", pre43:"4.3 · 2023 年后", pre65:"6.5 · 全部历史", pre12:"12 · 放缓",
+    dblHelp:"METR Time Horizon 1.1 不同时间段拟合出的翻倍周期。",
+    messLabel:"真实工作难度折扣", messAria:"真实工作难度折扣（倍数，以 2 为底）",
+    messHelp:"METR 的题目定义清楚、能自动评分，真实工作做不到。×4 表示把每项任务当作长 4 倍来算。这个系数还没校准，是本项目接下来要估计的核心参数。",
+    lagLabel:"落地期", lagAria:"落地期（年）", lagHelp:"AI 能做到之后，公司真正用起来要多久：采购、合规、改流程。",
+    tlagLabel:"人际信任类任务额外落地期", tlagAria:"人际信任类任务额外落地期（年）",
+    tlagHelp:"和客户沟通、谈判、安抚情绪这类任务，AI 技术上能做，但人们愿不愿意交给 AI 是另一回事。",
+    thrLabel:"倒计时指的是", thr50:"一半工作时间", thr75:"四分之三",
+    newsAria:"新闻证据", newsTitle:"这个行业发生了什么", tlAria:"任务时间线", tlTitle:"哪项工作先被 AI 接手",
+    lgCap:"能力到位", lgLag:"落地期", lgOut:"趋势线不覆盖（需要现场操作）",
+    shareAria:"分享", shareTitle:"发给同行", shareTextAria:"分享文案", copy:"复制文案", copied:"已复制", copySelect:"已选中，按 Ctrl/⌘+C",
+    methodAria:"怎么算的", methodTitle:"怎么算的",
+    m1h:"1 · 把职业拆成任务",
+    m1p:"任务清单来自 O*NET 30.2（876 个职业，17,517 项任务）。每项任务占工作时间的比例 = O*NET 调查里从业者报告的执行频率 × 相关度 × 做一次的时长（一次最多按一个工作日算），再在职业内部归一化。",
+    m2h:"2 · 估计每项任务做一次要多久",
+    m2p:"让 Qwen2.5-32B 估计一位熟练从业者从开始到交付、不用 AI，做一次这项任务的总工时，并判断它是电脑上能完成的、依赖现场操作的，还是依赖人际信任的。每项采样 5 次取中位数。在 51 条人工标注的任务上，86% 的估计与人工判断相差不超过一档（8 档时长），任务类型一致率 86%。",
+    m3h:"3 · 套上 METR 的能力曲线",
+    m3p:"METR 测量 AI agent 能独立完成多长的任务：目前 80% 可靠度下约 3 小时，50% 可靠度下约 16 小时。一项任务要等的时间是 <code>翻倍周期 × log₂(任务时长 × 难度折扣 ÷ 当前上限)</code>。按到位先后累加时间占比，到你选的比例就是「能力到位」，再加落地期。",
+    m4h:"这个数字不能说明什么",
+    m4a:"能做到不等于会被取代：工作通常是被重组，而不是消失。",
+    m4b:"需要现场操作的任务不计入；依赖人际信任的任务计入，但落地期更长。",
+    m4c:"时间占比里，每次执行最多按一个工作日算，耗时几百小时的长任务分量会偏小。所以软件、研究这类长任务多的职业，倒计时可能偏早约一年。",
+    m4d:"METR 的题目以软件工程为主，推到其他行业要打折扣，折扣多大还没校准。",
+    m4e:"任务时长是模型估计。短任务（1 小时以内）往往被估长，但它们本来就在 AI 当前能力范围内，不影响倒计时；人工校验仍在扩大样本。英文任务描述直接来自 O*NET。",
+    unitY:"年", unitD:"天", months:"{n} 个月", years:"{n} 年", plusYears:"+{n} 年",
+    half:"一半", threeQ:"四分之三", oThr50:"一半工作", oThr75:"四分之三",
+    types:["电脑可完成","依赖人际信任","需要现场操作"],
+    lvOut:"曲线外", lvRed:"红色警报 · 2 年内", lvOrange:"橙色警报 · 5 年内", lvYellow:"黄色预警 · 5 年以上",
+    signal:"AI 进展", check:"现实检验", noNews:"这个职业还没有收录新闻。后续会按职业自动抓取，每条「AI 进展」都配一条「现实检验」。",
+    regionNote:"地区：{r}。第一期地区还不影响计算，之后会接入当地按职业的就业人数。",
+    outTxt:"现场操作占 {p}，人际信任占 {t}",
+    leadOut:"按这条趋势线，AI <em>接不住</em>你{thr}的工作时间：需要现场操作的工作占 {p}，不在曲线覆盖范围内。",
+    statusOut:"到不了 {thr}%", capOut:"趋势线不覆盖", capOutNote:"不需要到现场的工作只占 {p}",
+    shareOut:"我的职业「{o}」：按当前 AI 能力趋势，AI 接不住我{thr}的工作，因为 {p} 要在现场完成。你的职业还剩多久？",
+    leadIn:"AI 能以 {rel}% 的成功率独立接手你<em>{thr}的工作时间</em>，再加上 {lag} 年落地期，还剩：",
+    now:"现在", capNowNote:"按这组假设，能力已经够了", stillNeed:"还要 {s}", passed:"按这组假设，已经越过",
+    adoptNote:"落地期 {lag} 年", adoptTrust:"；人际信任类任务再加 {t} 年",
+    rangeNote:"翻倍周期在 {a}–{b} 个月之间（METR 不同时间段的拟合）时，能力到位在 {f} 到 {s} 之间。",
+    shareIn:"我的职业「{o}」：按当前 AI 能力趋势（每 {d} 个月翻倍，难度折扣 ×{m}），加上 {lag} 年落地期，AI 接手我{thr}工作的倒计时还剩 {s}。你的职业还剩多久？",
+    axisNow:"现在", axisY:"+{n} 年", taskMeta:"占 {p} · 人类做一次约 {h}", outShort:"趋势线不覆盖", canNow:"现在就能", over10:"10 年以上",
+    collapse:"收起", expand:"展开全部 {n} 项任务",
+    statusArrived:"按这组假设，这一刻已经到了", status99:"超过 99 年",
+    loading:"正在载入 876 个职业的数据…", loadFail:"数据载入失败（{e}），请刷新页面重试。",
+    needInput:"先输入一个职业。", noMatch:"没找到这个职业。试试英文职业名，比如 nurse、accountant、translator。", matched:"匹配到：{o}"
+  },
+  en: {
+    title:"AI Job Countdown", tickerLabel:"Latest signals", tagline:"How long until AI <span>can do your job?</span>", proto:"Phase 1 · 876 occupations · durations are model estimates",
+    searchAria:"Choose an occupation", placeholder:"Type an occupation: accountant, mathematician, translator, nurse…", occAria:"Your occupation", regionAria:"Region",
+    regCA:"Other Canadian provinces", regCN:"Mainland China", regUS:"United States", go:"Start countdown", ledAria:"Countdown",
+    capLabel:"AI capable", adoptLabel:"In practice (plus adoption lag)",
+    assumptionsAria:"Assumptions", assumptionsTitle:"Set your assumptions", relLabel:"Reliability required", rel50:"Right half the time", rel80:"Right 8 times in 10",
+    relHelp:"Handing real work to AI needs at least 80% success. METR publishes both thresholds.",
+    dblLabel:"Capability doubling time", dblAria:"Capability doubling time (months)", pre29:"2.9 · since 2024", pre43:"4.3 · since 2023", pre65:"6.5 · full history", pre12:"12 · slowdown",
+    dblHelp:"Doubling times fitted to METR Time Horizon 1.1 over different periods.",
+    messLabel:"Real-world difficulty factor", messAria:"Real-world difficulty factor (powers of 2)",
+    messHelp:"METR tasks are well-specified and auto-graded; real work is not. ×4 treats every task as 4 times longer. This factor is not calibrated yet; estimating it is the project's next core question.",
+    lagLabel:"Adoption lag", lagAria:"Adoption lag (years)", lagHelp:"Once AI can do it, how long until companies actually use it: procurement, compliance, new workflows.",
+    tlagLabel:"Extra lag for trust-based tasks", tlagAria:"Extra lag for trust-based tasks (years)",
+    tlagHelp:"AI may technically handle client conversations, negotiation or calming people down; whether people accept AI for them is another matter.",
+    thrLabel:"Countdown to", thr50:"Half of work time", thr75:"Three quarters",
+    newsAria:"News evidence", newsTitle:"What's happening in this field", tlAria:"Task timeline", tlTitle:"Which tasks AI takes over first",
+    lgCap:"AI capable", lgLag:"Adoption lag", lgOut:"Not covered by the trend (on-site work)",
+    shareAria:"Share", shareTitle:"Send to a colleague", shareTextAria:"Share text", copy:"Copy text", copied:"Copied", copySelect:"Selected — press Ctrl/⌘+C",
+    methodAria:"Method", methodTitle:"How it's calculated",
+    m1h:"1 · Break the occupation into tasks",
+    m1p:"Tasks come from O*NET 30.2 (876 occupations, 17,517 tasks). A task's share of work time = how often workers report doing it in the O*NET survey × its relevance × how long one instance takes (capped at one workday per occurrence), normalized within the occupation.",
+    m2h:"2 · Estimate how long each task takes",
+    m2p:"Qwen2.5-32B estimates the total hours a skilled worker needs to complete one instance of the task end to end, without AI, and classifies it as doable at a computer, dependent on being on site, or dependent on interpersonal trust. Each task is sampled 5 times and the median is used. On 51 human-labeled tasks, 86% of estimates are within one bin of the human judgment (8 duration bins), and task types agree 86% of the time.",
+    m3h:"3 · Apply METR's capability curve",
+    m3p:"METR measures how long a task AI agents can complete on their own: currently about 3 hours at 80% reliability and about 16 hours at 50%. The wait for a task is <code>doubling time × log₂(task hours × difficulty factor ÷ current horizon)</code>. Adding up work-time shares in order of arrival gives the date AI covers your chosen share; then add the adoption lag.",
+    m4h:"What this number does not tell you",
+    m4a:"Being able to do it is not the same as replacing you: jobs are usually reorganized, not eliminated.",
+    m4b:"Tasks that require being on site are excluded; trust-based tasks are included but with a longer adoption lag.",
+    m4c:"Time shares count at most one workday per occurrence, which underweights tasks that take hundreds of hours. For occupations heavy in such work, like software and research, the countdown may run about a year early.",
+    m4d:"METR's tasks are mostly software engineering. Extending the trend to other fields needs a discount whose size is not yet calibrated.",
+    m4e:"Task durations are model estimates. Short tasks (under an hour) tend to be overestimated, but they are already within AI's current range, so the countdown is unaffected. Human validation is being expanded. Task descriptions are O*NET's original English text.",
+    unitY:"y", unitD:"d", months:"{n} mo", years:"{n} yr", plusYears:"+{n} yr",
+    half:"half", threeQ:"three quarters", oThr50:"Half", oThr75:"Three quarters",
+    types:["Computer-based","Trust-based","On-site"],
+    lvOut:"Off the curve", lvRed:"Red alert · within 2 years", lvOrange:"Orange alert · within 5 years", lvYellow:"Yellow · 5+ years",
+    signal:"AI progress", check:"Reality check", noNews:"No news collected for this occupation yet. Each \"AI progress\" item will be paired with a \"reality check\".",
+    regionNote:"Region: {r}. In phase 1 the region does not change the calculation; local employment by occupation comes later.",
+    outTxt:"On-site work {p}, trust-based work {t}",
+    leadOut:"On this trend, AI <em>cannot cover</em> {thr} of your work time: {p} of it requires being on site, which the curve does not cover.",
+    statusOut:"Never reaches {thr}%", capOut:"Not covered", capOutNote:"Only {p} of the work can be done off site",
+    shareOut:"My occupation, {o}: on the current AI trend, AI can't cover {thr} of my work, because {p} has to be done on site. How long does your job have?",
+    leadIn:"Until AI can independently handle <em>{thr} of your work time</em> at {rel}% reliability, plus a {lag}-year adoption lag:",
+    now:"Now", capNowNote:"Under these assumptions, AI is already capable", stillNeed:"{s} to go", passed:"Under these assumptions, already passed",
+    adoptNote:"{lag}-year adoption lag", adoptTrust:"; +{t} years for trust-based tasks",
+    rangeNote:"With doubling times between {a} and {b} months (METR fits over different periods), AI becomes capable between {f} and {s}.",
+    shareIn:"My occupation, {o}: on the current AI trend (doubling every {d} months, difficulty ×{m}) plus a {lag}-year adoption lag, AI could take over {thr} of my work in {s}. How long does your job have?",
+    axisNow:"Now", axisY:"+{n} yr", taskMeta:"{p} of time · about {h} per instance", outShort:"Not covered", canNow:"Already", over10:"10+ years",
+    collapse:"Show less", expand:"Show all {n} tasks",
+    statusArrived:"Under these assumptions, this moment has already arrived", status99:"More than 99 years",
+    loading:"Loading data for 876 occupations…", loadFail:"Couldn't load data ({e}). Please refresh the page.",
+    needInput:"Type an occupation first.", noMatch:"Occupation not found. Try another title, e.g. nurse, accountant, translator.", matched:"Matched: {o}"
+  }
+};
+const MONTHS_EN=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+let LANG = "zh";
+function t(k, v){ let s = STR[LANG][k] ?? STR.zh[k] ?? k; if(v) for(const x in v) s = s.split("{"+x+"}").join(v[x]); return s; }
+
 const NEWS = {
   "Mathematicians":[
-    {k:"signal",date:"2026-05",t:"OpenAI 称其通用推理模型推翻了 Erdős 一个 80 年的几何猜想",p:"问题关于平面上等距点对的数量；OpenAI 称外部数学家审核了证明，这个模型并非专为数学训练。",src:"eWeek",url:"https://www.eweek.com/news/openai-ai-erdos-geometry-conjecture/"},
-    {k:"check",date:"2026-05",t:"推翻的是「上界已最优」的猜想，正确的界仍然未知",p:"构造用到的思路文献里已有，Princeton 的 Will Sawin 很快改进了它。2025 年 10 月 OpenAI 还曾把文献里已有的 Erdős 解答当成新成果。",src:"INESC TEC",url:"https://bip.inesctec.pt/en/inesctecwatch/does-artificial-intelligence-finally-understand-mathematics-openai-believes-so-but-doubts-remain-over-both-the-result-and-the-conduct/"}
+    {k:"signal",date:"2026-05",src:"eWeek",url:"https://www.eweek.com/news/openai-ai-erdos-geometry-conjecture/",
+     zh:{t:"OpenAI 称其通用推理模型推翻了 Erdős 一个 80 年的几何猜想",p:"问题关于平面上等距点对的数量；OpenAI 称外部数学家审核了证明，这个模型并非专为数学训练。"},
+     en:{t:"OpenAI says its general reasoning model disproved an 80-year-old Erdős geometry conjecture",p:"The problem concerns the number of unit-distance pairs in the plane. OpenAI says outside mathematicians checked the proof and that the model was not trained specifically for math."}},
+    {k:"check",date:"2026-05",src:"INESC TEC",url:"https://bip.inesctec.pt/en/inesctecwatch/does-artificial-intelligence-finally-understand-mathematics-openai-believes-so-but-doubts-remain-over-both-the-result-and-the-conduct/",
+     zh:{t:"推翻的是「上界已最优」的猜想，正确的界仍然未知",p:"构造用到的思路文献里已有，Princeton 的 Will Sawin 很快改进了它。2025 年 10 月 OpenAI 还曾把文献里已有的 Erdős 解答当成新成果。"},
+     en:{t:"It disproved that the known upper bound is optimal; the correct bound is still unknown",p:"The construction builds on ideas already in the literature, and Princeton's Will Sawin quickly improved it. In October 2025 OpenAI had also presented existing Erdős solutions as new results."}}
   ],
   "Bioinformatics Scientists":[
-    {k:"signal",date:"2026-09",t:"Anthropic 称 Claude 在 DNA 数据库里自主找到一个类 CRISPR 的酶系统",p:"Claude 检索了 21 小时，研究人员只给了高层方向；这个系统被命名为 ART，可能是一种新的基因编辑机制。",src:"Al Jazeera",url:"https://www.aljazeera.com/news/2026/9/24/ai-model-claude-discovers-crispr-like-enzyme-system-anthropic-says"},
-    {k:"check",date:"2026-09",t:"功能还没确定，哥本哈根的团队说他们一年前就发现了它",p:"这个系统还没有湿实验验证。哥本哈根大学一位生物学家称其团队约一年前已发现该酶，用过 Claude，只是尚未发表；Anthropic 否认用用户对话训练。",src:"ThePrint",url:"https://theprint.in/science/did-claude-discover-a-new-enzyme-or-stole-a-biologists-work-anthropic-responds/3057122/"}
+    {k:"signal",date:"2026-09",src:"Al Jazeera",url:"https://www.aljazeera.com/news/2026/9/24/ai-model-claude-discovers-crispr-like-enzyme-system-anthropic-says",
+     zh:{t:"Anthropic 称 Claude 在 DNA 数据库里自主找到一个类 CRISPR 的酶系统",p:"Claude 检索了 21 小时，研究人员只给了高层方向；这个系统被命名为 ART，可能是一种新的基因编辑机制。"},
+     en:{t:"Anthropic says Claude independently found a CRISPR-like enzyme system in DNA databases",p:"Claude searched for 21 hours with only high-level direction from researchers. The system, named ART, may be a new gene-editing mechanism."}},
+    {k:"check",date:"2026-09",src:"ThePrint",url:"https://theprint.in/science/did-claude-discover-a-new-enzyme-or-stole-a-biologists-work-anthropic-responds/3057122/",
+     zh:{t:"功能还没确定，哥本哈根的团队说他们一年前就发现了它",p:"这个系统还没有湿实验验证。哥本哈根大学一位生物学家称其团队约一年前已发现该酶，用过 Claude，只是尚未发表；Anthropic 否认用用户对话训练。"},
+     en:{t:"Its function is unconfirmed, and a Copenhagen team says it found the system a year earlier",p:"The system has not been validated in the wet lab. A University of Copenhagen biologist says her team found the enzyme about a year ago, had used Claude, and had not yet published; Anthropic denies training on user conversations."}}
   ],
   "Software Developers":[
-    {k:"signal",date:"2026-01",t:"AI agent 能独立完成的任务长度，2023 年后约每 4.3 个月翻一倍",p:"METR 用人类专家完成任务的时长衡量 AI 能力；2026 年 1 月的更新显示进展在加速。这正是本页倒计时用的曲线。",src:"Wikipedia · METR",url:"https://en.wikipedia.org/wiki/METR"},
-    {k:"check",date:"2025-07",t:"随机对照实验：资深开发者用 AI 工具后反而慢了 19%",p:"16 位资深开源开发者在自己的仓库里做真实任务；他们事前以为会快 24%，事后仍以为快了 20%。",src:"DX · METR",url:"https://getdx.com/blog/metr-study-on-how-ai-affects-developer-productivity/"}
+    {k:"signal",date:"2026-01",src:"Wikipedia · METR",url:"https://en.wikipedia.org/wiki/METR",
+     zh:{t:"AI agent 能独立完成的任务长度，2023 年后约每 4.3 个月翻一倍",p:"METR 用人类专家完成任务的时长衡量 AI 能力；2026 年 1 月的更新显示进展在加速。这正是本页倒计时用的曲线。"},
+     en:{t:"The length of tasks AI agents can complete alone has doubled about every 4.3 months since 2023",p:"METR measures AI capability by how long the tasks take human experts. Its January 2026 update shows progress speeding up. This is the curve this page uses."}},
+    {k:"check",date:"2025-07",src:"DX · METR",url:"https://getdx.com/blog/metr-study-on-how-ai-affects-developer-productivity/",
+     zh:{t:"随机对照实验：资深开发者用 AI 工具后反而慢了 19%",p:"16 位资深开源开发者在自己的仓库里做真实任务；他们事前以为会快 24%，事后仍以为快了 20%。"},
+     en:{t:"Randomized trial: experienced developers were 19% slower with AI tools",p:"16 experienced open-source developers worked on real tasks in their own repositories. Beforehand they expected to be 24% faster; afterwards they still believed they had been 20% faster."}}
   ],
   "Customer Service Representatives":[
-    {k:"signal",date:"2024-02",t:"Klarna 称 AI 助手承担了 700 人的工作量",p:"高峰时 AI 处理了约 75% 的客服对话，覆盖 35 种以上语言。",src:"Tech.co",url:"https://tech.co/news/klarna-reverses-ai-overhaul"},
-    {k:"check",date:"2025-05",t:"服务质量下滑后，Klarna 重新招聘人工客服",p:"CEO 承认之前偏重 AI 的做法不对，客户往往更想和人沟通，现在改成 AI 加人工的双轨模式。",src:"Tech.co",url:"https://tech.co/news/klarna-reverses-ai-overhaul"}
+    {k:"signal",date:"2024-02",src:"Tech.co",url:"https://tech.co/news/klarna-reverses-ai-overhaul",
+     zh:{t:"Klarna 称 AI 助手承担了 700 人的工作量",p:"高峰时 AI 处理了约 75% 的客服对话，覆盖 35 种以上语言。"},
+     en:{t:"Klarna says its AI assistant does the work of 700 people",p:"At its peak, the AI handled about 75% of customer service chats in more than 35 languages."}},
+    {k:"check",date:"2025-05",src:"Tech.co",url:"https://tech.co/news/klarna-reverses-ai-overhaul",
+     zh:{t:"服务质量下滑后，Klarna 重新招聘人工客服",p:"CEO 承认之前偏重 AI 的做法不对，客户往往更想和人沟通，现在改成 AI 加人工的双轨模式。"},
+     en:{t:"After service quality fell, Klarna is hiring human agents again",p:"The CEO admitted the AI-heavy approach went too far; customers often prefer a person, so Klarna now runs AI and human support side by side."}}
   ],
   "Paralegals and Legal Assistants":[
-    {k:"check",date:"2026-06",t:"美国联邦法院同时处罚原被告双方律师：文书引用了 AI 编造的判例",p:"密西西比北区法院对 4 名律师罚款，其中两人被禁止在该法院执业两年，原定的庭审也被取消。",src:"Lawyer Monthly",url:"https://www.lawyer-monthly.com/2026/06/judge-aycock-ai-hallucinations-sanctions-mississippi-2026/"}
+    {k:"check",date:"2026-06",src:"Lawyer Monthly",url:"https://www.lawyer-monthly.com/2026/06/judge-aycock-ai-hallucinations-sanctions-mississippi-2026/",
+     zh:{t:"美国联邦法院同时处罚原被告双方律师：文书引用了 AI 编造的判例",p:"密西西比北区法院对 4 名律师罚款，其中两人被禁止在该法院执业两年，原定的庭审也被取消。"},
+     en:{t:"A US federal court sanctioned lawyers on both sides for citing AI-fabricated cases",p:"The Northern District of Mississippi fined four lawyers, barred two from practicing before the court for two years, and cancelled the scheduled trial."}}
   ]
 };
 NEWS["Lawyers"] = NEWS["Paralegals and Legal Assistants"];
@@ -334,8 +475,9 @@ const FEATURED = ["Accountants and Auditors","Software Developers","Mathematicia
 const H0 = {50:16, 80:3.1};
 const MESS = [1,2,4,8,16,32];
 const DBL_RANGE = [2.9, 6.5];
-const TYPE_TXT = ["电脑可完成","依赖人际信任","需要现场操作"];
-const REGIONS = {BC:"British Columbia",AB:"Alberta",ON:"Ontario",QC:"Québec",CA:"加拿大其他省份",CN:"中国大陆",US:"美国"};
+const REGION_KEYS = {BC:null,AB:null,ON:null,QC:null,CA:"regCA",CN:"regCN",US:"regUS"};
+const REGION_EN = {BC:"British Columbia",AB:"Alberta",ON:"Ontario",QC:"Québec"};
+const regionName = r => REGION_KEYS[r] ? t(REGION_KEYS[r]) : REGION_EN[r];
 const state = {occ:null, rel:80, dbl:4.3, mess:2, lag:2, trustLag:3, thr:50, region:"BC", showAll:false};
 const MS_MONTH = 30.4375*864e5, MS_YEAR = 365.25*864e5;
 const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -348,7 +490,7 @@ const SEG = {a:"10,3 40,3 45,8 40,13 10,13 5,8", b:"37,10 42,5 47,10 47,38 42,43
 const DIG = {"0":"abcdef","1":"bc","2":"abged","3":"abgcd","4":"fgbc","5":"afgcd","6":"afgedc","7":"abc","8":"abcdefg","9":"abcdfg","-":"g"," ":""};
 const groups = [];
 function buildLED(){
-  const spec=[{n:2,unit:"年"},{n:3,unit:"天"},{n:2,sep:":"},{n:2,sep:":"},{n:2,sep:"."},{n:2,small:true}];
+  const spec=[{n:2,unit:"unitY"},{n:3,unit:"unitD"},{n:2,sep:":"},{n:2,sep:":"},{n:2,sep:"."},{n:2,small:true}];
   const led=$("led"); led.innerHTML="";
   const row1=document.createElement("div"); row1.style.cssText="display:flex;align-items:flex-end;gap:10px 22px;flex-wrap:wrap";
   const row2=document.createElement("div"); row2.style.cssText="display:flex;align-items:flex-end;gap:6px";
@@ -359,7 +501,7 @@ function buildLED(){
       const polys={}; for(const key in SEG){ const p=document.createElementNS("http://www.w3.org/2000/svg","polygon"); p.setAttribute("points",SEG[key]); svg.appendChild(p); polys[key]=p; }
       g.appendChild(svg); digits.push({polys,cur:null});
     }
-    if(s.unit){ const u=document.createElement("span"); u.className="unit"; u.textContent=s.unit; g.appendChild(u); }
+    if(s.unit){ const u=document.createElement("span"); u.className="unit"; u.dataset.i18n=s.unit; u.textContent=t(s.unit); g.appendChild(u); }
     groups.push(digits);
     (i<2?row1:row2).appendChild(g);
     if(s.sep){ const sp=document.createElement("span"); sp.className="sep"; sp.textContent=s.sep; row2.appendChild(sp); }
@@ -376,27 +518,36 @@ function setAll(ch){ groups.forEach((g,i)=>setGroup(i,ch.repeat(g.length))); }
 
 const pctTxt = v => (v>=10||v===0? Math.round(v) : v.toFixed(1))+"%";
 function monthsFor(h, dbl){ const H=H0[state.rel], x=h*MESS[state.mess]; return x<=H?0:dbl*Math.log2(x/H); }
-function fmtDate(d){ return d.getFullYear()+" 年 "+(d.getMonth()+1)+" 月"; }
-function fmtHours(h){ return h<1 ? Math.max(1,Math.round(h*60))+" 分钟" : (h<10? +h.toFixed(1) : Math.round(h))+" 小时"; }
-function spanText(ms){ if(ms<=0) return "0 天"; const y=Math.floor(ms/MS_YEAR), d=Math.floor((ms-y*MS_YEAR)/864e5); return (y?y+" 年 ":"")+d+" 天"; }
-const label = o => o.zh ? o.zh+" · "+o.en : o.en;
+function fmtDate(d){ return LANG==="zh" ? d.getFullYear()+" 年 "+(d.getMonth()+1)+" 月" : MONTHS_EN[d.getMonth()]+" "+d.getFullYear(); }
+function fmtHours(h){
+  const n = h<1 ? Math.max(1,Math.round(h*60)) : (h<10? +h.toFixed(1) : Math.round(h));
+  return LANG==="zh" ? n+(h<1?" 分钟":" 小时") : n+(h<1?" min":" h");
+}
+function spanText(ms){
+  if(ms<=0) return LANG==="zh"?"0 天":"0 days";
+  const y=Math.floor(ms/MS_YEAR), d=Math.floor((ms-y*MS_YEAR)/864e5);
+  if(LANG==="zh") return (y?y+" 年 ":"")+d+" 天";
+  return (y?y+(y===1?" year ":" years "):"")+d+(d===1?" day":" days");
+}
+const label = o => LANG==="zh" && o.zh ? o.zh+" · "+o.en : o.en;
+const shortName = o => LANG==="zh" ? (o.zh||o.en) : o.en;
 
-const extraLag = t => state.lag*12 + (t.type===1 ? state.trustLag*12 : 0);
+const extraLag = tk => state.lag*12 + (tk.type===1 ? state.trustLag*12 : 0);
 function crossing(items){
   items.sort((a,b)=>a.v-b.v);
-  let cum=0; for(const t of items){ cum+=t.share; if(cum>=state.thr-1e-6) return t.v; }
+  let cum=0; for(const it of items){ cum+=it.share; if(cum>=state.thr-1e-6) return it.v; }
   return null;
 }
 function capMonths(occ, dbl){
-  return crossing(occ.tasks.filter(t=>t.type!==2).map(t=>({share:t.share,v:monthsFor(t.h,dbl)})));
+  return crossing(occ.tasks.filter(tk=>tk.type!==2).map(tk=>({share:tk.share,v:monthsFor(tk.h,dbl)})));
 }
 function compute(){
   const occ = BY_CODE[state.occ];
-  const tasks = occ.tasks.map(t=>({...t, m: t.type!==2 ? monthsFor(t.h,state.dbl) : null}));
-  const sum = ty => occ.tasks.filter(t=>t.type===ty).reduce((s,t)=>s+t.share,0);
+  const tasks = occ.tasks.map(tk=>({...tk, m: tk.type!==2 ? monthsFor(tk.h,state.dbl) : null}));
+  const sum = ty => occ.tasks.filter(tk=>tk.type===ty).reduce((s,tk)=>s+tk.share,0);
   const covShare = sum(0), trustShare = sum(1), physShare = sum(2);
   const T = capMonths(occ, state.dbl);
-  const A = T==null?null:crossing(tasks.filter(t=>t.m!=null).map(t=>({share:t.share,v:t.m+extraLag(t)})));
+  const A = T==null?null:crossing(tasks.filter(tk=>tk.m!=null).map(tk=>({share:tk.share,v:tk.m+extraLag(tk)})));
   const now = new Date();
   const cap = T==null?null:new Date(now.getTime()+T*MS_MONTH);
   const adopt = A==null?null:new Date(now.getTime()+A*MS_MONTH);
@@ -408,14 +559,14 @@ let target=null, raf=null, iv=null, lastStatus="";
 function tick(){
   if(target==null) return;
   const ms = target - Date.now();
-  if(ms<=0){ setAll("0"); setStatus("按这组假设，这一刻已经到了"); return; }
+  if(ms<=0){ setAll("0"); setStatus(t("statusArrived")); return; }
   let y=Math.floor(ms/MS_YEAR); const d=Math.floor((ms-y*MS_YEAR)/864e5);
   const rest=ms-y*MS_YEAR-d*864e5;
   const hh=Math.floor(rest/36e5), mm=Math.floor(rest%36e5/6e4), ss=Math.floor(rest%6e4/1e3), cs=reduce?0:Math.floor(rest%1e3/10);
   const p=n=>String(n).padStart(2,"0");
   setGroup(0,String(Math.min(y,99)).padStart(2,"0")); setGroup(1,String(d).padStart(3,"0"));
   setGroup(2,p(hh)); setGroup(3,p(mm)); setGroup(4,p(ss)); setGroup(5,p(cs));
-  setStatus(y>99?"超过 99 年":"");
+  setStatus(y>99?t("status99"):"");
 }
 function setStatus(s){ if(s!==lastStatus){ $("led-status").textContent=s; lastStatus=s; } }
 function loop(){ tick(); raf=requestAnimationFrame(loop); }
@@ -423,84 +574,86 @@ function startClock(){ stopClock(); if(reduce){ tick(); iv=setInterval(tick,1000
 function stopClock(){ if(raf) cancelAnimationFrame(raf); if(iv) clearInterval(iv); raf=iv=null; }
 
 function level(r){
-  if(r.cap==null) return ["lv-out","曲线外"];
+  if(r.cap==null) return ["lv-out",t("lvOut")];
   const yrs=(r.adopt-r.now)/MS_YEAR;
-  if(yrs<2) return ["lv-red","红色警报 · 2 年内"];
-  if(yrs<5) return ["lv-orange","橙色警报 · 5 年内"];
-  return ["lv-yellow","黄色预警 · 5 年以上"];
+  if(yrs<2) return ["lv-red",t("lvRed")];
+  if(yrs<5) return ["lv-orange",t("lvOrange")];
+  return ["lv-yellow",t("lvYellow")];
 }
 
 function renderNews(){
   const items = NEWS[BY_CODE[state.occ].en]||[];
-  if(!items.length){ $("news").innerHTML='<p class="empty">这个职业还没有收录新闻。后续会按职业自动抓取，每条「AI 进展」都配一条「现实检验」。</p>'; return; }
-  $("news").innerHTML = items.map(n=>'<article class="news-item '+n.k+'"><span class="kind '+(n.k==="signal"?"k-signal":"k-check")+'">'+(n.k==="signal"?"AI 进展":"现实检验")+'</span>'+
-    '<strong>'+esc(n.t)+'</strong><p>'+esc(n.p)+'</p><span class="src">'+n.date+' · <a href="'+n.url+'" target="_blank" rel="noopener">'+esc(n.src)+' ↗</a></span></article>').join("");
+  if(!items.length){ $("news").innerHTML='<p class="empty">'+esc(t("noNews"))+'</p>'; return; }
+  $("news").innerHTML = items.map(n=>{ const c=n[LANG]||n.zh;
+    return '<article class="news-item '+n.k+'"><span class="kind '+(n.k==="signal"?"k-signal":"k-check")+'">'+t(n.k)+'</span>'+
+    '<strong>'+esc(c.t)+'</strong><p>'+esc(c.p)+'</p><span class="src">'+n.date+' · <a href="'+n.url+'" target="_blank" rel="noopener">'+esc(n.src)+' ↗</a></span></article>'; }).join("");
 }
 
 function render(){
   const r = compute();
-  const thrTxt = state.thr===50?"一半":"四分之三";
+  const thrTxt = state.thr===50?t("half"):t("threeQ");
   $("occ-name").textContent = label(r.occ);
-  $("hero-eyebrow").textContent = "O*NET "+r.occ.code+" · "+REGIONS[state.region];
+  $("hero-eyebrow").textContent = "O*NET "+r.occ.code+" · "+regionName(state.region);
   $("o-rel").textContent = state.rel+"%";
-  $("o-dbl").textContent = state.dbl.toFixed(1)+" 个月";
+  $("o-dbl").textContent = t("months",{n:state.dbl.toFixed(1)});
   $("o-mess").textContent = "×"+MESS[state.mess];
-  $("o-lag").textContent = state.lag.toFixed(1)+" 年";
-  $("o-tlag").textContent = "+"+state.trustLag.toFixed(1)+" 年";
-  $("o-thr").textContent = state.thr===50?"一半工作":"四分之三";
-  $("region-note").textContent = "地区："+REGIONS[state.region]+"。第一期地区还不影响计算，之后会接入当地按职业的就业人数。";
+  $("o-lag").textContent = t("years",{n:state.lag.toFixed(1)});
+  $("o-tlag").textContent = t("plusYears",{n:state.trustLag.toFixed(1)});
+  $("o-thr").textContent = state.thr===50?t("oThr50"):t("oThr75");
+  $("region-note").textContent = t("regionNote",{r:regionName(state.region)});
   const [lvCls,lvTxt]=level(r); $("level").className="level "+lvCls; $("level").textContent=lvTxt;
-  const outTxt = "现场操作占 "+pctTxt(r.physShare)+"，人际信任占 "+pctTxt(r.trustShare);
+  const outTxt = t("outTxt",{p:pctTxt(r.physShare),t:pctTxt(r.trustShare)});
 
   let share;
   if(r.cap==null){
     target=null; stopClock(); setAll("-");
-    $("hero-lead").innerHTML = "按这条趋势线，AI <em>接不住</em>你"+thrTxt+"的工作时间：需要现场操作的工作占 "+pctTxt(r.physShare)+"，不在曲线覆盖范围内。";
-    setStatus("到不了 "+state.thr+"%");
-    $("d-cap").textContent="趋势线不覆盖"; $("d-cap-note").textContent="不需要到现场的工作只占 "+pctTxt(r.covShare+r.trustShare);
+    $("hero-lead").innerHTML = t("leadOut",{thr:thrTxt,p:pctTxt(r.physShare)});
+    lastStatus=""; setStatus(t("statusOut",{thr:state.thr}));
+    $("d-cap").textContent=t("capOut"); $("d-cap-note").textContent=t("capOutNote",{p:pctTxt(r.covShare+r.trustShare)});
     $("d-adopt").textContent="—"; $("d-adopt-note").textContent=outTxt;
     $("range-note").textContent = "";
-    share = "我的职业「"+(r.occ.zh||r.occ.en)+"」：按当前 AI 能力趋势，AI 接不住我"+thrTxt+"的工作，因为 "+pctTxt(r.physShare)+" 要在现场完成。你的职业还剩多久？";
+    share = t("shareOut",{o:shortName(r.occ),thr:thrTxt,p:pctTxt(r.physShare)});
   } else {
     target = r.adopt.getTime();
     const capNow = r.T===0;
-    $("hero-lead").innerHTML = "AI 能以 "+state.rel+"% 的成功率独立接手你<em>"+thrTxt+"的工作时间</em>，再加上 "+state.lag+" 年落地期，还剩：";
-    $("d-cap").textContent = capNow?"现在":fmtDate(r.cap);
-    $("d-cap-note").textContent = capNow?"按这组假设，能力已经够了":"还要 "+spanText(r.cap-r.now);
+    $("hero-lead").innerHTML = t("leadIn",{rel:state.rel,thr:thrTxt,lag:state.lag});
+    $("d-cap").textContent = capNow?t("now"):fmtDate(r.cap);
+    $("d-cap-note").textContent = capNow?t("capNowNote"):t("stillNeed",{s:spanText(r.cap-r.now)});
     $("d-adopt").textContent = fmtDate(r.adopt);
-    $("d-adopt-note").textContent = r.adopt<=r.now?"按这组假设，已经越过":("落地期 "+state.lag+" 年"+(r.trustShare>0?"；人际信任类任务再加 "+state.trustLag+" 年":""));
+    $("d-adopt-note").textContent = r.adopt<=r.now?t("passed"):(t("adoptNote",{lag:state.lag})+(r.trustShare>0?t("adoptTrust",{t:state.trustLag}):""));
     const [fast,slow] = r.range.map(m=>fmtDate(new Date(r.now.getTime()+m*MS_MONTH)));
-    $("range-note").textContent = "翻倍周期在 "+DBL_RANGE[0]+"–"+DBL_RANGE[1]+" 个月之间（METR 不同时间段的拟合）时，能力到位在 "+fast+" 到 "+slow+" 之间。";
-    startClock();
-    share = "我的职业「"+(r.occ.zh||r.occ.en)+"」：按当前 AI 能力趋势（每 "+state.dbl.toFixed(1)+" 个月翻倍，难度折扣 ×"+MESS[state.mess]+"），加上 "+state.lag+" 年落地期，AI 接手我"+thrTxt+"工作的倒计时还剩 "+spanText(r.adopt-r.now)+"。你的职业还剩多久？";
+    $("range-note").textContent = t("rangeNote",{a:DBL_RANGE[0],b:DBL_RANGE[1],f:fast,s:slow});
+    lastStatus=""; startClock();
+    share = t("shareIn",{o:shortName(r.occ),d:state.dbl.toFixed(1),m:MESS[state.mess],lag:state.lag,thr:thrTxt,s:spanText(r.adopt-r.now)});
   }
   $("share-text").value = share;
   renderNews();
 
   const MAXY=10, pct = m => Math.min(100, m/12/MAXY*100);
-  let html = '<div class="tl-axis"><div></div><div class="ticks">'+[0,2,4,6,8,10].map(y=>'<span style="left:'+(y/MAXY*100)+'%">'+(y===0?"现在":"+"+y+" 年")+'</span>').join("")+'</div></div>';
+  let html = '<div class="tl-axis"><div></div><div class="ticks">'+[0,2,4,6,8,10].map(y=>'<span style="left:'+(y/MAXY*100)+'%">'+(y===0?t("axisNow"):t("axisY",{n:y}))+'</span>').join("")+'</div></div>';
   const ordered = r.tasks.slice().sort((a,b)=>(a.m==null)-(b.m==null)||(a.m??0)-(b.m??0)||b.share-a.share);
   const LIMIT=12, shown = state.showAll?ordered:ordered.slice(0,LIMIT);
-  for(const t of shown){
-    const meta = "占 "+pctTxt(t.share)+" · 人类做一次约 "+fmtHours(t.h)+'<span class="ty">'+TYPE_TXT[t.type]+'</span>';
+  const TYPES = t("types");
+  for(const tk of shown){
+    const meta = esc(t("taskMeta",{p:pctTxt(tk.share),h:fmtHours(tk.h)}))+'<span class="ty">'+TYPES[tk.type]+'</span>';
     let track;
-    if(t.m==null){ track='<div class="out">趋势线不覆盖 · '+TYPE_TXT[t.type]+'</div>'; }
+    if(tk.m==null){ track='<div class="out">'+t("outShort")+' · '+TYPES[tk.type]+'</div>'; }
     else{
-      const x=pct(t.m), x2=pct(t.m+extraLag(t));
-      const lab = t.m===0?"现在就能":(t.m/12>MAXY?"10 年以上":fmtDate(new Date(r.now.getTime()+t.m*MS_MONTH)));
+      const x=pct(tk.m), x2=pct(tk.m+extraLag(tk));
+      const lab = tk.m===0?t("canNow"):(tk.m/12>MAXY?t("over10"):fmtDate(new Date(r.now.getTime()+tk.m*MS_MONTH)));
       const tagPos = x>70?'right:'+(100-x)+'%':'left:'+x+'%';
-      track='<div class="bar" style="left:'+x+'%;width:'+Math.max(0,x2-x)+'%"></div><div class="dot'+(t.m===0?' now':'')+'" style="left:'+x+'%"></div><span class="tag" style="'+tagPos+'">'+lab+'</span>';
+      track='<div class="bar" style="left:'+x+'%;width:'+Math.max(0,x2-x)+'%"></div><div class="dot'+(tk.m===0?' now':'')+'" style="left:'+x+'%"></div><span class="tag" style="'+tagPos+'">'+lab+'</span>';
     }
-    html += '<div class="tl-row"><div class="task"><strong lang="en">'+esc(t.name)+'</strong><small>'+meta+'</small></div><div class="track">'+track+'</div></div>';
+    html += '<div class="tl-row"><div class="task"><strong lang="en">'+esc(tk.name)+'</strong><small>'+meta+'</small></div><div class="track">'+track+'</div></div>';
   }
   $("tl").innerHTML = html;
   const more=$("tl-more");
-  if(ordered.length>LIMIT){ more.hidden=false; more.textContent = state.showAll?"收起":"展开全部 "+ordered.length+" 项任务"; } else more.hidden=true;
+  if(ordered.length>LIMIT){ more.hidden=false; more.textContent = state.showAll?t("collapse"):t("expand",{n:ordered.length}); } else more.hidden=true;
 
   document.querySelectorAll("#chips .chip").forEach(c=>c.setAttribute("aria-pressed", c.dataset.id===state.occ?"true":"false"));
   document.querySelectorAll("#rel-group button").forEach(b=>b.setAttribute("aria-pressed", +b.dataset.v===state.rel?"true":"false"));
   document.querySelectorAll("#thr-group button").forEach(b=>b.setAttribute("aria-pressed", +b.dataset.v===state.thr?"true":"false"));
-  try{ history.replaceState(null,"","#"+state.occ); }catch(_){}
+  try{ history.replaceState(null,"","?lang="+LANG+"#"+state.occ); }catch(_){}
 }
 
 function match(q){
@@ -519,10 +672,38 @@ function match(q){
 }
 
 function buildTicker(){
-  const all=[]; for(const en in NEWS) for(const n of NEWS[en]){ const o=OCC.find(x=>x.en===en); if(o && en!=="Lawyers") all.push({...n,occ:o.zh||o.en}); }
+  const all=[]; for(const en in NEWS) for(const n of NEWS[en]){ const o=OCC.find(x=>x.en===en); if(o && en!=="Lawyers") all.push({...n,occ:shortName(o)}); }
   all.sort((a,b)=>b.date.localeCompare(a.date));
-  const item=n=>'<a href="'+n.url+'" target="_blank" rel="noopener"><b class="'+(n.k==="signal"?"k-signal":"k-check")+'">'+(n.k==="signal"?"AI 进展":"现实检验")+'</b>'+esc(n.occ)+'｜'+esc(n.t)+'</a>';
+  const sepCh = LANG==="zh"?"｜":" | ";
+  const item=n=>'<a href="'+n.url+'" target="_blank" rel="noopener"><b class="'+(n.k==="signal"?"k-signal":"k-check")+'">'+t(n.k)+'</b>'+esc(n.occ)+sepCh+esc((n[LANG]||n.zh).t)+'</a>';
   $("ticker").innerHTML = all.map(item).join("")+'<span aria-hidden="true" style="display:contents">'+all.map(item).join("").replace(/<a /g,'<a tabindex="-1" ')+'</span>';
+}
+function buildPickers(){
+  $("chips").innerHTML = FEATURED.map(en=>OCC.find(o=>o.en===en)).filter(Boolean).map(o=>'<button type="button" class="chip" data-id="'+o.code+'">'+esc(shortName(o))+'</button>').join("");
+  const zhOpts = LANG==="zh" ? OCC.filter(o=>o.zh).map(o=>'<option value="'+esc(o.zh)+'">'+esc(o.en)+'</option>').join("") : "";
+  $("occ-list").innerHTML = zhOpts + OCC.map(o=>'<option value="'+esc(o.en)+'"></option>').join("");
+}
+
+function applyStatic(){
+  document.documentElement.lang = LANG==="zh"?"zh-CN":"en";
+  document.title = t("title");
+  document.querySelectorAll("[data-i18n]").forEach(el=>{ el.textContent = t(el.dataset.i18n); });
+  document.querySelectorAll("[data-i18n-html]").forEach(el=>{ el.innerHTML = t(el.dataset.i18nHtml); });
+  document.querySelectorAll("[data-i18n-ph]").forEach(el=>{ el.placeholder = t(el.dataset.i18nPh); });
+  document.querySelectorAll("[data-i18n-aria]").forEach(el=>{ el.setAttribute("aria-label", t(el.dataset.i18nAria)); });
+  document.querySelectorAll(".lang button").forEach(b=>b.setAttribute("aria-pressed", b.dataset.lang===LANG?"true":"false"));
+}
+function setLang(l){
+  LANG = l==="en"?"en":"zh";
+  try{ localStorage.setItem("lang", LANG); }catch(_){}
+  applyStatic();
+  if(OCC.length){ buildTicker(); buildPickers(); $("msg").textContent=""; render(); }
+  else $("hero-lead").innerHTML = '<span class="loading">'+esc(t("loading"))+'</span>';
+}
+function initialLang(){
+  try{ const q=new URLSearchParams(location.search).get("lang"); if(q==="en"||q==="zh") return q; }catch(_){}
+  try{ const s=localStorage.getItem("lang"); if(s==="en"||s==="zh") return s; }catch(_){}
+  return (navigator.language||"").toLowerCase().startsWith("zh") ? "zh" : "en";
 }
 
 function init(data){
@@ -532,23 +713,23 @@ function init(data){
   BY_CODE = Object.fromEntries(OCC.map(o=>[o.code,o]));
   const fromHash = decodeURIComponent(location.hash.slice(1));
   state.occ = BY_CODE[fromHash] ? fromHash : OCC.find(o=>o.en==="Accountants and Auditors").code;
-  buildTicker();
-  $("chips").innerHTML = FEATURED.map(en=>OCC.find(o=>o.en===en)).filter(Boolean).map(o=>'<button type="button" class="chip" data-id="'+o.code+'">'+esc(o.zh||o.en)+'</button>').join("");
-  const opts = OCC.filter(o=>o.zh).map(o=>'<option value="'+esc(o.zh)+'">'+esc(o.en)+'</option>').join("") + OCC.map(o=>'<option value="'+esc(o.en)+'"></option>').join("");
-  $("occ-list").innerHTML = opts;
+  buildTicker(); buildPickers();
   render();
 }
 
+LANG = initialLang();
 buildLED(); setAll("-");
-$("hero-lead").innerHTML = '<span class="loading">正在载入 876 个职业的数据…</span>';
+applyStatic();
+$("hero-lead").innerHTML = '<span class="loading">'+esc(t("loading"))+'</span>';
+document.querySelectorAll(".lang button").forEach(b=>b.addEventListener("click",()=>setLang(b.dataset.lang)));
 $("chips").addEventListener("click",e=>{ const b=e.target.closest(".chip"); if(!b) return; state.occ=b.dataset.id; state.showAll=false; $("occ-input").value=""; $("msg").textContent=""; render(); });
 $("occ-form").addEventListener("submit",e=>{
   e.preventDefault();
   if(!OCC.length) return;
-  if(!$("occ-input").value.trim()){ $("msg").textContent="先输入一个职业。"; return; }
+  if(!$("occ-input").value.trim()){ $("msg").textContent=t("needInput"); return; }
   const o=match($("occ-input").value);
-  if(!o){ $("msg").textContent="没找到这个职业。试试英文职业名，比如 nurse、accountant、translator。"; return; }
-  $("msg").textContent = "匹配到："+label(o); state.occ=o.code; state.showAll=false; render();
+  if(!o){ $("msg").textContent=t("noMatch"); return; }
+  $("msg").textContent = t("matched",{o:label(o)}); state.occ=o.code; state.showAll=false; render();
 });
 $("occ-input").addEventListener("input",()=>{ $("msg").textContent=""; });
 $("region").addEventListener("change",e=>{ state.region=e.target.value; if(OCC.length) render(); });
@@ -561,12 +742,11 @@ $("tlag").addEventListener("input",e=>{ state.trustLag=+e.target.value; if(OCC.l
 $("tl-more").addEventListener("click",()=>{ state.showAll=!state.showAll; render(); });
 document.querySelectorAll(".presets button").forEach(b=>b.addEventListener("click",()=>{ state.dbl=+b.dataset.dbl; $("dbl").value=state.dbl; if(OCC.length) render(); }));
 $("copy-btn").addEventListener("click",()=>{
-  const t=$("share-text"), btn=$("copy-btn");
-  const fallback=()=>{ t.select(); btn.textContent="已选中，按 Ctrl/⌘+C"; };
-  try{ navigator.clipboard.writeText(t.value).then(()=>{ btn.textContent="已复制"; setTimeout(()=>btn.textContent="复制文案",1600); }).catch(fallback); }
+  const ta=$("share-text"), btn=$("copy-btn");
+  const fallback=()=>{ ta.select(); btn.textContent=t("copySelect"); };
+  try{ navigator.clipboard.writeText(ta.value).then(()=>{ btn.textContent=t("copied"); setTimeout(()=>btn.textContent=t("copy"),1600); }).catch(fallback); }
   catch(_){ fallback(); }
 });
 fetch("occupations.json").then(r=>{ if(!r.ok) throw new Error(r.status); return r.json(); }).then(init)
-  .catch(err=>{ $("hero-lead").textContent="数据载入失败（"+err.message+"），请刷新页面重试。"; });
-
+  .catch(err=>{ $("hero-lead").textContent=t("loadFail",{e:err.message}); });
 </script>

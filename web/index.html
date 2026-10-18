@@ -659,7 +659,17 @@ function render(){
 function match(q){
   q=q.trim().toLowerCase(); if(!q) return null;
   const exact = OCC.find(o=>o.keys.includes(q)); if(exact) return exact;
-  const zhHit = OCC.find(o=>o.keys.some(k=>k.length>1 && (k.includes(q)||q.includes(k)) && /[^\x00-\x7f]/.test(k))); if(zhHit && /[^\x00-\x7f]/.test(q)) return zhHit;
+  if(/[^\x00-\x7f]/.test(q)){
+    // 中文：优先选「包含输入、且多出的字最少」的名字；同样短时优先有别名的常见职业
+    let best=null, bestD=1e9;
+    for(const o of OCC) for(const k of o.keys){
+      if(!/[^\x00-\x7f]/.test(k)) continue;
+      let d = k.includes(q) ? k.length-q.length : (k.length>1 && q.includes(k) ? 100-k.length : 1e9);
+      if(d<1e9 && o.aliases.length) d-=0.5;
+      if(d<bestD){ best=o; bestD=d; }
+    }
+    if(best) return best;
+  }
   const words=q.split(/\s+/).filter(Boolean);
   let best=null, bestScore=0;
   for(const o of OCC){
@@ -680,8 +690,9 @@ function buildTicker(){
 }
 function buildPickers(){
   $("chips").innerHTML = FEATURED.map(en=>OCC.find(o=>o.en===en)).filter(Boolean).map(o=>'<button type="button" class="chip" data-id="'+o.code+'">'+esc(shortName(o))+'</button>').join("");
-  const zhOpts = LANG==="zh" ? OCC.filter(o=>o.zh).map(o=>'<option value="'+esc(o.zh)+'">'+esc(o.en)+'</option>').join("") : "";
-  $("occ-list").innerHTML = zhOpts + OCC.map(o=>'<option value="'+esc(o.en)+'"></option>').join("");
+  $("occ-list").innerHTML = LANG==="zh"
+    ? OCC.map(o=>o.zh ? '<option value="'+esc(o.zh)+'">'+esc(o.en)+'</option>' : '<option value="'+esc(o.en)+'"></option>').join("")
+    : OCC.map(o=>'<option value="'+esc(o.en)+'"></option>').join("");
 }
 
 function applyStatic(){

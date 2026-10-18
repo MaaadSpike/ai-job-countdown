@@ -67,7 +67,7 @@ These 51 tasks were used to tune the prompt, so they are a development set. The 
 
 A static site: one HTML file and one JSON data file (`web/occupations.json`, about 2 MB). No backend; all calculations run in the browser.
 
-- **Search** in Chinese or English, with Chinese aliases for about 120 common occupations.
+- **Search** in Chinese or English, with Chinese names for all 876 occupations and extra aliases for about 120 common ones.
 - **Seven-segment countdown** to the "in practice" date, with "AI capable" and "in practice" dates, plus the range across METR's doubling-time fits.
 - **Assumption controls**: reliability (50% or 80%), doubling time, real-world difficulty factor, adoption lag, extra lag for trust-based tasks, and the threshold (half or three quarters of work time).
 - **Task timeline**: each task's capability date and adoption lag. On-site tasks are marked as not covered by the trend.

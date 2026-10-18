@@ -141,6 +141,9 @@ ZH = {
  'Meeting, Convention, and Event Planners':('活动策划',['会展','event planner']),
  'Farmers, Ranchers, and Other Agricultural Managers':('农场主',['农民','farmer']),
 }
+# 其余职业的中文名（没有别名）：web/zh_names.tsv，每行「英文名<TAB>中文名」
+_tsv = os.path.join(os.path.dirname(os.path.abspath(__file__)), "zh_names.tsv")
+ZH_EXTRA = dict(line.rstrip("\n").split("\t", 1) for line in open(_tsv, encoding="utf-8") if "\t" in line)
 missing=[k for k in ZH if k not in set(df.occupation)]
 print('ZH titles not in data:', missing)
 TYPE={'digital':0,'trust':1,'physical':2}
@@ -148,7 +151,7 @@ d=df[~df.task.str.match(r'^Specializ')].copy()
 d['share']=d['per_day']/d.groupby('onet_code')['per_day'].transform('sum')
 out=[]
 for code,g in d.groupby('onet_code'):
-    title=g.occupation.iloc[0]; zh,al=ZH.get(title,('',[]))
+    title=g.occupation.iloc[0]; zh,al=ZH.get(title,(ZH_EXTRA.get(title,''),[]))
     tasks=[[t, round(float(h),2), round(float(s)*100,2), TYPE[ty]] for t,h,s,ty in zip(g.task,g.hours,g.share,g.task_type)]
     tasks.sort(key=lambda x:-x[2])
     out.append([code,title,zh,al,tasks])

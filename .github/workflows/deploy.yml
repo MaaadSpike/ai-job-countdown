@@ -1,0 +1,22 @@
+# 把 web/ 部署到 Cloudflare Pages。
+# 现在只能手动触发：网站公开前（数据授权、标注完成）不要自动部署。
+# 准备：Cloudflare 上建一个 Pages 项目 ai-job-countdown；仓库 Settings → Secrets 里加
+#   CLOUDFLARE_API_TOKEN（权限：Cloudflare Pages Edit）和 CLOUDFLARE_ACCOUNT_ID
+# 公开后，把 on: 改成 push 到 main 时触发，并把 web/occupations.json 从 .gitignore 里去掉。
+name: Deploy website
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check data file
+        run: test -f web/occupations.json || (echo "web/occupations.json 不在仓库里，先运行 web/build_data.py 并提交" && exit 1)
+      - uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy web --project-name=ai-job-countdown --branch=main

@@ -1,7 +1,27 @@
 """把 M2 端到端时长 + 斯坦福时间占比合成网站用的 occupations.json。
 格式：{"meta":{...}, "occ":[[onet_code, title_en, zh_name, [aliases], [[task, hours, share_pct, type], ...]], ...]}
 type: 0 digital, 1 trust, 2 physical。"Specialize in..." 这类不是具体任务的条目剔除后重新归一化占比。"""
-import os; exec(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'load.py')).read())
+import argparse
+import json
+import os
+
+import load
+from load import load_frame
+
+ap = argparse.ArgumentParser(description="生成 web/occupations.json")
+ap.add_argument("--shares", choices=["stanford", "own"], default="stanford",
+                help="时间占比来源：stanford = Hatgis-Kessell et al. 的 s(t,o)；own = O*NET 频率 × M2 时长（own_shares.py）")
+ap.add_argument("--ratings", default=os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data", "Task Ratings.xlsx"),
+                help="--shares own 时需要：O*NET 30.2 的 Task Ratings.xlsx")
+args = ap.parse_args()
+
+df = load_frame(xlsx_path=None if args.shares == "own" else load.XLSX)
+if args.shares == "own":
+    import pandas as pd
+    from own_shares import expected_freq, own_shares
+    ratings = pd.read_excel(args.ratings) if args.ratings.endswith("xlsx") else pd.read_csv(args.ratings, sep="\t")
+    # own_shares 算出的 per_day 替换掉斯坦福的；下面会按职业重新归一化成占比
+    df = own_shares(df.drop(columns=["share", "per_day"]), expected_freq(ratings))
 ZH = {
  'Software Developers':('软件工程师',['程序员','码农','开发','后端','前端','software engineer','developer','sde','swe','programmer']),
  'Web Developers':('网页开发',['前端开发','web developer','webdev','web dev','网站开发']),
@@ -132,6 +152,6 @@ for code,g in d.groupby('onet_code'):
     tasks=[[t, round(float(h),2), round(float(s)*100,2), TYPE[ty]] for t,h,s,ty in zip(g.task,g.hours,g.share,g.task_type)]
     tasks.sort(key=lambda x:-x[2])
     out.append([code,title,zh,al,tasks])
-meta={'source':'O*NET 30.2 tasks; time shares: Hatgis-Kessell et al. 2026; end-to-end hours: M2 (Qwen2.5-32B-Instruct-AWQ, prompt v2, median of 5 samples)','n_occ':len(out),'n_tasks':int(len(d))}
+meta={'source':'O*NET 30.2 tasks; time shares: '+('Hatgis-Kessell et al. 2026' if args.shares=='stanford' else 'O*NET 30.2 frequency x relevance x min(M2 hours, 7h)')+'; end-to-end hours: M2 (Qwen2.5-32B-Instruct-AWQ, prompt v3.1, median of 5 samples)','n_occ':len(out),'n_tasks':int(len(d))}
 json.dump({'meta':meta,'occ':out},open(os.path.join(os.path.dirname(os.path.abspath(__file__)),'occupations.json'),'w'),ensure_ascii=False,separators=(',',':'))
 print(meta, 'with zh:',sum(1 for o in out if o[2]))

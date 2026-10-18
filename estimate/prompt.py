@@ -2,7 +2,7 @@
 import json
 import re
 
-PROMPT_VERSION = "v2-2026-10-14"
+PROMPT_VERSION = "v3.1-2026-10-16"
 
 TASK_TYPES = ["digital", "physical", "trust"]
 
@@ -11,7 +11,7 @@ SCHEMA = {
     "properties": {
         "instance": {"type": "string", "maxLength": 300},
         "steps": {
-            "type": "array", "minItems": 2, "maxItems": 6,
+            "type": "array", "minItems": 1, "maxItems": 6,
             "items": {"type": "object",
                       "properties": {"step": {"type": "string", "maxLength": 120},
                                      "hours": {"type": "number", "minimum": 0}},
@@ -35,8 +35,11 @@ For the given occupation and O*NET task statement, estimate the END-TO-END time 
 - The worker is skilled (several years in the occupation) and already familiar with the relevant materials and systems, so do not count time to learn context.
 - Assume the worker does NOT use generative AI tools.
 - If the statement bundles several activities, estimate a typical instance of the main activity.
+- Recurring actions (monitor, check, observe, greet, load, signal, record, trace): one instance is ONE occurrence of the action, not a whole shift or a whole day of it.
+- Quick routine actions: count only the action itself, without adding preparation or paperwork around it. Many routine actions take only a few minutes; do not inflate them into a multi-hour process.
+- Substantial work (designing, researching, analyzing, planning, writing, building, repairing, teaching a course): include all the work needed to deliver the result. The rule above about quick actions does NOT apply here; do not shorten substantial work.
 
-Method: first state in one sentence what one instance consists of. Then break it into 2-6 concrete steps and estimate the hours for each. Set hours_typical to roughly the sum of the steps, and give hours_low (10th percentile) and hours_high (90th percentile) for the whole instance. Use precise numbers (e.g. 0.3, 2.5, 14, 230), not only round values.
+Method: first state in one sentence what one instance consists of. Then list the concrete steps and estimate the hours for each: use a single step for a quick action, and up to 6 steps for larger work. Set hours_typical to roughly the sum of the steps, and give hours_low (10th percentile) and hours_high (90th percentile) for the whole instance. Use precise numbers (e.g. 0.3, 2.5, 14, 230), not only round values.
 
 Classify what the core of the task depends on (pick the dominant one):
 - "physical": it requires hands-on work with physical objects, or the worker must be physically present on site to do it. This includes tasks done on site with a device (operating a cash register at a counter, monitoring equipment on a plant floor, calling emergency services while on patrol).
@@ -44,6 +47,10 @@ Classify what the core of the task depends on (pick the dominant one):
 - "digital": the core output is text, numbers, code, images, or files, and it could be done entirely at a computer from anywhere.
 
 Calibration examples (other occupations):
+- Hotel desk clerk, "Answer a guest's question about checkout time": ~0.03 h typical, trust.
+- Stock clerk, "Check a shelf price tag against the store system": ~0.05 h typical, physical.
+- Machine operator, "Read a gauge and adjust a valve to keep pressure in range": ~0.1 h typical, physical.
+- Office supervisor, "Approve one employee's timesheet": ~0.1 h typical, digital.
 - Barber, "Cut and trim hair": ~0.5 h typical, physical.
 - Cashier, "Receive payment for purchases at the register": ~0.05 h typical, physical.
 - Accountant, "Reconcile a bank statement to the general ledger": ~1.5 h typical, digital.

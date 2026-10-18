@@ -9,8 +9,8 @@ import load
 from load import load_frame
 
 ap = argparse.ArgumentParser(description="生成 web/occupations.json")
-ap.add_argument("--shares", choices=["stanford", "own"], default="stanford",
-                help="时间占比来源：stanford = Hatgis-Kessell et al. 的 s(t,o)；own = O*NET 频率 × M2 时长（own_shares.py）")
+ap.add_argument("--shares", choices=["own", "stanford"], default="own",
+                help="时间占比来源：own（默认）= O*NET 频率 × M2 时长（own_shares.py）；stanford = Hatgis-Kessell et al. 的 s(t,o)")
 ap.add_argument("--ratings", default=os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data", "Task Ratings.xlsx"),
                 help="--shares own 时需要：O*NET 30.2 的 Task Ratings.xlsx")
 args = ap.parse_args()

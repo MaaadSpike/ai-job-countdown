@@ -1,25 +1,3 @@
-# what Peter need to do
-我把标注工具放到 GitHub 上了，已经邀请你进仓库，先去邮箱接受邀请。
-
-然后在终端里运行（需要先装好 Python）：
-```bash
-git clone https://github.com/MaaadSpike/ai-job-countdown.git
-cd ai-job-countdown/annotate
-pip install -r requirements.txt
-streamlit run label_app.py
-```
-
-浏览器会自动打开标注页面。开始之前先读一下 annotate/GUIDELINES.md 里的标注规则，大概 3 分钟。
-
-步骤：
-1. 输入你的名字（英文，和我的不一样就行）
-2. 保持「只看试标集」开关打开，先标前 20 条。自己独立判断，不要查资料，也不要问 AI
-3. 标完 20 条告诉我，我们约个时间一起对答案、统一标准
-4. 之后关掉开关，继续标到第 100 条
-
-结果会存在 annotate 文件夹里的 labels_你的名字.csv，直接发给我就行，不要 push 到仓库。
-页面右上角的 Deploy 不用管。
-
 # AI Job Countdown
 
 输入一个职业，按 AI agent 能力的增长趋势，估算 AI 能独立完成这个职业一半工作时间的时间点。
@@ -56,8 +34,8 @@ forecast/  ── METR 趋势参数 ──────────────�
 
 ```bash
 # 1. 数据（data/ 和 runs/ 不在仓库里，自己建）：
-#    data/task_time_share_estimates.xlsx  ← https://github.com/Stephanehk/Estimating-Time-Spent-On-Work（默认时间占比）
-#    data/Task Ratings.xlsx               ← O*NET 30.2：https://www.onetcenter.org/dl_files/database/db_30_2_excel.zip（--shares own）
+#    data/Task Ratings.xlsx               ← O*NET 30.2：https://www.onetcenter.org/dl_files/database/db_30_2_excel.zip（必需）
+#    data/task_time_share_estimates.xlsx  ← https://github.com/Stephanehk/Estimating-Time-Spent-On-Work（可选，只用于对照）
 #    runs/full-v3.1/estimates.jsonl       ← 第 2 步的输出
 
 # 2. 估计任务时长（需要 GPU，A100 40GB 上约 3.3 小时、4 美元）
@@ -68,8 +46,8 @@ python estimate.py --tasks tasks.jsonl --out ../runs/full-v2 --max-tokens 600
 
 # 3. 生成网站数据，本地预览
 cd ../web
-python build_data.py                  # 时间占比用 Hatgis-Kessell et al.
-# 或：python build_data.py --shares own  # 用 O*NET 频率 × M2 时长，需要 data/Task Ratings.xlsx（O*NET 30.2）
+python build_data.py                   # 时间占比：O*NET 频率 × M2 时长，需要 data/Task Ratings.xlsx
+# 或：python build_data.py --shares stanford  # 对照：用 Hatgis-Kessell et al. 的时间占比
 python -m http.server 8000   # 打开 http://localhost:8000
 ```
 
@@ -103,5 +81,6 @@ pytest -q          # prompt 解析、mock 后端端到端、倒计时算法、�
 ## 数据来源
 
 - 任务清单：[O*NET 30.2](https://www.onetcenter.org)（CC BY 4.0）
-- 任务时间占比：Hatgis-Kessell et al. (2026), *Estimating Time Spent on Work Tasks*
+- 任务时间占比：O*NET 30.2 任务评分里的执行频率和相关度，乘以 M2 估计的单次时长（`web/own_shares.py`）
+- 对照数据：Hatgis-Kessell et al. (2026), *Estimating Time Spent on Work Tasks*（只用于比较，不进入网站数据）
 - AI 时间跨度：METR Time Horizon 1.1

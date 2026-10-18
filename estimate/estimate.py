@@ -194,8 +194,8 @@ def main():
         if args.gpu_price:
             stats["est_cost_usd"] = round(elapsed / 3600 * args.gpu_price, 2)
             stats["usd_per_1k_tasks"] = round(stats["est_cost_usd"] / max(len(todo), 1) * 1000, 3)
-        prev = json.loads(stats_path.read_text()) if stats_path.exists() else []
-        stats_path.write_text(json.dumps(prev + [stats], indent=1, ensure_ascii=False))
+        prev = json.loads(stats_path.read_text(encoding="utf-8")) if stats_path.exists() else []
+        stats_path.write_text(json.dumps(prev + [stats], indent=1, ensure_ascii=False), encoding="utf-8")
         print(json.dumps(stats, ensure_ascii=False))
 
     agg = aggregate(read_jsonl(raw_path))

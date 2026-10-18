@@ -153,5 +153,5 @@ for code,g in d.groupby('onet_code'):
     tasks.sort(key=lambda x:-x[2])
     out.append([code,title,zh,al,tasks])
 meta={'source':'O*NET 30.2 tasks; time shares: '+('Hatgis-Kessell et al. 2026' if args.shares=='stanford' else 'O*NET 30.2 frequency x relevance x min(M2 hours, 7h)')+'; end-to-end hours: M2 (Qwen2.5-32B-Instruct-AWQ, prompt v3.1, median of 5 samples)','n_occ':len(out),'n_tasks':int(len(d))}
-json.dump({'meta':meta,'occ':out},open(os.path.join(os.path.dirname(os.path.abspath(__file__)),'occupations.json'),'w'),ensure_ascii=False,separators=(',',':'))
+json.dump({'meta':meta,'occ':out},open(os.path.join(os.path.dirname(os.path.abspath(__file__)),'occupations.json'),'w',encoding='utf-8'),ensure_ascii=False,separators=(',',':'))
 print(meta, 'with zh:',sum(1 for o in out if o[2]))

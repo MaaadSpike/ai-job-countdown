@@ -8,6 +8,8 @@
 
 > 进行中的研究项目。倒计时是基于明确假设的推算，不是预测。AI 能做某项任务，不等于会取代做这项任务的人。
 
+完整设计文档：[docs/DESIGN.zh-CN.md](docs/DESIGN.zh-CN.md)（[English](docs/DESIGN.md)）。
+
 ## 怎么算的
 
 ```
@@ -83,6 +85,7 @@ METR 时间跨度趋势（forecast/）──────────────
 | `forecast/` | METR 趋势拟合、回测、倒计时算法 |
 | `web/` | 网站、生成网站数据的脚本、时间占比公式 |
 | `tests/` | pytest 测试 |
+| `docs/` | 设计文档（中英文） |
 | `data/`、`runs/` | 第三方数据和模型输出，不提交到仓库 |
 
 ## 运行

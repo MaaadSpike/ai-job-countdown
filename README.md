@@ -8,6 +8,8 @@ The method breaks each occupation into its O\*NET tasks, estimates how long a sk
 
 > Research in progress. The countdown is a projection under stated assumptions, not a prediction. Being able to do a task is not the same as replacing the people who do it.
 
+Full design: [docs/DESIGN.md](docs/DESIGN.md) ([中文](docs/DESIGN.zh-CN.md)).
+
 ## How it works
 
 ```
@@ -83,6 +85,7 @@ A static site: one HTML file and one JSON data file (`web/occupations.json`, abo
 | `forecast/` | METR trend fitting, backtests, countdown algorithm |
 | `web/` | Website, data build script, time-share formula |
 | `tests/` | pytest suite |
+| `docs/` | Design doc (English and Chinese) |
 | `data/`, `runs/` | Third-party data and model outputs; not committed |
 
 ## Running it

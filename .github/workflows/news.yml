@@ -23,6 +23,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}   # 取分支最新的提交，不是触发时的那个（排队时前一次可能已经推了新闻）
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"

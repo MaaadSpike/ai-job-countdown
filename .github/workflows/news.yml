@@ -10,6 +10,13 @@ on:
   schedule:
     - cron: "17 14 * * *"   # 每天 UTC 14:17（温哥华早上 6/7 点）
   workflow_dispatch:
+    inputs:
+      per_field:
+        description: "每个领域这次最多新增几条（定时任务用 4）"
+        default: "4"
+      days:
+        description: "抓最近多少天的新闻（定时任务用 14）"
+        default: "14"
 
 permissions:
   contents: write
@@ -33,7 +40,7 @@ jobs:
           NEWS_LLM_API_KEY: ${{ secrets.NEWS_LLM_API_KEY }}
           NEWS_LLM_BASE_URL: ${{ vars.NEWS_LLM_BASE_URL }}
           NEWS_LLM_MODEL: ${{ vars.NEWS_LLM_MODEL }}
-        run: python news/collect.py -v
+        run: python news/collect.py -v --per-field "${{ inputs.per_field || 4 }}" --days "${{ inputs.days || 14 }}"
       - name: Commit if changed
         id: commit
         run: |

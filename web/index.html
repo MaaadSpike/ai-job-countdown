@@ -3,6 +3,16 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>AI 工作倒计时</title>
+<meta name="description" content="输入职业，看 AI 什么时候能独立接手它一半的工作时间。876 个职业，O*NET 任务 × METR 能力曲线，所有假设可调。 How long until AI can do your job? 876 occupations, every assumption adjustable.">
+<!-- 链接预览（LinkedIn / X / 微信）。上线后把域名换成真实地址；og.png 是通用预览图，按职业的预览图在 v2 -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="AI Job Countdown · 你的工作，还剩多久">
+<meta property="og:description" content="How long until AI can do your job? 876 occupations, O*NET tasks × METR's AI time-horizon trend, every assumption adjustable.">
+<meta property="og:url" content="https://ai-job-countdown.pages.dev/">
+<meta property="og:image" content="https://ai-job-countdown.pages.dev/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Stencil+Display:wght@700;900&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
@@ -131,8 +141,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{ou
 .tag{position:absolute;top:0;font-family:var(--f-mono);font-size:11px;line-height:16px;color:var(--red);white-space:nowrap}
 .out{position:absolute;inset:6px 0;border-radius:2px;background:repeating-linear-gradient(45deg,var(--line) 0 4px,transparent 4px 9px);border:1px solid var(--line);display:flex;align-items:center;padding-left:10px;font-size:12px;color:var(--muted)}
 @media (max-width:620px){.tl-axis{grid-template-columns:1fr}.tl-axis>div:first-child{display:none}.tl-row{grid-template-columns:1fr;gap:4px}}
-.share{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px;align-items:center}
-@media (max-width:620px){.share{grid-template-columns:1fr}}
+.share{display:flex;flex-direction:column;gap:12px}
 #share-text{width:100%;font:inherit;font-size:14px;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:3px;padding:10px 12px;resize:none;min-height:70px}
 .copy{background:var(--red);color:#fff;border:0;border-radius:3px;padding:11px 20px;font-weight:700;white-space:nowrap}
 .method{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 28px}
@@ -161,6 +170,25 @@ code{font-family:var(--f-mono);font-size:12.5px;background:var(--panel-2);paddin
 .lang button[aria-pressed="true"]{background:var(--red-soft);color:var(--ink);font-weight:600}
 .lang button:focus-visible{outline:2px solid var(--amber);outline-offset:-2px}
 @media (max-width:520px){.head-right{align-items:flex-start}}
+.news-h{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap;font-size:13px;font-weight:600;color:var(--ink);margin:4px 0 0;letter-spacing:.02em}
+.news-h span{font-family:var(--f-mono);font-weight:400;font-size:11.5px;color:var(--muted)}
+.news-item.compact{gap:2px 12px}
+.news-item.compact .kind{grid-row:span 2}
+.news-item.compact strong{font-size:14px;font-weight:500}
+.share-actions{display:flex;flex-wrap:wrap;gap:8px}
+.sbtn{background:var(--panel-2);border:1px solid var(--line);color:var(--ink);border-radius:3px;padding:10px 14px;font-size:14px;font-weight:600;white-space:nowrap}
+.sbtn:hover{border-color:var(--amber)}
+.sbtn svg{width:15px;height:15px;vertical-align:-2px;margin-right:6px;fill:currentColor}
+.share-note{font-size:13px;color:var(--amber);margin:0;min-height:1.2em}
+dialog#share-dlg{background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:4px;padding:18px;width:min(560px,calc(100vw - 24px));max-height:calc(100dvh - 24px);overflow:auto}
+dialog#share-dlg::backdrop{background:rgba(0,0,0,.72)}
+.dlg-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}
+.dlg-head h2{margin:0;font-size:18px;display:flex;gap:10px;align-items:baseline}
+.dlg-close{background:transparent;border:1px solid var(--line);color:var(--muted);border-radius:3px;width:34px;height:34px;font-size:20px;line-height:1}
+.dlg-img{margin:12px 0;background:#0A0B0C;border:1px solid var(--line);border-radius:3px;display:flex;justify-content:center;align-items:center;min-height:200px}
+.dlg-img img{display:block;width:100%;height:auto;max-height:62dvh;object-fit:contain}
+.dlg-actions{display:flex;flex-wrap:wrap;gap:8px}
+.hint{font-size:12.5px;color:var(--muted);margin:0 0 12px}
 </style>
 
 <div class="hazard" aria-hidden="true"></div>
@@ -287,9 +315,36 @@ code{font-family:var(--f-mono);font-size:12.5px;background:var(--panel-2);paddin
     <h2><span class="eyebrow">Share</span><span data-i18n="shareTitle">发给同行</span></h2>
     <div class="share">
       <textarea id="share-text" readonly data-i18n-aria="shareTextAria" aria-label="分享文案"></textarea>
-      <button class="copy" type="button" id="copy-btn" data-i18n="copy">复制文案</button>
+      <div class="share-actions">
+        <button class="copy" type="button" id="img-btn" data-i18n="makeImg">生成分享图（带二维码）</button>
+        <button class="sbtn" type="button" id="li-btn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9.75h4v11H3zm6.5 0h3.8v1.5h.06c.53-.95 1.83-1.95 3.77-1.95 4.03 0 4.77 2.5 4.77 5.75v5.7h-4v-5.05c0-1.2-.02-2.75-1.75-2.75-1.75 0-2.02 1.3-2.02 2.65v5.15h-4z"/></svg>LinkedIn</button>
+        <button class="sbtn" type="button" id="x-btn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.75 3h3.07l-6.7 7.66L22 21h-6.17l-4.83-6.32L5.47 21H2.4l7.17-8.2L2 3h6.33l4.37 5.77zm-1.08 16.17h1.7L7.4 4.73H5.58z"/></svg>X</button>
+        <button class="sbtn" type="button" id="sys-btn" hidden data-i18n="sysShare">更多分享方式…</button>
+        <button class="sbtn" type="button" id="link-btn" data-i18n="copyLink">复制链接</button>
+        <button class="sbtn" type="button" id="copy-btn" data-i18n="copy">复制文案</button>
+      </div>
+      <p class="share-note" id="share-note" role="status"></p>
     </div>
   </section>
+
+  <dialog id="share-dlg" data-i18n-aria="imgTitle" aria-label="分享图">
+    <div class="dlg-head">
+      <h2><span class="eyebrow">Share card</span><span data-i18n="imgTitle">分享图</span></h2>
+      <button type="button" class="dlg-close" id="dlg-close" data-i18n-aria="close" aria-label="关闭">×</button>
+    </div>
+    <div class="seg-group" id="fmt-group">
+      <button type="button" data-f="portrait" aria-pressed="true" data-i18n="fmtPortrait">竖版 4:5 · 朋友圈 / 小红书</button>
+      <button type="button" data-f="square" aria-pressed="false" data-i18n="fmtSquare">方形 1:1 · LinkedIn / X</button>
+    </div>
+    <div class="dlg-img"><img id="share-img" alt=""></div>
+    <p class="hint" data-i18n="imgHint">图上的二维码打开的是同一个职业和同一组假设。手机上可以长按图片保存（微信里用这个办法）。</p>
+    <div class="dlg-actions">
+      <button class="copy" type="button" id="dl-btn" data-i18n="saveImg">保存图片</button>
+      <button class="sbtn" type="button" id="img-share-btn" hidden data-i18n="shareImg">分享图片…</button>
+      <button class="sbtn" type="button" id="li2-btn" data-i18n="liPost">发到 LinkedIn</button>
+    </div>
+    <p class="share-note" id="dlg-note" role="status"></p>
+  </dialog>
 
   <section class="panel box" data-i18n-aria="methodAria" aria-label="怎么算的">
     <h2><span class="eyebrow">Method</span><span data-i18n="methodTitle">怎么算的</span></h2>
@@ -320,6 +375,7 @@ code{font-family:var(--f-mono);font-size:12.5px;background:var(--panel-2);paddin
   </section>
 </div>
 
+<script src="vendor/qrcode.min.js"></script>
 <script>
 const STR = {
   zh: {
@@ -340,6 +396,17 @@ const STR = {
     newsAria:"新闻证据", newsTitle:"这个行业发生了什么", tlAria:"任务时间线", tlTitle:"哪项工作先被 AI 接手",
     lgCap:"能力到位", lgLag:"落地期", lgOut:"趋势线不覆盖（需要现场操作）",
     shareAria:"分享", shareTitle:"发给同行", shareTextAria:"分享文案", copy:"复制文案", copied:"已复制", copySelect:"已选中，按 Ctrl/⌘+C",
+    newsOcc:"这个职业", newsField:"领域动态 · {f}", newsUpdated:"更新于 {d}", newsMore:"再看 {n} 条", newsLess:"收起",
+    noFieldNews:"这个领域最近还没有收录到 AI 新闻。新闻每天自动更新，每条标注是「AI 进展」还是「现实检验」。",
+    makeImg:"生成分享图（带二维码）", sysShare:"更多分享方式…", copyLink:"复制链接", linkCopied:"链接已复制",
+    liNote:"文案已复制，在 LinkedIn 的帖子里粘贴即可。想带图的话，先生成并保存分享图，再在帖子里上传。",
+    imgTitle:"分享图", close:"关闭", fmtPortrait:"竖版 4:5 · 朋友圈 / 小红书", fmtSquare:"方形 1:1 · LinkedIn / X",
+    imgHint:"图上的二维码打开的是同一个职业和同一组假设。手机上可以长按图片保存（微信里用这个办法）。",
+    saveImg:"保存图片", shareImg:"分享图片…", liPost:"发到 LinkedIn", imgRendering:"正在生成…", imgFail:"生成失败：{e}",
+    cardTag:"你的工作，", cardTagRed:"还剩多久", cardCta:"扫码，查你的职业还剩多久",
+    cardDisc:"按当前趋势和图上的假设推算，不是预测。能做到不等于会被取代。",
+    cardAssume:"可靠度 {rel}% · 翻倍周期 {d} 个月 · 难度 ×{m} · 落地期 {lag} 年 · 信任类 +{t} 年",
+    cardArrived:"按这组假设，已经到了", cardOut:"按这条趋势线，AI 接不住{thr}的工作时间",
     methodAria:"怎么算的", methodTitle:"怎么算的",
     m1h:"1 · 把职业拆成任务",
     m1p:"任务清单来自 O*NET 30.2（876 个职业，17,517 项任务）。每项任务占工作时间的比例 = O*NET 调查里从业者报告的执行频率 × 相关度 × 做一次的时长（一次最多按一个工作日算），再在职业内部归一化。",
@@ -357,7 +424,7 @@ const STR = {
     half:"一半", threeQ:"四分之三", oThr50:"一半工作", oThr75:"四分之三",
     types:["电脑可完成","依赖人际信任","需要现场操作"],
     lvOut:"曲线外", lvRed:"红色警报 · 2 年内", lvOrange:"橙色警报 · 5 年内", lvYellow:"黄色预警 · 5 年以上",
-    signal:"AI 进展", check:"现实检验", noNews:"这个职业还没有收录新闻。后续会按职业自动抓取，每条「AI 进展」都配一条「现实检验」。",
+    signal:"AI 进展", check:"现实检验",
     regionNote:"地区：{r}。第一期地区还不影响计算，之后会接入当地按职业的就业人数。",
     outTxt:"现场操作占 {p}，人际信任占 {t}",
     leadOut:"按这条趋势线，AI <em>接不住</em>你{thr}的工作时间：需要现场操作的工作占 {p}，不在曲线覆盖范围内。",
@@ -392,6 +459,17 @@ const STR = {
     newsAria:"News evidence", newsTitle:"What's happening in this field", tlAria:"Task timeline", tlTitle:"Which tasks AI takes over first",
     lgCap:"AI capable", lgLag:"Adoption lag", lgOut:"Not covered by the trend (on-site work)",
     shareAria:"Share", shareTitle:"Send to a colleague", shareTextAria:"Share text", copy:"Copy text", copied:"Copied", copySelect:"Selected — press Ctrl/⌘+C",
+    newsOcc:"This occupation", newsField:"Field news · {f}", newsUpdated:"updated {d}", newsMore:"{n} more", newsLess:"Show less",
+    noFieldNews:"No AI news collected for this field recently. News updates daily; each item is marked \"AI progress\" or \"reality check\".",
+    makeImg:"Create share image (with QR)", sysShare:"More options…", copyLink:"Copy link", linkCopied:"Link copied",
+    liNote:"Text copied. Paste it into your LinkedIn post. To add the image, create and save the share image, then upload it to the post.",
+    imgTitle:"Share image", close:"Close", fmtPortrait:"Portrait 4:5 · Instagram / stories", fmtSquare:"Square 1:1 · LinkedIn / X",
+    imgHint:"The QR code opens the same occupation with the same assumptions. On a phone, long-press the image to save it.",
+    saveImg:"Save image", shareImg:"Share image…", liPost:"Post on LinkedIn", imgRendering:"Rendering…", imgFail:"Couldn't create the image: {e}",
+    cardTag:"How long until AI ", cardTagRed:"can do your job?", cardCta:"Scan to check your own job",
+    cardDisc:"A projection under the trend and assumptions shown, not a prediction. Being able to do the work is not the same as replacing the people who do it.",
+    cardAssume:"{rel}% reliability · {d}-mo doubling · difficulty ×{m} · {lag}-yr lag · trust +{t} yr",
+    cardArrived:"Under these assumptions, already here", cardOut:"On this trend, AI cannot cover {thr} of the work time",
     methodAria:"Method", methodTitle:"How it's calculated",
     m1h:"1 · Break the occupation into tasks",
     m1p:"Tasks come from O*NET 30.2 (876 occupations, 17,517 tasks). A task's share of work time = how often workers report doing it in the O*NET survey × its relevance × how long one instance takes (capped at one workday per occurrence), normalized within the occupation.",
@@ -409,7 +487,7 @@ const STR = {
     half:"half", threeQ:"three quarters", oThr50:"Half", oThr75:"Three quarters",
     types:["Computer-based","Trust-based","On-site"],
     lvOut:"Off the curve", lvRed:"Red alert · within 2 years", lvOrange:"Orange alert · within 5 years", lvYellow:"Yellow · 5+ years",
-    signal:"AI progress", check:"Reality check", noNews:"No news collected for this occupation yet. Each \"AI progress\" item will be paired with a \"reality check\".",
+    signal:"AI progress", check:"Reality check",
     regionNote:"Region: {r}. In phase 1 the region does not change the calculation; local employment by occupation comes later.",
     outTxt:"On-site work {p}, trust-based work {t}",
     leadOut:"On this trend, AI <em>cannot cover</em> {thr} of your work time: {p} of it requires being on site, which the curve does not cover.",
@@ -431,46 +509,10 @@ const MONTHS_EN=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","No
 let LANG = "zh";
 function t(k, v){ let s = STR[LANG][k] ?? STR.zh[k] ?? k; if(v) for(const x in v) s = s.split("{"+x+"}").join(v[x]); return s; }
 
-const NEWS = {
-  "Mathematicians":[
-    {k:"signal",date:"2026-05",src:"eWeek",url:"https://www.eweek.com/news/openai-ai-erdos-geometry-conjecture/",
-     zh:{t:"OpenAI 称其通用推理模型推翻了 Erdős 一个 80 年的几何猜想",p:"问题关于平面上等距点对的数量；OpenAI 称外部数学家审核了证明，这个模型并非专为数学训练。"},
-     en:{t:"OpenAI says its general reasoning model disproved an 80-year-old Erdős geometry conjecture",p:"The problem concerns the number of unit-distance pairs in the plane. OpenAI says outside mathematicians checked the proof and that the model was not trained specifically for math."}},
-    {k:"check",date:"2026-05",src:"INESC TEC",url:"https://bip.inesctec.pt/en/inesctecwatch/does-artificial-intelligence-finally-understand-mathematics-openai-believes-so-but-doubts-remain-over-both-the-result-and-the-conduct/",
-     zh:{t:"推翻的是「上界已最优」的猜想，正确的界仍然未知",p:"构造用到的思路文献里已有，Princeton 的 Will Sawin 很快改进了它。2025 年 10 月 OpenAI 还曾把文献里已有的 Erdős 解答当成新成果。"},
-     en:{t:"It disproved that the known upper bound is optimal; the correct bound is still unknown",p:"The construction builds on ideas already in the literature, and Princeton's Will Sawin quickly improved it. In October 2025 OpenAI had also presented existing Erdős solutions as new results."}}
-  ],
-  "Bioinformatics Scientists":[
-    {k:"signal",date:"2026-09",src:"Al Jazeera",url:"https://www.aljazeera.com/news/2026/9/24/ai-model-claude-discovers-crispr-like-enzyme-system-anthropic-says",
-     zh:{t:"Anthropic 称 Claude 在 DNA 数据库里自主找到一个类 CRISPR 的酶系统",p:"Claude 检索了 21 小时，研究人员只给了高层方向；这个系统被命名为 ART，可能是一种新的基因编辑机制。"},
-     en:{t:"Anthropic says Claude independently found a CRISPR-like enzyme system in DNA databases",p:"Claude searched for 21 hours with only high-level direction from researchers. The system, named ART, may be a new gene-editing mechanism."}},
-    {k:"check",date:"2026-09",src:"ThePrint",url:"https://theprint.in/science/did-claude-discover-a-new-enzyme-or-stole-a-biologists-work-anthropic-responds/3057122/",
-     zh:{t:"功能还没确定，哥本哈根的团队说他们一年前就发现了它",p:"这个系统还没有湿实验验证。哥本哈根大学一位生物学家称其团队约一年前已发现该酶，用过 Claude，只是尚未发表；Anthropic 否认用用户对话训练。"},
-     en:{t:"Its function is unconfirmed, and a Copenhagen team says it found the system a year earlier",p:"The system has not been validated in the wet lab. A University of Copenhagen biologist says her team found the enzyme about a year ago, had used Claude, and had not yet published; Anthropic denies training on user conversations."}}
-  ],
-  "Software Developers":[
-    {k:"signal",date:"2026-01",src:"Wikipedia · METR",url:"https://en.wikipedia.org/wiki/METR",
-     zh:{t:"AI agent 能独立完成的任务长度，2023 年后约每 4.3 个月翻一倍",p:"METR 用人类专家完成任务的时长衡量 AI 能力；2026 年 1 月的更新显示进展在加速。这正是本页倒计时用的曲线。"},
-     en:{t:"The length of tasks AI agents can complete alone has doubled about every 4.3 months since 2023",p:"METR measures AI capability by how long the tasks take human experts. Its January 2026 update shows progress speeding up. This is the curve this page uses."}},
-    {k:"check",date:"2025-07",src:"DX · METR",url:"https://getdx.com/blog/metr-study-on-how-ai-affects-developer-productivity/",
-     zh:{t:"随机对照实验：资深开发者用 AI 工具后反而慢了 19%",p:"16 位资深开源开发者在自己的仓库里做真实任务；他们事前以为会快 24%，事后仍以为快了 20%。"},
-     en:{t:"Randomized trial: experienced developers were 19% slower with AI tools",p:"16 experienced open-source developers worked on real tasks in their own repositories. Beforehand they expected to be 24% faster; afterwards they still believed they had been 20% faster."}}
-  ],
-  "Customer Service Representatives":[
-    {k:"signal",date:"2024-02",src:"Tech.co",url:"https://tech.co/news/klarna-reverses-ai-overhaul",
-     zh:{t:"Klarna 称 AI 助手承担了 700 人的工作量",p:"高峰时 AI 处理了约 75% 的客服对话，覆盖 35 种以上语言。"},
-     en:{t:"Klarna says its AI assistant does the work of 700 people",p:"At its peak, the AI handled about 75% of customer service chats in more than 35 languages."}},
-    {k:"check",date:"2025-05",src:"Tech.co",url:"https://tech.co/news/klarna-reverses-ai-overhaul",
-     zh:{t:"服务质量下滑后，Klarna 重新招聘人工客服",p:"CEO 承认之前偏重 AI 的做法不对，客户往往更想和人沟通，现在改成 AI 加人工的双轨模式。"},
-     en:{t:"After service quality fell, Klarna is hiring human agents again",p:"The CEO admitted the AI-heavy approach went too far; customers often prefer a person, so Klarna now runs AI and human support side by side."}}
-  ],
-  "Paralegals and Legal Assistants":[
-    {k:"check",date:"2026-06",src:"Lawyer Monthly",url:"https://www.lawyer-monthly.com/2026/06/judge-aycock-ai-hallucinations-sanctions-mississippi-2026/",
-     zh:{t:"美国联邦法院同时处罚原被告双方律师：文书引用了 AI 编造的判例",p:"密西西比北区法院对 4 名律师罚款，其中两人被禁止在该法院执业两年，原定的庭审也被取消。"},
-     en:{t:"A US federal court sanctioned lawyers on both sides for citing AI-fabricated cases",p:"The Northern District of Mississippi fined four lawyers, barred two from practicing before the court for two years, and cancelled the scheduled trial."}}
-  ]
-};
-NEWS["Lawyers"] = NEWS["Paralegals and Legal Assistants"];
+// 新闻在 news.json：人工挑选的（news/curated.json）+ 每天按领域自动抓的（news/collect.py）
+let NEWSDB = {updated:"", fields:{}, items:[]};
+// 分享链接和二维码用的网址：在正式域名上打开时用当前地址；本地预览时用这个（上线后改成真实域名）
+const SITE_URL = "https://ai-job-countdown.pages.dev/";
 const FEATURED = ["Accountants and Auditors","Software Developers","Mathematicians","Bioinformatics Scientists","Business Intelligence Analysts","Interpreters and Translators","Graphic Designers","Customer Service Representatives","Paralegals and Legal Assistants","Lawyers","Registered Nurses","Electricians"];
 const H0 = {50:16, 80:3.1};
 const MESS = [1,2,4,8,16,32];
@@ -478,7 +520,7 @@ const DBL_RANGE = [2.9, 6.5];
 const REGION_KEYS = {BC:null,AB:null,ON:null,QC:null,CA:"regCA",CN:"regCN",US:"regUS"};
 const REGION_EN = {BC:"British Columbia",AB:"Alberta",ON:"Ontario",QC:"Québec"};
 const regionName = r => REGION_KEYS[r] ? t(REGION_KEYS[r]) : REGION_EN[r];
-const state = {occ:null, rel:80, dbl:4.3, mess:2, lag:2, trustLag:3, thr:50, region:"BC", showAll:false};
+const state = {occ:null, rel:80, dbl:4.3, mess:2, lag:2, trustLag:3, thr:50, region:"BC", showAll:false, newsAll:false};
 const MS_MONTH = 30.4375*864e5, MS_YEAR = 365.25*864e5;
 const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const $ = id => document.getElementById(id);
@@ -581,13 +623,62 @@ function level(r){
   return ["lv-yellow",t("lvYellow")];
 }
 
-function renderNews(){
-  const items = NEWS[BY_CODE[state.occ].en]||[];
-  if(!items.length){ $("news").innerHTML='<p class="empty">'+esc(t("noNews"))+'</p>'; return; }
-  $("news").innerHTML = items.map(n=>{ const c=n[LANG]||n.zh;
-    return '<article class="news-item '+n.k+'"><span class="kind '+(n.k==="signal"?"k-signal":"k-check")+'">'+t(n.k)+'</span>'+
-    '<strong>'+esc(c.t)+'</strong><p>'+esc(c.p)+'</p><span class="src">'+n.date+' · <a href="'+n.url+'" target="_blank" rel="noopener">'+esc(n.src)+' ↗</a></span></article>'; }).join("");
+const fieldOf = o => o.code.slice(0,2);
+// 当前语言没有这条的译文时（关键词模式抓的新闻只有英文标题）退回英文，并标上 lang="en"
+function newsText(n){ const c=n[LANG]||n.en||n.zh; return {c, en: c===n.en && LANG!=="en"}; }
+function newsItem(n){
+  const {c,en}=newsText(n), lang=en?' lang="en"':'';
+  return '<article class="news-item '+n.k+(c.p?'':' compact')+'"><span class="kind '+(n.k==="signal"?"k-signal":"k-check")+'">'+t(n.k)+'</span>'+
+    '<strong'+lang+'>'+esc(c.t)+'</strong>'+(c.p?'<p'+lang+'>'+esc(c.p)+'</p>':'')+
+    '<span class="src">'+esc(n.date)+' · <a href="'+esc(n.url)+'" target="_blank" rel="noopener">'+esc(n.src)+' ↗</a></span></article>';
 }
+function renderNews(){
+  const o=BY_CODE[state.occ], f=fieldOf(o), fname=(NEWSDB.fields[f]||{})[LANG]||"";
+  // 这个职业专属的（人工挑选），AI 进展在前、现实检验在后
+  const mine = NEWSDB.items.filter(n=>(n.occ||[]).includes(o.en)).sort((a,b)=>(a.k==="check")-(b.k==="check"));
+  const ids = new Set(mine.map(n=>n.id));
+  const field = NEWSDB.items.filter(n=>!ids.has(n.id) && (n.fields||[]).includes(f));
+  const LIMIT=5, shown = state.newsAll?field:field.slice(0,LIMIT);
+  let html = "";
+  if(mine.length) html += '<h3 class="news-h">'+esc(t("newsOcc"))+'</h3>'+mine.map(newsItem).join("");
+  html += '<h3 class="news-h">'+esc(t("newsField",{f:fname}))+(NEWSDB.updated?'<span>'+esc(t("newsUpdated",{d:NEWSDB.updated.slice(0,10)}))+'</span>':'')+'</h3>';
+  html += shown.length ? shown.map(newsItem).join("") : '<p class="empty">'+esc(t("noFieldNews"))+'</p>';
+  if(field.length>LIMIT) html += '<button type="button" class="more" id="news-more">'+esc(state.newsAll?t("newsLess"):t("newsMore",{n:field.length-LIMIT}))+'</button>';
+  $("news").innerHTML = html;
+}
+
+// ---------- 链接里带上职业、语言和假设，打开分享链接看到的是同一组数字
+const DEFAULTS = {rel:80, dbl:4.3, mess:2, lag:2, trustLag:3, thr:50};
+let lastNewsOcc = null;
+function stateQuery(){
+  const q = ["lang="+LANG];
+  if(state.rel!==DEFAULTS.rel) q.push("r="+state.rel);
+  if(state.dbl!==DEFAULTS.dbl) q.push("d="+state.dbl);
+  if(state.mess!==DEFAULTS.mess) q.push("k="+MESS[state.mess]);
+  if(state.lag!==DEFAULTS.lag) q.push("l="+state.lag);
+  if(state.trustLag!==DEFAULTS.trustLag) q.push("t="+state.trustLag);
+  if(state.thr!==DEFAULTS.thr) q.push("p="+state.thr);
+  return q.join("&");
+}
+function readStateFromURL(){
+  let q; try{ q=new URLSearchParams(location.search); }catch(_){ return; }
+  const num=(k,lo,hi,step)=>{ const v=parseFloat(q.get(k)); if(!isFinite(v)||v<lo||v>hi) return null; return Math.round(v/step)*step; };
+  const r=q.get("r"); if(r==="50"||r==="80") state.rel=+r;
+  const p=q.get("p"); if(p==="50"||p==="75") state.thr=+p;
+  const d=num("d",2.5,14,0.1); if(d!=null) state.dbl=+d.toFixed(1);
+  const k=MESS.indexOf(parseInt(q.get("k"),10)); if(k>=0) state.mess=k;
+  const l=num("l",0,5,0.5); if(l!=null) state.lag=l;
+  const tl=num("t",0,10,0.5); if(tl!=null) state.trustLag=tl;
+}
+function syncControls(){
+  $("dbl").value=state.dbl; $("mess").value=state.mess; $("lag").value=state.lag; $("tlag").value=state.trustLag; $("region").value=state.region;
+}
+function siteBase(){
+  const h=location.hostname;
+  const local = !/^https?:$/.test(location.protocol) || !h || h==="localhost" || h==="0.0.0.0" || /^127\./.test(h) || /^192\.168\./.test(h) || /^10\./.test(h) || h.endsWith(".local");
+  return local ? SITE_URL : location.origin+location.pathname;
+}
+const shareURL = () => siteBase()+"?"+stateQuery()+"#"+state.occ;
 
 function render(){
   const r = compute();
@@ -626,7 +717,9 @@ function render(){
     lastStatus=""; startClock();
     share = t("shareIn",{o:shortName(r.occ),d:state.dbl.toFixed(1),m:MESS[state.mess],lag:state.lag,thr:thrTxt,s:spanText(r.adopt-r.now)});
   }
-  $("share-text").value = share;
+  SHARE.text = share; SHARE.r = r;
+  $("share-text").value = share+"\n"+shareURL();
+  if(state.occ!==lastNewsOcc){ state.newsAll=false; lastNewsOcc=state.occ; }
   renderNews();
 
   const MAXY=10, pct = m => Math.min(100, m/12/MAXY*100);
@@ -653,7 +746,7 @@ function render(){
   document.querySelectorAll("#chips .chip").forEach(c=>c.setAttribute("aria-pressed", c.dataset.id===state.occ?"true":"false"));
   document.querySelectorAll("#rel-group button").forEach(b=>b.setAttribute("aria-pressed", +b.dataset.v===state.rel?"true":"false"));
   document.querySelectorAll("#thr-group button").forEach(b=>b.setAttribute("aria-pressed", +b.dataset.v===state.thr?"true":"false"));
-  try{ history.replaceState(null,"","?lang="+LANG+"#"+state.occ); }catch(_){}
+  try{ history.replaceState(null,"","?"+stateQuery()+"#"+state.occ); }catch(_){}
 }
 
 function match(q){
@@ -682,10 +775,14 @@ function match(q){
 }
 
 function buildTicker(){
-  const all=[]; for(const en in NEWS) for(const n of NEWS[en]){ const o=OCC.find(x=>x.en===en); if(o && en!=="Lawyers") all.push({...n,occ:shortName(o)}); }
-  all.sort((a,b)=>b.date.localeCompare(a.date));
+  const byEn = Object.fromEntries(OCC.map(o=>[o.en,o]));
+  const all = NEWSDB.items.slice(0,24).map(n=>{
+    const o = (n.occ||[]).map(e=>byEn[e]).find(Boolean);
+    return {...n, who: o ? shortName(o) : ((NEWSDB.fields[(n.fields||[])[0]]||{})[LANG]||"")};
+  });
+  if(!all.length){ $("ticker").innerHTML=""; return; }
   const sepCh = LANG==="zh"?"｜":" | ";
-  const item=n=>'<a href="'+n.url+'" target="_blank" rel="noopener"><b class="'+(n.k==="signal"?"k-signal":"k-check")+'">'+t(n.k)+'</b>'+esc(n.occ)+sepCh+esc((n[LANG]||n.zh).t)+'</a>';
+  const item=n=>{ const {c,en}=newsText(n); return '<a href="'+esc(n.url)+'" target="_blank" rel="noopener"><b class="'+(n.k==="signal"?"k-signal":"k-check")+'">'+t(n.k)+'</b>'+esc(n.who)+sepCh+'<span'+(en?' lang="en"':'')+'>'+esc(c.t)+'</span></a>'; };
   $("ticker").innerHTML = all.map(item).join("")+'<span aria-hidden="true" style="display:contents">'+all.map(item).join("").replace(/<a /g,'<a tabindex="-1" ')+'</span>';
 }
 function buildPickers(){
@@ -724,6 +821,7 @@ function init(data){
   BY_CODE = Object.fromEntries(OCC.map(o=>[o.code,o]));
   const fromHash = decodeURIComponent(location.hash.slice(1));
   state.occ = BY_CODE[fromHash] ? fromHash : OCC.find(o=>o.en==="Accountants and Auditors").code;
+  readStateFromURL(); syncControls();
   buildTicker(); buildPickers();
   render();
 }
@@ -752,12 +850,232 @@ $("lag").addEventListener("input",e=>{ state.lag=+e.target.value; if(OCC.length)
 $("tlag").addEventListener("input",e=>{ state.trustLag=+e.target.value; if(OCC.length) render(); });
 $("tl-more").addEventListener("click",()=>{ state.showAll=!state.showAll; render(); });
 document.querySelectorAll(".presets button").forEach(b=>b.addEventListener("click",()=>{ state.dbl=+b.dataset.dbl; $("dbl").value=state.dbl; if(OCC.length) render(); }));
+$("news").addEventListener("click",e=>{ if(e.target.id!=="news-more") return; state.newsAll=!state.newsAll; renderNews(); });
+
+// ---------- 分享：文案、链接、LinkedIn / X / 系统分享
+const SHARE = {text:"", r:null, fmt:"portrait", blob:null, url:null};
+function note(id, msg, ms){ const el=$(id); el.textContent=msg; clearTimeout(el._t); if(ms) el._t=setTimeout(()=>{ el.textContent=""; }, ms); }
+function copyText(text){
+  if(navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(text);
+  return new Promise((ok,fail)=>{ // http 或旧浏览器：临时 textarea + execCommand
+    const ta=document.createElement("textarea"); ta.value=text; ta.style.cssText="position:fixed;opacity:0"; document.body.appendChild(ta); ta.select();
+    try{ document.execCommand("copy") ? ok() : fail(new Error("copy")); }catch(e){ fail(e); } finally{ ta.remove(); }
+  });
+}
 $("copy-btn").addEventListener("click",()=>{
   const ta=$("share-text"), btn=$("copy-btn");
-  const fallback=()=>{ ta.select(); btn.textContent=t("copySelect"); };
-  try{ navigator.clipboard.writeText(ta.value).then(()=>{ btn.textContent=t("copied"); setTimeout(()=>btn.textContent=t("copy"),1600); }).catch(fallback); }
-  catch(_){ fallback(); }
+  copyText(ta.value).then(()=>{ btn.textContent=t("copied"); setTimeout(()=>btn.textContent=t("copy"),1600); })
+    .catch(()=>{ ta.select(); btn.textContent=t("copySelect"); });
 });
+$("link-btn").addEventListener("click",()=>{ copyText(shareURL()).then(()=>note("share-note",t("linkCopied"),2500)).catch(()=>note("share-note",shareURL())); });
+function openLinkedIn(noteId){
+  // LinkedIn 的分享接口只收链接，文案要用户自己粘贴，所以先复制好
+  window.open("https://www.linkedin.com/sharing/share-offsite/?url="+encodeURIComponent(shareURL()),"_blank","noopener,width=600,height=640");
+  copyText(SHARE.text).then(()=>note(noteId,t("liNote"),9000)).catch(()=>{});
+}
+$("li-btn").addEventListener("click",()=>openLinkedIn("share-note"));
+$("li2-btn").addEventListener("click",()=>openLinkedIn("dlg-note"));
+$("x-btn").addEventListener("click",()=>{
+  window.open("https://x.com/intent/tweet?text="+encodeURIComponent(SHARE.text)+"&url="+encodeURIComponent(shareURL()),"_blank","noopener,width=600,height=520");
+});
+if(navigator.share){
+  $("sys-btn").hidden=false;
+  $("sys-btn").addEventListener("click",()=>{ navigator.share({title:t("title"), text:SHARE.text, url:shareURL()}).catch(()=>{}); });
+}
+
+// ---------- 分享图：canvas 画竖版 1080×1350 / 方形 1080×1080，右下角二维码指向同一组假设
+const CF = {
+  stencil:(w,px)=>w+" "+px+'px "Big Shoulders Stencil Display",Impact,sans-serif',
+  body:(w,px)=>w+" "+px+'px "IBM Plex Sans","PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans SC","Noto Sans CJK SC",sans-serif',
+  mono:(w,px)=>w+" "+px+'px "IBM Plex Mono",Menlo,Consolas,"PingFang SC","Noto Sans CJK SC",monospace'
+};
+const CC = {bg:"#0F1113", panel:"#181B1F", panel2:"#1F2328", line:"#2D3238", ink:"#ECEDEE", muted:"#9AA1A9", red:"#FF3B30", redOff:"#2A1513", amber:"#F5B700", amberInk:"#171200"};
+const LV_COLORS = {"lv-red":[CC.red,"#fff"], "lv-orange":["#FF7A1A","#1A0A00"], "lv-yellow":[CC.amber,CC.amberInk], "lv-out":[CC.panel2,CC.muted]};
+async function loadFonts(){
+  if(!document.fonts) return;
+  const specs=[CF.stencil(900,80), CF.body(700,40), CF.body(400,30), CF.mono(600,30), CF.mono(500,24)];
+  await Promise.race([Promise.all(specs.map(f=>document.fonts.load(f,"Aa1中"))).catch(()=>{}), new Promise(r=>setTimeout(r,3000))]);
+}
+// 中文按字断行，英文按词断行
+function wrapLines(ctx, text, maxW, maxLines){
+  const tokens = text.match(/[⺀-鿿豈-﫿＀-￯　-〿]|[^\s⺀-鿿豈-﫿＀-￯　-〿]+|\s+/g)||[];
+  const lines=[]; let cur="";
+  for(const tk of tokens){
+    const next = cur+tk;
+    if(ctx.measureText(next.trimEnd()).width<=maxW || !cur.trim() || /^[，。、；：！？）」』%,.;:!?)]/.test(tk)){ cur=next; continue; } // 标点不放行首
+    lines.push(cur.trimEnd()); cur = /^\s+$/.test(tk) ? "" : tk;
+  }
+  if(cur.trim()) lines.push(cur.trimEnd());
+  if(maxLines && lines.length>maxLines){
+    const keep=lines.slice(0,maxLines); let last=keep[maxLines-1];
+    while(last && ctx.measureText(last+"…").width>maxW) last=last.slice(0,-1);
+    keep[maxLines-1]=last.trimEnd()+"…"; return keep;
+  }
+  return lines;
+}
+function drawLines(ctx, lines, x, y, lh){ lines.forEach((l,i)=>ctx.fillText(l,x,y+i*lh)); return y+(lines.length-1)*lh; } // 返回最后一行的基线
+function stripe(ctx, x, y, w, h, a, b, step){
+  ctx.save(); ctx.beginPath(); ctx.rect(x,y,w,h); ctx.clip();
+  ctx.fillStyle=b; ctx.fillRect(x,y,w,h); ctx.fillStyle=a;
+  for(let i=-h; i<w+h; i+=step*2){ ctx.beginPath(); ctx.moveTo(x+i,y+h); ctx.lineTo(x+i+h,y); ctx.lineTo(x+i+h+step,y); ctx.lineTo(x+i+step,y+h); ctx.fill(); }
+  ctx.restore();
+}
+const SEG_PTS = Object.fromEntries(Object.entries(SEG).map(([k,v])=>[k, v.split(" ").map(p=>p.split(",").map(Number))]));
+function drawDigit(ctx, ch, x, y, h){
+  const s=h/90, on=DIG[ch]||"";
+  ctx.save(); ctx.translate(x,y); ctx.transform(1,0,Math.tan(-6*Math.PI/180),1,h*0.1,0); ctx.scale(s,s);
+  for(const k in SEG_PTS){
+    ctx.beginPath(); SEG_PTS[k].forEach(([px,py],i)=>i?ctx.lineTo(px,py):ctx.moveTo(px,py)); ctx.closePath();
+    const lit=on.includes(k);
+    ctx.fillStyle = lit?CC.red:CC.redOff; ctx.shadowColor = lit?"rgba(255,59,48,.6)":"transparent"; ctx.shadowBlur = lit?14/s:0;
+    ctx.fill();
+  }
+  ctx.restore();
+  return h*50/90;
+}
+function drawQR(ctx, text, x, y, size){
+  const qr=qrcode(0,"M"); qr.addData(text); qr.make();
+  const n=qr.getModuleCount(), cell=Math.floor(size/(n+6)), off=Math.floor((size-n*cell)/2); // 整数像素的格子，扫码更稳
+  ctx.fillStyle="#fff"; ctx.fillRect(x,y,size,size); ctx.fillStyle="#0F1113";
+  for(let r=0;r<n;r++) for(let c=0;c<n;c++) if(qr.isDark(r,c)) ctx.fillRect(x+off+c*cell, y+off+r*cell, cell, cell);
+}
+function roundRect(ctx,x,y,w,h,r){ ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); }
+
+function drawCard(fmt, extra){
+  const ex = (extra||0)/4; // 第二遍把剩余空白分给 4 处间距
+  const sq = fmt==="square", W=1080, H=sq?1080:1350, P=sq?64:72, CW=W-2*P;
+  const r=SHARE.r, o=r.occ, url=shareURL();
+  const cv=document.createElement("canvas"); cv.width=W; cv.height=H;
+  const ctx=cv.getContext("2d"); ctx.textBaseline="alphabetic";
+  ctx.fillStyle=CC.bg; ctx.fillRect(0,0,W,H);
+  stripe(ctx,0,0,W,sq?18:22,CC.amber,CC.amberInk,16);
+  stripe(ctx,0,H-12,W,12,CC.amber,CC.amberInk,16);
+
+  // 标题 + 警报等级
+  let y = sq?112:128;
+  ctx.fillStyle=CC.ink; ctx.font=CF.stencil(900,sq?76:88); ctx.fillText("COUNTDOWN",P,y);
+  const [lvCls,lvTxt]=level(r), [lvBg,lvFg]=LV_COLORS[lvCls];
+  ctx.font=CF.mono(600,sq?22:24); const lw=ctx.measureText(lvTxt).width+36, lh=sq?44:48;
+  ctx.fillStyle=lvBg; roundRect(ctx,W-P-lw,y-lh+6,lw,lh,4); ctx.fill();
+  if(lvCls==="lv-out"){ ctx.strokeStyle=CC.line; ctx.lineWidth=2; ctx.stroke(); }
+  ctx.fillStyle=lvFg; ctx.fillText(lvTxt,W-P-lw+18,y-lh/2+14);
+  y += sq?50:58;
+  ctx.font=CF.body(700,sq?32:38); ctx.fillStyle=CC.ink; ctx.fillText(t("cardTag"),P,y);
+  ctx.fillStyle=CC.red; ctx.fillText(t("cardTagRed"),P+ctx.measureText(t("cardTag")).width,y);
+
+  // 职业名
+  y += (sq?62:84)+ex;
+  ctx.font=CF.mono(500,sq?20:22); ctx.fillStyle=CC.muted; ctx.fillText(("O*NET "+o.code).toUpperCase(),P,y);
+  const main = LANG==="zh" ? (o.zh||o.en) : o.en, sub = LANG==="zh" && o.zh ? o.en : "";
+  const nameSize = sq?52:62;
+  ctx.font=CF.body(700,nameSize); ctx.fillStyle=CC.ink;
+  y = drawLines(ctx, wrapLines(ctx,main,CW,2), P, y+nameSize+10, Math.round(nameSize*1.16));
+  if(sub){ ctx.font=CF.body(400,sq?24:28); ctx.fillStyle=CC.muted; y = drawLines(ctx, wrapLines(ctx,sub,CW,1), P, y+(sq?42:52), 34); }
+
+  // 一句话说明（竖版才有），后面接数码管
+  if(!sq){
+    const thrTxt = state.thr===50?t("half"):t("threeQ");
+    const lead = (r.cap!=null ? t("leadIn",{rel:state.rel,thr:thrTxt,lag:state.lag}) : t("leadOut",{thr:thrTxt,p:pctTxt(r.physShare)})).replace(/<[^>]+>/g,"");
+    ctx.font=CF.body(400,28); ctx.fillStyle=CC.ink;
+    y = drawLines(ctx, wrapLines(ctx,lead,CW,2), P, y+62+ex, 40);
+  }
+
+  // 七段数码管：年 + 天
+  y += (sq?32:34)+(sq?ex:0);
+  const ledH = sq?200:240, digH = sq?126:150;
+  ctx.fillStyle="#0A0B0C"; roundRect(ctx,P,y,CW,ledH,6); ctx.fill(); ctx.strokeStyle=CC.line; ctx.lineWidth=2; ctx.stroke();
+  let yrs="--", days="---", status="";
+  if(r.cap==null){ status=t("cardOut",{thr:state.thr===50?t("half"):t("threeQ")}); }
+  else{
+    const ms=r.adopt-r.now;
+    if(ms<=0){ yrs="00"; days="000"; status=t("cardArrived"); }
+    else{ const yy=Math.floor(ms/MS_YEAR); yrs=String(Math.min(yy,99)).padStart(2,"0"); days=String(Math.floor((ms-yy*MS_YEAR)/864e5)).padStart(3,"0"); if(yy>99) status=t("status99"); }
+  }
+  let x=P+(sq?36:44); const dy=y+(ledH-digH)/2-(status?16:0), gap=digH*0.1;
+  ctx.font=CF.body(700,sq?34:40);
+  for(const ch of yrs) x+=drawDigit(ctx,ch,x,dy,digH)+gap;
+  ctx.fillStyle=CC.muted; ctx.fillText(t("unitY"),x+4,dy+digH-4); x+=ctx.measureText(t("unitY")).width+(sq?44:56);
+  for(const ch of days) x+=drawDigit(ctx,ch,x,dy,digH)+gap;
+  ctx.fillStyle=CC.muted; ctx.fillText(t("unitD"),x+4,dy+digH-4);
+  if(status){ ctx.font=CF.mono(500,sq?20:22); ctx.fillStyle=CC.amber; ctx.fillText(wrapLines(ctx,status,CW-80,1)[0],P+(sq?36:44),y+ledH-24); }
+  y += ledH;
+
+  // 两个日期
+  y += (sq?28:40)+ex;
+  const bw=(CW-20)/2, bh=sq?108:122;
+  const boxes = r.cap==null
+    ? [[t("capLabel"),t("capOut")],[t("adoptLabel"),"—"]]
+    : [[t("capLabel"), r.T===0?t("now"):fmtDate(r.cap)],[t("adoptLabel"), fmtDate(r.adopt)]];
+  boxes.forEach(([lab,val],i)=>{
+    const bx=P+i*(bw+20);
+    ctx.fillStyle=CC.panel2; roundRect(ctx,bx,y,bw,bh,5); ctx.fill();
+    ctx.font=CF.body(400,sq?20:22); ctx.fillStyle=CC.muted; ctx.fillText(wrapLines(ctx,lab,bw-40,1)[0],bx+20,y+(sq?38:42));
+    ctx.font=CF.mono(600,sq?36:42); ctx.fillStyle=CC.ink; ctx.fillText(wrapLines(ctx,val,bw-40,1)[0],bx+20,y+bh-(sq?24:28));
+  });
+  y += bh;
+
+  // 假设
+  const assume = t("cardAssume",{rel:state.rel,d:state.dbl.toFixed(1),m:MESS[state.mess],lag:state.lag,t:state.trustLag});
+  let af=sq?20:22; ctx.font=CF.mono(400,af);
+  while(af>15 && ctx.measureText(assume).width>CW){ af--; ctx.font=CF.mono(400,af); } // 尽量一行放下
+  ctx.fillStyle=CC.muted; const yEnd = drawLines(ctx, wrapLines(ctx,assume,CW,2), P, y+(sq?38:46)+ex, af+8);
+
+  // 底部：二维码 + 号召 + 免责
+  const qs = sq?188:212, qy=H-P-qs+(sq?8:4), qx=W-P-qs;
+  drawQR(ctx,url,qx,qy,qs);
+  const tw = CW-qs-36;
+  ctx.font=CF.body(700,sq?32:36); ctx.fillStyle=CC.ink;
+  let by = drawLines(ctx, wrapLines(ctx,t("cardCta"),tw,2), P, qy+(sq?34:40), sq?42:46);
+  ctx.font=CF.mono(500,sq?20:22); ctx.fillStyle=CC.amber;
+  by = drawLines(ctx, [url.replace(/^https?:\/\//,"").replace(/[?#].*$/,"").replace(/\/$/,"")], P, by+(sq?42:48), 30);
+  ctx.font=CF.body(400,sq?18:19); ctx.fillStyle=CC.muted;
+  drawLines(ctx, wrapLines(ctx,t("cardDisc"),tw,3), P, by+(sq?44:50), sq?26:28);
+  return {cv, free: qy-(sq?56:64)-yEnd};
+}
+
+async function renderCard(){
+  note("dlg-note", t("imgRendering"));
+  $("share-img").removeAttribute("src");
+  try{
+    await loadFonts();
+    let res=drawCard(SHARE.fmt, 0);
+    if(res.free>8) res=drawCard(SHARE.fmt, Math.min(res.free, 280));
+    const cv=res.cv;
+    const blob = await new Promise((ok,fail)=>cv.toBlob(b=>b?ok(b):fail(new Error("toBlob")),"image/png"));
+    if(SHARE.url) URL.revokeObjectURL(SHARE.url);
+    SHARE.blob=blob; SHARE.url=URL.createObjectURL(blob);
+    const img=$("share-img"); img.src=SHARE.url; img.alt=SHARE.text;
+    const file = new File([blob], cardName(), {type:"image/png"});
+    $("img-share-btn").hidden = !(navigator.canShare && navigator.canShare({files:[file]}));
+    note("dlg-note","");
+  }catch(e){ note("dlg-note", t("imgFail",{e:e.message})); }
+}
+const cardName = () => "ai-countdown-"+state.occ+"-"+LANG+"-"+(SHARE.fmt==="square"?"1x1":"4x5")+".png";
+function setFmt(f){ SHARE.fmt=f; document.querySelectorAll("#fmt-group button").forEach(b=>b.setAttribute("aria-pressed", b.dataset.f===f?"true":"false")); }
+$("img-btn").addEventListener("click",()=>{
+  if(!SHARE.r) return;
+  const dlg=$("share-dlg");
+  if(dlg.showModal) dlg.showModal(); else dlg.setAttribute("open","");
+  renderCard();
+});
+$("fmt-group").addEventListener("click",e=>{ const b=e.target.closest("button"); if(!b||b.dataset.f===SHARE.fmt) return; setFmt(b.dataset.f); renderCard(); });
+$("dlg-close").addEventListener("click",()=>{ const d=$("share-dlg"); d.close ? d.close() : d.removeAttribute("open"); });
+$("share-dlg").addEventListener("click",e=>{ if(e.target===$("share-dlg")) $("share-dlg").close(); }); // 点背景关闭
+$("dl-btn").addEventListener("click",()=>{
+  if(!SHARE.url) return;
+  const a=document.createElement("a"); a.href=SHARE.url; a.download=cardName(); document.body.appendChild(a); a.click(); a.remove();
+});
+$("img-share-btn").addEventListener("click",()=>{
+  if(!SHARE.blob) return;
+  navigator.share({files:[new File([SHARE.blob],cardName(),{type:"image/png"})], text:SHARE.text+" "+shareURL()}).catch(()=>{});
+});
+
+function loadNews(){
+  fetch("news.json",{cache:"no-cache"}).then(r=>{ if(!r.ok) throw new Error(r.status); return r.json(); })
+    .then(d=>{ NEWSDB = {updated:d.updated||"", fields:d.fields||{}, items:d.items||[]}; if(OCC.length){ buildTicker(); renderNews(); } })
+    .catch(()=>{}); // 没有新闻也不影响倒计时
+}
+loadNews();
 fetch("occupations.json").then(r=>{ if(!r.ok) throw new Error(r.status); return r.json(); }).then(init)
   .catch(err=>{ $("hero-lead").textContent=t("loadFail",{e:err.message}); });
 </script>

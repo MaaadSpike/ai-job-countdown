@@ -67,13 +67,14 @@ These 51 tasks were used to tune the prompt, so they are a development set. The 
 
 ## Website
 
-A static site: one HTML file and one JSON data file (`web/occupations.json`, about 2 MB). No backend; all calculations run in the browser.
+A static site: one HTML file and two JSON data files (`web/occupations.json`, about 2 MB, and `web/news.json`). No backend; all calculations run in the browser.
 
 - **Search** in Chinese or English, with Chinese names for all 876 occupations and extra aliases for about 120 common ones.
 - **Seven-segment countdown** to the "in practice" date, with "AI capable" and "in practice" dates, plus the range across METR's doubling-time fits.
 - **Assumption controls**: reliability (50% or 80%), doubling time, real-world difficulty factor, adoption lag, extra lag for trust-based tasks, and the threshold (half or three quarters of work time).
 - **Task timeline**: each task's capability date and adoption lag. On-site tasks are marked as not covered by the trend.
-- **Evidence**: each "AI progress" news item is paired with a "reality check".
+- **Field news**: AI news for the occupation's field (one of 22 SOC major groups), each item marked "AI progress" or "reality check". Hand-picked items for a few occupations sit on top; the rest is collected daily by `news/collect.py` (see below).
+- **Sharing**: a share image drawn in the browser (portrait 4:5 or square 1:1, Chinese or English) with a QR code back to the same occupation and assumptions; LinkedIn, X, the phone's share sheet, copy link and copy text. Links carry the assumptions (`?lang=en&d=2.9&k=8#15-1252.00`), so a shared link shows the same numbers.
 - **Bilingual**: Chinese and English. The language follows `?lang=zh|en`, then the last choice, then the browser language.
 
 ## Repository layout
@@ -83,7 +84,8 @@ A static site: one HTML file and one JSON data file (`web/occupations.json`, abo
 | `annotate/` | Streamlit labeling tool, guidelines, agreement metrics |
 | `estimate/` | vLLM batch inference, prompt, evaluation against labels |
 | `forecast/` | METR trend fitting, backtests, countdown algorithm |
-| `web/` | Website, data build script, time-share formula |
+| `web/` | Website, data build script, time-share formula, `news.json`, QR library (`vendor/`) |
+| `news/` | Field definitions and search terms, hand-picked news, daily news collector |
 | `tests/` | pytest suite |
 | `docs/` | Design doc (English and Chinese) |
 | `data/`, `runs/` | Third-party data and model outputs; not committed |
@@ -107,6 +109,12 @@ cd ../web
 python build_data.py                     # our time shares (default)
 python build_data.py --shares stanford   # comparison: Hatgis-Kessell et al.'s time shares
 python -m http.server 8000               # open http://localhost:8000
+
+# 4. News (optional; a GitHub Action runs this daily)
+cd ..
+python news/collect.py -v                # Google News RSS per field → web/news.json
+# With NEWS_LLM_API_KEY set (any OpenAI-compatible API; NEWS_LLM_BASE_URL / NEWS_LLM_MODEL),
+# an LLM filters, classifies and translates the headlines; without it, keyword rules keep English headlines.
 ```
 
 **Labeling.** See [`annotate/README.md`](annotate/README.md) and [`annotate/GUIDELINES.md`](annotate/GUIDELINES.md). Each annotator runs `streamlit run label_app.py` on their own computer and sends their `labels_<name>.csv` directly. Labels are not committed, so annotators stay independent.
@@ -118,10 +126,11 @@ pip install -r requirements-dev.txt
 pytest -q
 ```
 
-The tests cover prompt parsing, an end-to-end run with a mock backend (including resuming), the countdown algorithm, the time-share formula, and the website data schema.
+The tests cover prompt parsing, an end-to-end run with a mock backend (including resuming), the countdown algorithm, the time-share formula, the news collector (RSS parsing, filtering, merging; offline), and the website data schemas.
 
 - `.github/workflows/ci.yml` runs lint and tests on every push and pull request.
 - `.github/workflows/deploy.yml` deploys `web/` to Cloudflare Pages. For now it only runs when triggered by hand.
+- `.github/workflows/news.yml` collects news every day and commits `web/news.json` when it changes. Set the repository secret `NEWS_LLM_API_KEY` for Chinese translations; set the variable `NEWS_AUTO_DEPLOY=true` after launch to redeploy when news changes.
 
 ## Limitations
 

@@ -67,13 +67,14 @@ METR 时间跨度趋势（forecast/）──────────────
 
 ## 网站
 
-静态网站：一个 HTML 文件加一个数据文件（`web/occupations.json`，约 2 MB），没有后端，所有计算都在浏览器里完成。
+静态网站：一个 HTML 文件加两个数据文件（`web/occupations.json` 约 2 MB，`web/news.json`），没有后端，所有计算都在浏览器里完成。
 
 - **搜索**：支持中英文；876 个职业都有中文名，约 120 个常见职业另有别名（比如「程序员」「码农」）。
 - **七段数码管倒计时**：倒数到「实际落地」；同时显示「能力到位」和「实际落地」两个日期，以及按 METR 不同翻倍周期算出的区间。
 - **假设控制**：可靠度（50% 或 80%）、翻倍周期、真实工作难度折扣、落地期、人际信任类任务的额外落地期，以及倒计时对应的比例（一半或四分之三工作时间）。
 - **任务时间线**：每项任务的能力到位时间和落地期；需要现场操作的任务标为「趋势线不覆盖」。
-- **证据**：每条「AI 进展」新闻都配一条「现实检验」。
+- **领域动态**：按职业所属领域（22 个 SOC 大类）显示 AI 新闻，每条标明是「AI 进展」还是「现实检验」。少数职业有人工挑选的新闻置顶，其余由 `news/collect.py` 每天自动抓取（见下文）。
+- **分享**：浏览器里画分享图（竖版 4:5 或方形 1:1，中英文），二维码打开同一个职业和同一组假设；另有 LinkedIn、X、手机系统分享、复制链接和复制文案。链接里带着假设（`?lang=zh&d=2.9&k=8#15-1252.00`），别人打开看到的是同一组数字。
 - **中英双语**：语言按 `?lang=zh|en`、上次的选择、浏览器语言的顺序决定。
 
 ## 仓库结构
@@ -83,7 +84,8 @@ METR 时间跨度趋势（forecast/）──────────────
 | `annotate/` | Streamlit 标注工具、标注规则、一致性计算 |
 | `estimate/` | vLLM 批量推理、prompt、与人工标注的对比评估 |
 | `forecast/` | METR 趋势拟合、回测、倒计时算法 |
-| `web/` | 网站、生成网站数据的脚本、时间占比公式 |
+| `web/` | 网站、生成网站数据的脚本、时间占比公式、`news.json`、二维码库（`vendor/`） |
+| `news/` | 领域划分和搜索词、人工挑选的新闻、每日新闻抓取脚本 |
 | `tests/` | pytest 测试 |
 | `docs/` | 设计文档（中英文） |
 | `data/`、`runs/` | 第三方数据和模型输出，不提交到仓库 |
@@ -107,6 +109,12 @@ cd ../web
 python build_data.py                     # 用我们的时间占比（默认）
 python build_data.py --shares stanford   # 对照：用 Hatgis-Kessell et al. 的时间占比
 python -m http.server 8000               # 打开 http://localhost:8000
+
+# 4. 新闻（可选；GitHub Action 每天自动跑）
+cd ..
+python news/collect.py -v                # 按领域抓 Google News RSS → web/news.json
+# 设了 NEWS_LLM_API_KEY（任何 OpenAI 兼容接口，另有 NEWS_LLM_BASE_URL / NEWS_LLM_MODEL）就用 LLM 筛选、分类并翻译成中文；
+# 不设就用关键词规则，只保留英文标题
 ```
 
 **标注。** 见 [`annotate/README.md`](annotate/README.md) 和 [`annotate/GUIDELINES.md`](annotate/GUIDELINES.md)。每位标注者在自己电脑上运行 `streamlit run label_app.py`，标完把 `labels_<名字>.csv` 直接发给对方。标注结果不提交到仓库，保证标注者之间互相独立。
@@ -118,10 +126,11 @@ pip install -r requirements-dev.txt
 pytest -q
 ```
 
-测试覆盖 prompt 解析、用 mock 后端端到端跑通估计流程（包括断点续跑）、倒计时算法、时间占比公式和网站数据格式。
+测试覆盖 prompt 解析、用 mock 后端端到端跑通估计流程（包括断点续跑）、倒计时算法、时间占比公式、新闻抓取（RSS 解析、筛选、合并，不联网）和网站数据格式。
 
 - `.github/workflows/ci.yml`：每次 push 和 PR 自动运行 lint 和测试。
 - `.github/workflows/deploy.yml`：把 `web/` 部署到 Cloudflare Pages，目前只能手动触发。
+- `.github/workflows/news.yml`：每天抓一次新闻，`web/news.json` 有变化就提交。仓库 Secret 里设 `NEWS_LLM_API_KEY` 才有中文标题；上线后把变量 `NEWS_AUTO_DEPLOY` 设为 `true`，新闻更新时会自动重新部署。
 
 ## 局限
 

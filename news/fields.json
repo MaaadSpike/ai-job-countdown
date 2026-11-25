@@ -1,0 +1,28 @@
+{
+  "_comment": "按 SOC 大类（O*NET 代码前两位）划分领域。terms 拼成 Google News 搜索词：(AI 词) (领域词1 OR 领域词2 ...)。改这里就能调整每个领域抓什么。",
+  "ai_terms": ["AI", "\"artificial intelligence\"", "LLM", "\"AI agent\"", "robot", "humanoid"],
+  "fields": {
+    "11": {"zh": "管理", "en": "Management", "terms": ["executives", "managers", "\"middle management\"", "\"operations management\"", "\"project management\""]},
+    "13": {"zh": "商业与金融", "en": "Business & finance", "terms": ["accounting", "accountants", "auditing", "\"financial analysts\"", "underwriting", "actuaries", "\"tax preparation\"", "\"investment banking\""]},
+    "15": {"zh": "计算机与数学", "en": "Computer & math", "terms": ["\"software engineering\"", "coding", "programmers", "\"software developers\"", "mathematics", "mathematicians", "\"data science\"", "cybersecurity"]},
+    "17": {"zh": "建筑与工程", "en": "Architecture & engineering", "terms": ["engineers", "\"engineering design\"", "\"chip design\"", "architects", "CAD", "\"civil engineering\""]},
+    "19": {"zh": "科学研究", "en": "Science", "terms": ["\"scientific discovery\"", "biology", "chemistry", "physics", "\"drug discovery\"", "protein", "\"materials science\"", "economists"]},
+    "21": {"zh": "社区与社会服务", "en": "Community & social service", "terms": ["therapists", "counseling", "\"social workers\"", "\"mental health\""]},
+    "23": {"zh": "法律", "en": "Legal", "terms": ["lawyers", "\"law firms\"", "paralegals", "\"legal research\"", "courts", "judges"]},
+    "25": {"zh": "教育与图书馆", "en": "Education & libraries", "terms": ["teachers", "tutoring", "classroom", "grading", "librarians"]},
+    "27": {"zh": "艺术、设计与传媒", "en": "Arts, design & media", "terms": ["designers", "artists", "journalists", "journalism", "illustrators", "translators", "translation", "\"video editing\"", "writers"]},
+    "29": {"zh": "医疗专业人员", "en": "Healthcare practitioners", "terms": ["doctors", "physicians", "radiology", "diagnosis", "nurses", "pharmacists", "clinicians", "surgery"]},
+    "31": {"zh": "医疗辅助", "en": "Healthcare support", "terms": ["\"medical assistants\"", "\"home health\"", "caregivers", "\"medical scribes\"", "\"nursing assistants\""]},
+    "33": {"zh": "安保与公共安全", "en": "Protective service", "terms": ["police", "\"security guards\"", "firefighters", "surveillance"]},
+    "35": {"zh": "餐饮服务", "en": "Food service", "terms": ["restaurants", "chefs", "\"fast food\"", "kitchen", "\"food service\""]},
+    "37": {"zh": "清洁与园林维护", "en": "Cleaning & grounds", "terms": ["janitorial", "\"cleaning robot\"", "landscaping", "housekeeping"]},
+    "39": {"zh": "个人护理与服务", "en": "Personal care & service", "terms": ["hairdressers", "\"child care\"", "\"elder care\"", "\"personal trainers\""]},
+    "41": {"zh": "销售", "en": "Sales", "terms": ["salespeople", "\"sales reps\"", "retail", "\"real estate agents\"", "telemarketing"]},
+    "43": {"zh": "行政与办公", "en": "Office & admin", "terms": ["\"customer service\"", "\"call center\"", "\"data entry\"", "\"administrative assistants\"", "receptionists", "\"back office\""]},
+    "45": {"zh": "农林渔", "en": "Farming, fishing & forestry", "terms": ["farming", "agriculture", "farmers", "harvesting"]},
+    "47": {"zh": "建筑施工", "en": "Construction", "terms": ["construction", "electricians", "plumbers", "\"construction site\""]},
+    "49": {"zh": "安装与维修", "en": "Installation & repair", "terms": ["mechanics", "\"maintenance technicians\"", "\"predictive maintenance\"", "\"repair technicians\""]},
+    "51": {"zh": "生产制造", "en": "Production", "terms": ["manufacturing", "factory", "\"factory workers\"", "welding", "\"assembly line\""]},
+    "53": {"zh": "交通运输与物流", "en": "Transportation & logistics", "terms": ["\"truck drivers\"", "\"self-driving\"", "\"autonomous trucks\"", "robotaxi", "warehouse", "logistics"]}
+  }
+}

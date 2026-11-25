@@ -1,0 +1,294 @@
+{
+ "updated": "2026-11-25T21:10Z",
+ "fields": {
+  "11": {
+   "zh": "管理",
+   "en": "Management"
+  },
+  "13": {
+   "zh": "商业与金融",
+   "en": "Business & finance"
+  },
+  "15": {
+   "zh": "计算机与数学",
+   "en": "Computer & math"
+  },
+  "17": {
+   "zh": "建筑与工程",
+   "en": "Architecture & engineering"
+  },
+  "19": {
+   "zh": "科学研究",
+   "en": "Science"
+  },
+  "21": {
+   "zh": "社区与社会服务",
+   "en": "Community & social service"
+  },
+  "23": {
+   "zh": "法律",
+   "en": "Legal"
+  },
+  "25": {
+   "zh": "教育与图书馆",
+   "en": "Education & libraries"
+  },
+  "27": {
+   "zh": "艺术、设计与传媒",
+   "en": "Arts, design & media"
+  },
+  "29": {
+   "zh": "医疗专业人员",
+   "en": "Healthcare practitioners"
+  },
+  "31": {
+   "zh": "医疗辅助",
+   "en": "Healthcare support"
+  },
+  "33": {
+   "zh": "安保与公共安全",
+   "en": "Protective service"
+  },
+  "35": {
+   "zh": "餐饮服务",
+   "en": "Food service"
+  },
+  "37": {
+   "zh": "清洁与园林维护",
+   "en": "Cleaning & grounds"
+  },
+  "39": {
+   "zh": "个人护理与服务",
+   "en": "Personal care & service"
+  },
+  "41": {
+   "zh": "销售",
+   "en": "Sales"
+  },
+  "43": {
+   "zh": "行政与办公",
+   "en": "Office & admin"
+  },
+  "45": {
+   "zh": "农林渔",
+   "en": "Farming, fishing & forestry"
+  },
+  "47": {
+   "zh": "建筑施工",
+   "en": "Construction"
+  },
+  "49": {
+   "zh": "安装与维修",
+   "en": "Installation & repair"
+  },
+  "51": {
+   "zh": "生产制造",
+   "en": "Production"
+  },
+  "53": {
+   "zh": "交通运输与物流",
+   "en": "Transportation & logistics"
+  }
+ },
+ "items": [
+  {
+   "id": "7c8d18eb7d2c",
+   "k": "check",
+   "date": "2026-09",
+   "src": "ThePrint",
+   "url": "https://theprint.in/science/did-claude-discover-a-new-enzyme-or-stole-a-biologists-work-anthropic-responds/3057122/",
+   "fields": [
+    "19"
+   ],
+   "occ": [
+    "Bioinformatics Scientists"
+   ],
+   "curated": true,
+   "zh": {
+    "t": "功能还没确定，哥本哈根的团队说他们一年前就发现了它",
+    "p": "这个系统还没有湿实验验证。哥本哈根大学一位生物学家称其团队约一年前已发现该酶，用过 Claude，只是尚未发表；Anthropic 否认用用户对话训练。"
+   },
+   "en": {
+    "t": "Its function is unconfirmed, and a Copenhagen team says it found the system a year earlier",
+    "p": "The system has not been validated in the wet lab. A University of Copenhagen biologist says her team found the enzyme about a year ago, had used Claude, and had not yet published; Anthropic denies training on user conversations."
+   }
+  },
+  {
+   "id": "54f342e0eaf7",
+   "k": "signal",
+   "date": "2026-09",
+   "src": "Al Jazeera",
+   "url": "https://www.aljazeera.com/news/2026/9/24/ai-model-claude-discovers-crispr-like-enzyme-system-anthropic-says",
+   "fields": [
+    "19"
+   ],
+   "occ": [
+    "Bioinformatics Scientists"
+   ],
+   "curated": true,
+   "zh": {
+    "t": "Anthropic 称 Claude 在 DNA 数据库里自主找到一个类 CRISPR 的酶系统",
+    "p": "Claude 检索了 21 小时，研究人员只给了高层方向；这个系统被命名为 ART，可能是一种新的基因编辑机制。"
+   },
+   "en": {
+    "t": "Anthropic says Claude independently found a CRISPR-like enzyme system in DNA databases",
+    "p": "Claude searched for 21 hours with only high-level direction from researchers. The system, named ART, may be a new gene-editing mechanism."
+   }
+  },
+  {
+   "id": "c4452b63cf31",
+   "k": "check",
+   "date": "2026-06",
+   "src": "Lawyer Monthly",
+   "url": "https://www.lawyer-monthly.com/2026/06/judge-aycock-ai-hallucinations-sanctions-mississippi-2026/",
+   "fields": [
+    "23"
+   ],
+   "occ": [
+    "Paralegals and Legal Assistants",
+    "Lawyers"
+   ],
+   "curated": true,
+   "zh": {
+    "t": "美国联邦法院同时处罚原被告双方律师：文书引用了 AI 编造的判例",
+    "p": "密西西比北区法院对 4 名律师罚款，其中两人被禁止在该法院执业两年，原定的庭审也被取消。"
+   },
+   "en": {
+    "t": "A US federal court sanctioned lawyers on both sides for citing AI-fabricated cases",
+    "p": "The Northern District of Mississippi fined four lawyers, barred two from practicing before the court for two years, and cancelled the scheduled trial."
+   }
+  },
+  {
+   "id": "f31b1b5c6f10",
+   "k": "signal",
+   "date": "2026-05",
+   "src": "eWeek",
+   "url": "https://www.eweek.com/news/openai-ai-erdos-geometry-conjecture/",
+   "fields": [
+    "15"
+   ],
+   "occ": [
+    "Mathematicians"
+   ],
+   "curated": true,
+   "zh": {
+    "t": "OpenAI 称其通用推理模型推翻了 Erdős 一个 80 年的几何猜想",
+    "p": "问题关于平面上等距点对的数量；OpenAI 称外部数学家审核了证明，这个模型并非专为数学训练。"
+   },
+   "en": {
+    "t": "OpenAI says its general reasoning model disproved an 80-year-old Erdős geometry conjecture",
+    "p": "The problem concerns the number of unit-distance pairs in the plane. OpenAI says outside mathematicians checked the proof and that the model was not trained specifically for math."
+   }
+  },
+  {
+   "id": "b86bce9e37ae",
+   "k": "check",
+   "date": "2026-05",
+   "src": "INESC TEC",
+   "url": "https://bip.inesctec.pt/en/inesctecwatch/does-artificial-intelligence-finally-understand-mathematics-openai-believes-so-but-doubts-remain-over-both-the-result-and-the-conduct/",
+   "fields": [
+    "15"
+   ],
+   "occ": [
+    "Mathematicians"
+   ],
+   "curated": true,
+   "zh": {
+    "t": "推翻的是「上界已最优」的猜想，正确的界仍然未知",
+    "p": "构造用到的思路文献里已有，Princeton 的 Will Sawin 很快改进了它。2025 年 10 月 OpenAI 还曾把文献里已有的 Erdős 解答当成新成果。"
+   },
+   "en": {
+    "t": "It disproved that the known upper bound is optimal; the correct bound is still unknown",
+    "p": "The construction builds on ideas already in the literature, and Princeton's Will Sawin quickly improved it. In October 2025 OpenAI had also presented existing Erdős solutions as new results."
+   }
+  },
+  {
+   "id": "bcd791931f6f",
+   "k": "signal",
+   "date": "2026-01",
+   "src": "Wikipedia · METR",
+   "url": "https://en.wikipedia.org/wiki/METR",
+   "fields": [
+    "15"
+   ],
+   "occ": [
+    "Software Developers"
+   ],
+   "curated": true,
+   "zh": {
+    "t": "AI agent 能独立完成的任务长度，2023 年后约每 4.3 个月翻一倍",
+    "p": "METR 用人类专家完成任务的时长衡量 AI 能力；2026 年 1 月的更新显示进展在加速。这正是本页倒计时用的曲线。"
+   },
+   "en": {
+    "t": "The length of tasks AI agents can complete alone has doubled about every 4.3 months since 2023",
+    "p": "METR measures AI capability by how long the tasks take human experts. Its January 2026 update shows progress speeding up. This is the curve this page uses."
+   }
+  },
+  {
+   "id": "6f63914712e8",
+   "k": "check",
+   "date": "2025-07",
+   "src": "DX · METR",
+   "url": "https://getdx.com/blog/metr-study-on-how-ai-affects-developer-productivity/",
+   "fields": [
+    "15"
+   ],
+   "occ": [
+    "Software Developers"
+   ],
+   "curated": true,
+   "zh": {
+    "t": "随机对照实验：资深开发者用 AI 工具后反而慢了 19%",
+    "p": "16 位资深开源开发者在自己的仓库里做真实任务；他们事前以为会快 24%，事后仍以为快了 20%。"
+   },
+   "en": {
+    "t": "Randomized trial: experienced developers were 19% slower with AI tools",
+    "p": "16 experienced open-source developers worked on real tasks in their own repositories. Beforehand they expected to be 24% faster; afterwards they still believed they had been 20% faster."
+   }
+  },
+  {
+   "id": "a2108f6bf726",
+   "k": "check",
+   "date": "2025-05",
+   "src": "Tech.co",
+   "url": "https://tech.co/news/klarna-reverses-ai-overhaul",
+   "fields": [
+    "43"
+   ],
+   "occ": [
+    "Customer Service Representatives"
+   ],
+   "curated": true,
+   "zh": {
+    "t": "服务质量下滑后，Klarna 重新招聘人工客服",
+    "p": "CEO 承认之前偏重 AI 的做法不对，客户往往更想和人沟通，现在改成 AI 加人工的双轨模式。"
+   },
+   "en": {
+    "t": "After service quality fell, Klarna is hiring human agents again",
+    "p": "The CEO admitted the AI-heavy approach went too far; customers often prefer a person, so Klarna now runs AI and human support side by side."
+   }
+  },
+  {
+   "id": "42fcc8aa320c",
+   "k": "signal",
+   "date": "2024-02",
+   "src": "Tech.co",
+   "url": "https://tech.co/news/klarna-reverses-ai-overhaul",
+   "fields": [
+    "43"
+   ],
+   "occ": [
+    "Customer Service Representatives"
+   ],
+   "curated": true,
+   "zh": {
+    "t": "Klarna 称 AI 助手承担了 700 人的工作量",
+    "p": "高峰时 AI 处理了约 75% 的客服对话，覆盖 35 种以上语言。"
+   },
+   "en": {
+    "t": "Klarna says its AI assistant does the work of 700 people",
+    "p": "At its peak, the AI handled about 75% of customer service chats in more than 35 languages."
+   }
+  }
+ ]
+}

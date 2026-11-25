@@ -2,7 +2,7 @@
 
 **English** | [中文](DESIGN.zh-CN.md)
 
-Last updated: 2026-10-19 · Spike
+Last updated: 2026-11-25 · Spike
 
 ## Background and goals
 
@@ -24,7 +24,7 @@ v1 is a static website: type in an occupation and get a countdown to when AI age
 
 - Predicting whether an occupation will disappear, or how employment will change
 - Adjusting by region (the region selector is shown but does not affect the calculation)
-- User accounts, a backend, or live news collection
+- User accounts or a backend (news is collected on a daily schedule into a static JSON file, so no backend is needed)
 - Translating the 17,517 task statements (they stay in O\*NET's original English)
 
 ## System overview
@@ -142,7 +142,7 @@ D is the doubling time in months, h is hours per instance, k is the real-world d
 
 ## Website design
 
-Fully static: one `index.html` (about 60 KB, styles and script inline) plus one `occupations.json` (about 2 MB). No backend and no build step.
+Fully static: one `index.html` (about 80 KB, styles and script inline), one `occupations.json` (about 2 MB), one `news.json`, and a QR library `vendor/qrcode.min.js` (qrcode-generator, MIT, about 20 KB). No backend and no build step.
 
 **Look.** A dark "industrial alarm console": a hazard stripe and a scrolling news ticker on top, and a red seven-segment countdown as the main display (years / days / hh:mm:ss.cs). Alert levels: red within 2 years, orange within 5, yellow beyond 5, grey when off the curve.
 
@@ -150,9 +150,9 @@ Fully static: one `index.html` (about 60 KB, styles and script inline) plus one 
 
 1. Search box, region selector, and 12 shortcut buttons for common occupations
 2. Countdown panel: occupation, alert level, seven-segment display, "AI capable" and "in practice" dates, doubling-time range
-3. Assumptions panel (six controls) beside the evidence panel (each "AI progress" item paired with a "reality check")
+3. Assumptions panel (six controls) beside field news (hand-picked news for the occupation on top, then news for its field)
 4. Task timeline: one row per task on a 0–10 year axis, with the capability point and adoption-lag bar; 12 tasks shown, expandable
-5. Share text and copy button
+5. Sharing: text, share image, LinkedIn, X, system share, copy link
 6. Method and "what this number does not tell you"
 
 **Search.** All 876 occupations have Chinese and English names, and 116 common ones have extra aliases ("程序员", "码农"). Chinese input prefers the name that contains the input with the fewest extra characters; English input is scored by word overlap. The occupation lives in the URL hash (`#13-2011.00`), so it can be linked directly.
@@ -160,6 +160,41 @@ Fully static: one `index.html` (about 60 KB, styles and script inline) plus one 
 **Bilingual.** All interface text sits in one `STR` dictionary, and static elements are swapped via `data-i18n` attributes. Language order: the `?lang=` parameter → the last choice (localStorage) → browser language. Switching keeps the current occupation and assumptions. Task statements stay in O\*NET's English.
 
 **Performance and accessibility.** The first load fetches one 2 MB JSON; all computation is client-side. Respects prefers-reduced-motion (no ticker scroll, no centiseconds); no horizontal overflow at 390 px. All output files are written as UTF-8 (fixes a GBK mojibake bug on Windows).
+
+## Field news
+
+v1 news covered only 5 occupations and was hard-coded in `index.html`. It is now collected by **field**: the first two digits of an O\*NET code are the SOC major group (15 computer and math, 23 legal, 29 healthcare practitioners, and so on; 22 in all), and each occupation shows its field's news, so all 876 occupations have an evidence panel.
+
+```
+news/fields.json  (names and search terms for 22 fields)
+       │
+       ▼
+news/collect.py ── Google News RSS, one query per field: (AI terms) (field terms…) when:14d
+       │            ├─ with NEWS_LLM_API_KEY: an LLM selects strictly, labels "AI progress / reality check", translates to Chinese
+       │            └─ without: keyword rules (AI term and field term in the headline, no stock or funding news), English headlines only
+       │  + news/curated.json (hand-picked, with occupations and longer summaries, merged as is on every run)
+       ▼
+web/news.json ── merged with the previous run and deduplicated (a story found in several fields keeps all of them), at most 12 per field, automatic items kept 180 days
+       │
+       ▼
+index.html ── evidence panel: "This occupation" (hand-picked, progress first) + "Field news" (5, expandable); the top ticker shows the latest 24 across the site
+```
+
+- **Schedule**: `.github/workflows/news.yml` runs daily at 14:17 UTC and commits `news.json` only when it changed. Commits made with `GITHUB_TOKEN` do not trigger other workflows, so after launch set the variable `NEWS_AUTO_DEPLOY=true` to deploy from the same workflow
+- **LLM API**: any OpenAI-compatible API (OpenAI, DeepSeek, Qwen, or our own `vllm serve`), called with the standard library's urllib, no new dependency. The prompt keeps only concrete capability advances or concrete evidence of limits, drops funding, stock and opinion pieces, and forbids adding facts that are not in the headline
+- **Headlines and links only**: automatic items store the headline (and translation), source, date and link, not article text
+- **Why not fetch live in the browser**: Google News does not allow cross-origin requests, and a static site has nowhere to keep an API key; once a day is enough for this kind of news
+
+**`news.json` format**
+
+```
+{"updated": "2026-11-25T14:17Z",
+ "fields": {"15": {"zh": "计算机与数学", "en": "Computer & math"}, ...},
+ "items": [{"id", "k": "signal" | "check", "date", "src", "url", "fields": ["15"],
+            "occ": ["Mathematicians"],            // hand-picked items only
+            "curated": true,                       // same
+            "zh": {"t", "p"}, "en": {"t", "p"}}]}  // automatic items have only t; no zh without an LLM
+```
 
 ## Sharing
 
@@ -174,10 +209,15 @@ The core of v1 sharing is a saveable share image, because only LinkedIn and X ca
 
 **v1 scope**
 
-- Share image drawn in the browser with canvas, portrait 1080×1350 and square 1080×1080, Chinese or English; shows the occupation, countdown, "AI capable" date, the assumptions used, and a QR code to the URL
-- System share via `navigator.share` (the phone's share sheet, including WeChat and WhatsApp); desktop falls back to copying the link
-- LinkedIn / X buttons and copy link
-- Shared links carry the occupation and language (already supported: `?lang=en#13-2011.00`)
+Implemented in v1:
+
+- Share image drawn in the browser with canvas, portrait 1080×1350 and square 1080×1080, in the page language; shows the occupation, alert level, a seven-segment countdown (years / days), both dates, the assumptions used, a QR code and a disclaimer. The digits reuse the page's `SEG` polygons; drawing waits for `document.fonts`. QR modules are drawn on whole pixels so they scan reliably
+- Preview dialog: the image is an `<img>`, so phones can long-press to save it (the only way inside WeChat's browser); "Save image" downloads a PNG; phones that support `navigator.canShare({files})` get a "Share image" button that sends it straight to the LinkedIn or WeChat app
+- System share via `navigator.share` (the phone's share sheet); hidden where unsupported
+- LinkedIn: `share-offsite` accepts only a URL, so the button first copies the text to the clipboard and tells the user to paste it; X: `intent/tweet` with text and URL
+- Links carry the occupation, language and every non-default assumption: `?lang=en&r=50&d=2.9&k=8&l=1&t=5&p=75#15-1252.00` (r reliability, d doubling time, k difficulty factor, l adoption lag, t extra lag for trust tasks, p threshold), validated and restored on load. Defaults are left out to keep the QR code small
+- When previewing locally (localhost, LAN addresses, file://), links and QR codes use `SITE_URL` (`https://ai-job-countdown.pages.dev/`; change it to the real domain at launch)
+- Generic link preview: `og.png` (1200×630) plus Open Graph / Twitter Card tags
 
 **v2 scope**
 
@@ -189,7 +229,7 @@ The core of v1 sharing is a saveable share image, because only LinkedIn and X ca
 
 ## Engineering
 
-Repo `MaaadSpike/ai-job-countdown` (private). Every push runs lint and 11 tests; deployment to Cloudflare Pages is manual for now.
+Repo `MaaadSpike/ai-job-countdown` (private). Every push runs lint and 19 tests; a daily workflow updates the news; deployment to Cloudflare Pages is manual for now.
 
 | Directory | Contents |
 | --- | --- |
@@ -224,11 +264,11 @@ The largest uncertainty is the difficulty factor k: each ×4 delays the countdow
 | Task types misclassified (supervising staff, in-person care) | Occupations such as nurses end up on the curve | Add a labeling rule; show the type so users can see it |
 | One annotator, whose labels were also used for tuning | Accuracy is optimistic | Second annotator on 30 items + a held-out set of 50 |
 | Users read "AI can do it" as "I will be replaced" | Anxiety or backlash | Show the two dates separately; keep "what this number does not tell you" on the page |
-| News covers only 5 hand-picked occupations | No evidence panel for the rest | v2 collects and pairs news automatically |
+| Automatic news is filtered by headline and may include off-topic or overstated stories | Uneven quality of field news | Strict LLM filter when configured; hand-picked news on top; every item links to the source |
 
 ## Roadmap
 
-v1 still needs sharing, a second annotator and deployment; v2 centers on calibrating the difficulty factor and on link previews.
+v1 still needs a second annotator and deployment; v2 centers on calibrating the difficulty factor and on link previews.
 
 **v1 launch checklist**
 
@@ -237,7 +277,8 @@ v1 still needs sharing, a second annotator and deployment; v2 centers on calibra
 - [x] O\*NET-based time shares; the website no longer depends on Hatgis-Kessell et al.
 - [x] Bilingual website and README; Chinese names for all 876 occupations
 - [x] pytest + GitHub Actions CI
-- [ ] Share image, system share, LinkedIn / X buttons
+- [x] Share image (with QR code), system share, LinkedIn / X buttons; links carry the assumptions
+- [x] Field news: collected daily for 22 fields, hand-picked items on top
 - [ ] Second annotator labels items 1–30; compute inter-annotator agreement
 - [ ] Label items 51–100 as a held-out test set; update accuracy in the README and method
 - [ ] Deploy to Cloudflare Pages: set secrets, take `occupations.json` out of `.gitignore`
@@ -249,7 +290,7 @@ v1 still needs sharing, a second annotator and deployment; v2 centers on calibra
 2. Link previews: real paths + 876 Open Graph images rendered at build time
 3. Translate the 17,517 task statements with vLLM
 4. Distillation: train a small model on the current results to split and estimate any occupation a user types, in real time
-5. Automatic news collection and pairing; regional employment by occupation (StatCan / NOC)
+5. Automatic news pairing (find a "reality check" for each "AI progress" item); regional employment by occupation (StatCan / NOC)
 6. Douyin short-video template
 
 ## Open questions

@@ -190,6 +190,7 @@ dialog#share-dlg::backdrop{background:rgba(0,0,0,.72)}
 .dlg-actions{display:flex;flex-wrap:wrap;gap:8px}
 .hint{font-size:12.5px;color:var(--muted);margin:0 0 12px}
 .k-news{background:var(--panel);color:var(--muted);border:1px solid var(--line)}
+.news-item.auto{border-style:dashed;border-left-style:solid}
 .nsearch{display:flex;gap:8px}
 .nsearch input{flex:1;min-width:0;font:inherit;font-size:14px;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:3px;padding:8px 10px}
 .nsearch button{background:var(--panel-2);border:1px solid var(--line);color:var(--ink);border-radius:3px;padding:8px 14px;font-size:14px;font-weight:600;white-space:nowrap}
@@ -302,6 +303,7 @@ dialog#share-dlg::backdrop{background:rgba(0,0,0,.72)}
       <h2><span class="eyebrow">Evidence</span><span data-i18n="newsTitle">这个行业发生了什么</span></h2>
       <div class="news" id="news"></div>
       <div class="news" id="news-search"></div>
+      <div class="news" id="news-field"></div>
     </section>
   </div>
 
@@ -403,7 +405,7 @@ const STR = {
     newsAria:"新闻证据", newsTitle:"这个行业发生了什么", tlAria:"任务时间线", tlTitle:"哪项工作先被 AI 接手",
     lgCap:"能力到位", lgLag:"落地期", lgOut:"趋势线不覆盖（需要现场操作）",
     shareAria:"分享", shareTitle:"发给同行", shareTextAria:"分享文案", copy:"复制文案", copied:"已复制", copySelect:"已选中，按 Ctrl/⌘+C",
-    newsOcc:"这个职业", searchH:"搜索最新报道", searchBtn:"搜索", searchAria:"搜索新闻的关键词", searching:"正在搜索…", searchNone:"没有找到相关报道，换个关键词试试。", searchFail:"这里暂时搜不到（本地用 python 预览时没有搜索接口），可以直接在 Google News 打开。", searchOpen:"在 Google News 打开「{q}」↗", kNews:"报道", newsField:"领域动态 · {f}", newsUpdated:"更新于 {d}", newsMore:"再看 {n} 条", newsLess:"收起",
+    newsOcc:"这个职业", searchH:"这个职业的最新报道", curatedTag:"人工挑选", autoTag:"自动搜索 · 未经人工核实", searchBtn:"搜索", searchAria:"搜索新闻的关键词", searching:"正在搜索…", searchNone:"最近 30 天没有找到讲 AI 影响这个工作的报道。换个关键词试试，或者在 Google News 看全部结果。", searchHint:"按标题关键词粗分：提到取代、裁员、自动化的算「AI 进展」，提到出错、重新招人、不会取代、人手短缺的算「现实检验」。分类可能有错，点开原文判断。", searchFail:"这里暂时搜不到（本地用 python 预览时没有搜索接口），可以直接在 Google News 打开。", searchOpen:"在 Google News 打开「{q}」↗", kNews:"报道", newsField:"领域动态 · {f}", newsUpdated:"更新于 {d}", newsMore:"再看 {n} 条", newsLess:"收起",
     noFieldNews:"这个领域最近还没有收录到 AI 新闻。新闻每天自动更新，每条标注是「AI 进展」还是「现实检验」。",
     makeImg:"生成分享图（带二维码）", sysShare:"更多分享方式…", copyLink:"复制链接", linkCopied:"链接已复制",
     liNote:"文案已复制，在 LinkedIn 的帖子里粘贴即可。想带图的话，先生成并保存分享图，再在帖子里上传。",
@@ -466,7 +468,7 @@ const STR = {
     newsAria:"News evidence", newsTitle:"What's happening in this field", tlAria:"Task timeline", tlTitle:"Which tasks AI takes over first",
     lgCap:"AI capable", lgLag:"Adoption lag", lgOut:"Not covered by the trend (on-site work)",
     shareAria:"Share", shareTitle:"Send to a colleague", shareTextAria:"Share text", copy:"Copy text", copied:"Copied", copySelect:"Selected — press Ctrl/⌘+C",
-    newsOcc:"This occupation", searchH:"Search recent coverage", searchBtn:"Search", searchAria:"News search keywords", searching:"Searching…", searchNone:"No coverage found. Try other keywords.", searchFail:"Search isn't available here (a local python preview has no search endpoint). Open it on Google News instead.", searchOpen:"Open \"{q}\" on Google News ↗", kNews:"News", newsField:"Field news · {f}", newsUpdated:"updated {d}", newsMore:"{n} more", newsLess:"Show less",
+    newsOcc:"This occupation", searchH:"Latest coverage for this occupation", curatedTag:"Hand-picked", autoTag:"Automatic search · not verified", searchBtn:"Search", searchAria:"News search keywords", searching:"Searching…", searchNone:"No coverage in the last 30 days about AI affecting this work. Try other keywords, or see all results on Google News.", searchHint:"Roughly sorted by headline keywords: replacing, layoffs or automation count as \"AI progress\"; errors, rehiring, \"won't replace\" or shortages count as \"reality check\". Labels can be wrong; open the article to judge.", searchFail:"Search isn't available here (a local python preview has no search endpoint). Open it on Google News instead.", searchOpen:"Open \"{q}\" on Google News ↗", kNews:"News", newsField:"Field news · {f}", newsUpdated:"updated {d}", newsMore:"{n} more", newsLess:"Show less",
     noFieldNews:"No AI news collected for this field recently. News updates daily; each item is marked \"AI progress\" or \"reality check\".",
     makeImg:"Create share image (with QR)", sysShare:"More options…", copyLink:"Copy link", linkCopied:"Link copied",
     liNote:"Text copied. Paste it into your LinkedIn post. To add the image, create and save the share image, then upload it to the post.",
@@ -646,12 +648,11 @@ function renderNews(){
   const ids = new Set(mine.map(n=>n.id));
   const field = NEWSDB.items.filter(n=>!ids.has(n.id) && (n.fields||[]).includes(f));
   const LIMIT=5, shown = state.newsAll?field:field.slice(0,LIMIT);
-  let html = "";
-  if(mine.length) html += '<h3 class="news-h">'+esc(t("newsOcc"))+'</h3>'+mine.map(newsItem).join("");
-  html += '<h3 class="news-h">'+esc(t("newsField",{f:fname}))+(NEWSDB.updated?'<span>'+esc(t("newsUpdated",{d:NEWSDB.updated.slice(0,10)}))+'</span>':'')+'</h3>';
+  $("news").innerHTML = mine.length ? '<h3 class="news-h">'+esc(t("newsOcc"))+'<span>'+esc(t("curatedTag"))+'</span></h3>'+mine.map(newsItem).join("") : "";
+  let html = '<h3 class="news-h">'+esc(t("newsField",{f:fname}))+(NEWSDB.updated?'<span>'+esc(t("newsUpdated",{d:NEWSDB.updated.slice(0,10)}))+'</span>':'')+'</h3>';
   html += shown.length ? shown.map(newsItem).join("") : '<p class="empty">'+esc(t("noFieldNews"))+'</p>';
   if(field.length>LIMIT) html += '<button type="button" class="more" id="news-more">'+esc(state.newsAll?t("newsLess"):t("newsMore",{n:field.length-LIMIT}))+'</button>';
-  $("news").innerHTML = html;
+  $("news-field").innerHTML = html;
 }
 
 // ---------- 链接里带上职业、语言和假设，打开分享链接看到的是同一组数字
@@ -696,17 +697,19 @@ function searchTerm(o){
   const a = o.aliases.find(x=>/^[a-z][a-z .+-]*$/i.test(x) && (x.length>=5 || x.includes(" ")));
   return a || o.en.split(",")[0];
 }
-const gnewsURL = q => "https://news.google.com/search?"+new URLSearchParams(LANG==="zh"?{q,hl:"zh-CN",gl:"CN",ceid:"CN:zh-Hans"}:{q,hl:"en-US",gl:"US",ceid:"US:en"});
+const gnewsURL = q => "https://news.google.com/search?"+new URLSearchParams(LANG==="zh"?{q:q+" (取代 OR 裁员 OR 岗位 OR 自动化)",hl:"zh-CN",gl:"CN",ceid:"CN:zh-Hans"}:{q:q+" (replace OR layoffs OR jobs OR automation)",hl:"en-US",gl:"US",ceid:"US:en"});
 function setupSearch(){
   const q = searchTerm(BY_CODE[state.occ])+" AI";
-  $("news-search").innerHTML = '<h3 class="news-h">'+esc(t("searchH"))+'<span>Google News</span></h3>'+
+  $("news-search").innerHTML = '<h3 class="news-h">'+esc(t("searchH"))+'<span>'+esc(t("autoTag"))+'</span></h3>'+
     '<form class="nsearch" id="nsearch"><input id="nq" value="'+esc(q)+'" aria-label="'+esc(t("searchAria"))+'"><button type="submit">'+esc(t("searchBtn"))+'</button></form>'+
-    '<div class="news" id="nresults"></div>';
+    '<p class="hint" style="margin:0">'+esc(t("searchHint"))+'</p><div class="news" id="nresults"></div>';
   $("nsearch").addEventListener("submit",e=>{ e.preventDefault(); runSearch($("nq").value); });
   runSearch(q);
 }
 function searchItem(n){
-  return '<article class="news-item compact"><span class="kind k-news">'+esc(t("kNews"))+'</span><strong>'+esc(n.t)+'</strong>'+
+  const k = n.k==="check" ? "check" : (n.k==="signal" ? "signal" : "");
+  const badge = k ? '<span class="kind '+(k==="signal"?"k-signal":"k-check")+'">'+esc(t(k))+'</span>' : '<span class="kind k-news">'+esc(t("kNews"))+'</span>';
+  return '<article class="news-item compact auto '+k+'">'+badge+'<strong>'+esc(n.t)+'</strong>'+
     '<span class="src">'+esc(n.date)+' · <a href="'+esc(n.url)+'" target="_blank" rel="noopener">'+esc(n.src||"↗")+' ↗</a></span></article>';
 }
 async function runSearch(q){
@@ -724,7 +727,7 @@ async function runSearch(q){
     items=SEARCH_CACHE.get(key);
   }catch(_){ if(seq===searchSeq) box.innerHTML='<p class="empty">'+esc(t("searchFail"))+'</p>'+open; return; }
   if(seq!==searchSeq) return; // 已经有更新的搜索了
-  box.innerHTML=(items.length?items.slice(0,6).map(searchItem).join(""):'<p class="empty">'+esc(t("searchNone"))+'</p>')+open;
+  box.innerHTML=(items.length?items.slice(0,8).map(searchItem).join(""):'<p class="empty">'+esc(t("searchNone"))+'</p>')+open;
 }
 
 function render(){
@@ -918,7 +921,7 @@ $("lag").addEventListener("input",e=>{ state.lag=+e.target.value; if(OCC.length)
 $("tlag").addEventListener("input",e=>{ state.trustLag=+e.target.value; if(OCC.length) render(); });
 $("tl-more").addEventListener("click",()=>{ state.showAll=!state.showAll; render(); });
 document.querySelectorAll(".presets button").forEach(b=>b.addEventListener("click",()=>{ state.dbl=+b.dataset.dbl; $("dbl").value=state.dbl; if(OCC.length) render(); }));
-$("news").addEventListener("click",e=>{ if(e.target.id!=="news-more") return; state.newsAll=!state.newsAll; renderNews(); });
+$("news-field").addEventListener("click",e=>{ if(e.target.id!=="news-more") return; state.newsAll=!state.newsAll; renderNews(); });
 
 // ---------- 分享：文案、链接、LinkedIn / X / 系统分享
 const SHARE = {text:"", r:null, fmt:"portrait", blob:null, url:null};

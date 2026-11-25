@@ -1,41 +1,447 @@
 {
-  "_comment": "人工挑选的新闻：一条「AI 进展」(signal) 配一条「现实检验」(check)。occ 是 O*NET 英文职业名（这些职业的证据面板会置顶显示），fields 是领域代码（同领域其他职业的「领域动态」也会显示）。collect.py 每次运行都会把这里的内容原样并入 web/news.json。",
-  "items": [
-    {"k": "signal", "date": "2026-05", "src": "eWeek", "url": "https://www.eweek.com/news/openai-ai-erdos-geometry-conjecture/",
-     "occ": ["Mathematicians"], "fields": ["15"],
-     "zh": {"t": "OpenAI 称其通用推理模型推翻了 Erdős 一个 80 年的几何猜想", "p": "问题关于平面上等距点对的数量；OpenAI 称外部数学家审核了证明，这个模型并非专为数学训练。"},
-     "en": {"t": "OpenAI says its general reasoning model disproved an 80-year-old Erdős geometry conjecture", "p": "The problem concerns the number of unit-distance pairs in the plane. OpenAI says outside mathematicians checked the proof and that the model was not trained specifically for math."}},
-    {"k": "check", "date": "2026-05", "src": "INESC TEC", "url": "https://bip.inesctec.pt/en/inesctecwatch/does-artificial-intelligence-finally-understand-mathematics-openai-believes-so-but-doubts-remain-over-both-the-result-and-the-conduct/",
-     "occ": ["Mathematicians"], "fields": ["15"],
-     "zh": {"t": "推翻的是「上界已最优」的猜想，正确的界仍然未知", "p": "构造用到的思路文献里已有，Princeton 的 Will Sawin 很快改进了它。2025 年 10 月 OpenAI 还曾把文献里已有的 Erdős 解答当成新成果。"},
-     "en": {"t": "It disproved that the known upper bound is optimal; the correct bound is still unknown", "p": "The construction builds on ideas already in the literature, and Princeton's Will Sawin quickly improved it. In October 2025 OpenAI had also presented existing Erdős solutions as new results."}},
-    {"k": "signal", "date": "2026-09", "src": "Al Jazeera", "url": "https://www.aljazeera.com/news/2026/9/24/ai-model-claude-discovers-crispr-like-enzyme-system-anthropic-says",
-     "occ": ["Bioinformatics Scientists"], "fields": ["19"],
-     "zh": {"t": "Anthropic 称 Claude 在 DNA 数据库里自主找到一个类 CRISPR 的酶系统", "p": "Claude 检索了 21 小时，研究人员只给了高层方向；这个系统被命名为 ART，可能是一种新的基因编辑机制。"},
-     "en": {"t": "Anthropic says Claude independently found a CRISPR-like enzyme system in DNA databases", "p": "Claude searched for 21 hours with only high-level direction from researchers. The system, named ART, may be a new gene-editing mechanism."}},
-    {"k": "check", "date": "2026-09", "src": "ThePrint", "url": "https://theprint.in/science/did-claude-discover-a-new-enzyme-or-stole-a-biologists-work-anthropic-responds/3057122/",
-     "occ": ["Bioinformatics Scientists"], "fields": ["19"],
-     "zh": {"t": "功能还没确定，哥本哈根的团队说他们一年前就发现了它", "p": "这个系统还没有湿实验验证。哥本哈根大学一位生物学家称其团队约一年前已发现该酶，用过 Claude，只是尚未发表；Anthropic 否认用用户对话训练。"},
-     "en": {"t": "Its function is unconfirmed, and a Copenhagen team says it found the system a year earlier", "p": "The system has not been validated in the wet lab. A University of Copenhagen biologist says her team found the enzyme about a year ago, had used Claude, and had not yet published; Anthropic denies training on user conversations."}},
-    {"k": "signal", "date": "2026-01", "src": "Wikipedia · METR", "url": "https://en.wikipedia.org/wiki/METR",
-     "occ": ["Software Developers"], "fields": ["15"],
-     "zh": {"t": "AI agent 能独立完成的任务长度，2023 年后约每 4.3 个月翻一倍", "p": "METR 用人类专家完成任务的时长衡量 AI 能力；2026 年 1 月的更新显示进展在加速。这正是本页倒计时用的曲线。"},
-     "en": {"t": "The length of tasks AI agents can complete alone has doubled about every 4.3 months since 2023", "p": "METR measures AI capability by how long the tasks take human experts. Its January 2026 update shows progress speeding up. This is the curve this page uses."}},
-    {"k": "check", "date": "2025-07", "src": "DX · METR", "url": "https://getdx.com/blog/metr-study-on-how-ai-affects-developer-productivity/",
-     "occ": ["Software Developers"], "fields": ["15"],
-     "zh": {"t": "随机对照实验：资深开发者用 AI 工具后反而慢了 19%", "p": "16 位资深开源开发者在自己的仓库里做真实任务；他们事前以为会快 24%，事后仍以为快了 20%。"},
-     "en": {"t": "Randomized trial: experienced developers were 19% slower with AI tools", "p": "16 experienced open-source developers worked on real tasks in their own repositories. Beforehand they expected to be 24% faster; afterwards they still believed they had been 20% faster."}},
-    {"k": "signal", "date": "2024-02", "src": "Tech.co", "url": "https://tech.co/news/klarna-reverses-ai-overhaul",
-     "occ": ["Customer Service Representatives"], "fields": ["43"],
-     "zh": {"t": "Klarna 称 AI 助手承担了 700 人的工作量", "p": "高峰时 AI 处理了约 75% 的客服对话，覆盖 35 种以上语言。"},
-     "en": {"t": "Klarna says its AI assistant does the work of 700 people", "p": "At its peak, the AI handled about 75% of customer service chats in more than 35 languages."}},
-    {"k": "check", "date": "2025-05", "src": "Tech.co", "url": "https://tech.co/news/klarna-reverses-ai-overhaul",
-     "occ": ["Customer Service Representatives"], "fields": ["43"],
-     "zh": {"t": "服务质量下滑后，Klarna 重新招聘人工客服", "p": "CEO 承认之前偏重 AI 的做法不对，客户往往更想和人沟通，现在改成 AI 加人工的双轨模式。"},
-     "en": {"t": "After service quality fell, Klarna is hiring human agents again", "p": "The CEO admitted the AI-heavy approach went too far; customers often prefer a person, so Klarna now runs AI and human support side by side."}},
-    {"k": "check", "date": "2026-06", "src": "Lawyer Monthly", "url": "https://www.lawyer-monthly.com/2026/06/judge-aycock-ai-hallucinations-sanctions-mississippi-2026/",
-     "occ": ["Paralegals and Legal Assistants", "Lawyers"], "fields": ["23"],
-     "zh": {"t": "美国联邦法院同时处罚原被告双方律师：文书引用了 AI 编造的判例", "p": "密西西比北区法院对 4 名律师罚款，其中两人被禁止在该法院执业两年，原定的庭审也被取消。"},
-     "en": {"t": "A US federal court sanctioned lawyers on both sides for citing AI-fabricated cases", "p": "The Northern District of Mississippi fined four lawyers, barred two from practicing before the court for two years, and cancelled the scheduled trial."}}
-  ]
+ "_comment": "人工挑选的新闻：一条「AI 进展」(signal) 配一条「现实检验」(check)。occ 是 O*NET 英文职业名（这些职业的证据面板会置顶显示），fields 是领域代码（同领域其他职业的「领域动态」也会显示）。collect.py 每次运行都会把这里的内容原样并入 web/news.json。",
+ "items": [
+  {
+   "k": "signal",
+   "date": "2026-05",
+   "src": "eWeek",
+   "url": "https://www.eweek.com/news/openai-ai-erdos-geometry-conjecture/",
+   "occ": [
+    "Mathematicians"
+   ],
+   "fields": [
+    "15"
+   ],
+   "zh": {
+    "t": "OpenAI 称其通用推理模型推翻了 Erdős 一个 80 年的几何猜想",
+    "p": "问题关于平面上等距点对的数量；OpenAI 称外部数学家审核了证明，这个模型并非专为数学训练。"
+   },
+   "en": {
+    "t": "OpenAI says its general reasoning model disproved an 80-year-old Erdős geometry conjecture",
+    "p": "The problem concerns the number of unit-distance pairs in the plane. OpenAI says outside mathematicians checked the proof and that the model was not trained specifically for math."
+   }
+  },
+  {
+   "k": "check",
+   "date": "2026-05",
+   "src": "INESC TEC",
+   "url": "https://bip.inesctec.pt/en/inesctecwatch/does-artificial-intelligence-finally-understand-mathematics-openai-believes-so-but-doubts-remain-over-both-the-result-and-the-conduct/",
+   "occ": [
+    "Mathematicians"
+   ],
+   "fields": [
+    "15"
+   ],
+   "zh": {
+    "t": "推翻的是「上界已最优」的猜想，正确的界仍然未知",
+    "p": "构造用到的思路文献里已有，Princeton 的 Will Sawin 很快改进了它。2025 年 10 月 OpenAI 还曾把文献里已有的 Erdős 解答当成新成果。"
+   },
+   "en": {
+    "t": "It disproved that the known upper bound is optimal; the correct bound is still unknown",
+    "p": "The construction builds on ideas already in the literature, and Princeton's Will Sawin quickly improved it. In October 2025 OpenAI had also presented existing Erdős solutions as new results."
+   }
+  },
+  {
+   "k": "signal",
+   "date": "2026-09",
+   "src": "Al Jazeera",
+   "url": "https://www.aljazeera.com/news/2026/9/24/ai-model-claude-discovers-crispr-like-enzyme-system-anthropic-says",
+   "occ": [
+    "Bioinformatics Scientists"
+   ],
+   "fields": [
+    "19"
+   ],
+   "zh": {
+    "t": "Anthropic 称 Claude 在 DNA 数据库里自主找到一个类 CRISPR 的酶系统",
+    "p": "Claude 检索了 21 小时，研究人员只给了高层方向；这个系统被命名为 ART，可能是一种新的基因编辑机制。"
+   },
+   "en": {
+    "t": "Anthropic says Claude independently found a CRISPR-like enzyme system in DNA databases",
+    "p": "Claude searched for 21 hours with only high-level direction from researchers. The system, named ART, may be a new gene-editing mechanism."
+   }
+  },
+  {
+   "k": "check",
+   "date": "2026-09",
+   "src": "ThePrint",
+   "url": "https://theprint.in/science/did-claude-discover-a-new-enzyme-or-stole-a-biologists-work-anthropic-responds/3057122/",
+   "occ": [
+    "Bioinformatics Scientists"
+   ],
+   "fields": [
+    "19"
+   ],
+   "zh": {
+    "t": "功能还没确定，哥本哈根的团队说他们一年前就发现了它",
+    "p": "这个系统还没有湿实验验证。哥本哈根大学一位生物学家称其团队约一年前已发现该酶，用过 Claude，只是尚未发表；Anthropic 否认用用户对话训练。"
+   },
+   "en": {
+    "t": "Its function is unconfirmed, and a Copenhagen team says it found the system a year earlier",
+    "p": "The system has not been validated in the wet lab. A University of Copenhagen biologist says her team found the enzyme about a year ago, had used Claude, and had not yet published; Anthropic denies training on user conversations."
+   }
+  },
+  {
+   "k": "signal",
+   "date": "2026-01",
+   "src": "Wikipedia · METR",
+   "url": "https://en.wikipedia.org/wiki/METR",
+   "occ": [
+    "Software Developers"
+   ],
+   "fields": [
+    "15"
+   ],
+   "zh": {
+    "t": "AI agent 能独立完成的任务长度，2023 年后约每 4.3 个月翻一倍",
+    "p": "METR 用人类专家完成任务的时长衡量 AI 能力；2026 年 1 月的更新显示进展在加速。这正是本页倒计时用的曲线。"
+   },
+   "en": {
+    "t": "The length of tasks AI agents can complete alone has doubled about every 4.3 months since 2023",
+    "p": "METR measures AI capability by how long the tasks take human experts. Its January 2026 update shows progress speeding up. This is the curve this page uses."
+   }
+  },
+  {
+   "k": "check",
+   "date": "2025-07",
+   "src": "DX · METR",
+   "url": "https://getdx.com/blog/metr-study-on-how-ai-affects-developer-productivity/",
+   "occ": [
+    "Software Developers"
+   ],
+   "fields": [
+    "15"
+   ],
+   "zh": {
+    "t": "随机对照实验：资深开发者用 AI 工具后反而慢了 19%",
+    "p": "16 位资深开源开发者在自己的仓库里做真实任务；他们事前以为会快 24%，事后仍以为快了 20%。"
+   },
+   "en": {
+    "t": "Randomized trial: experienced developers were 19% slower with AI tools",
+    "p": "16 experienced open-source developers worked on real tasks in their own repositories. Beforehand they expected to be 24% faster; afterwards they still believed they had been 20% faster."
+   }
+  },
+  {
+   "k": "signal",
+   "date": "2024-02",
+   "src": "Tech.co",
+   "url": "https://tech.co/news/klarna-reverses-ai-overhaul",
+   "occ": [
+    "Customer Service Representatives"
+   ],
+   "fields": [
+    "43"
+   ],
+   "zh": {
+    "t": "Klarna 称 AI 助手承担了 700 人的工作量",
+    "p": "高峰时 AI 处理了约 75% 的客服对话，覆盖 35 种以上语言。"
+   },
+   "en": {
+    "t": "Klarna says its AI assistant does the work of 700 people",
+    "p": "At its peak, the AI handled about 75% of customer service chats in more than 35 languages."
+   }
+  },
+  {
+   "k": "check",
+   "date": "2025-05",
+   "src": "Tech.co",
+   "url": "https://tech.co/news/klarna-reverses-ai-overhaul",
+   "occ": [
+    "Customer Service Representatives"
+   ],
+   "fields": [
+    "43"
+   ],
+   "zh": {
+    "t": "服务质量下滑后，Klarna 重新招聘人工客服",
+    "p": "CEO 承认之前偏重 AI 的做法不对，客户往往更想和人沟通，现在改成 AI 加人工的双轨模式。"
+   },
+   "en": {
+    "t": "After service quality fell, Klarna is hiring human agents again",
+    "p": "The CEO admitted the AI-heavy approach went too far; customers often prefer a person, so Klarna now runs AI and human support side by side."
+   }
+  },
+  {
+   "k": "check",
+   "date": "2026-06",
+   "src": "Lawyer Monthly",
+   "url": "https://www.lawyer-monthly.com/2026/06/judge-aycock-ai-hallucinations-sanctions-mississippi-2026/",
+   "occ": [
+    "Paralegals and Legal Assistants",
+    "Lawyers"
+   ],
+   "fields": [
+    "23"
+   ],
+   "zh": {
+    "t": "美国联邦法院同时处罚原被告双方律师：文书引用了 AI 编造的判例",
+    "p": "密西西比北区法院对 4 名律师罚款，其中两人被禁止在该法院执业两年，原定的庭审也被取消。"
+   },
+   "en": {
+    "t": "A US federal court sanctioned lawyers on both sides for citing AI-fabricated cases",
+    "p": "The Northern District of Mississippi fined four lawyers, barred two from practicing before the court for two years, and cancelled the scheduled trial."
+   }
+  },
+  {
+   "k": "signal",
+   "date": "2026-08",
+   "src": "ACCA AB magazine",
+   "url": "https://abmagazine.accaglobal.com/global/articles/2026/aug/practice/audit-s-not-so-secret-agents.html",
+   "occ": [
+    "Accountants and Auditors"
+   ],
+   "fields": [
+    "13"
+   ],
+   "zh": {
+    "t": "四大会计师事务所开始让 AI agent 直接执行审计任务",
+    "p": "EY 从 2026 年 4 月起把一部分日记账分录分析交给 AI agent；KPMG、Deloitte 也在审计平台里上线了 agent，PwC 称 2026 年度的审计将全流程接入 AI。"
+   },
+   "en": {
+    "t": "Big Four firms are rolling out AI agents that carry out audit tasks",
+    "p": "Since April 2026 EY has handed part of its journal-entry analysis to AI agents; KPMG and Deloitte have built agents into their audit platforms, and PwC says its 2026 audits will be AI-integrated end to end."
+   }
+  },
+  {
+   "k": "check",
+   "date": "2025-10",
+   "src": "AP · CTV News",
+   "url": "https://www.ctvnews.ca/business/article/deloitte-to-partially-refund-australian-government-for-report-with-apparent-ai-generated-errors/",
+   "occ": [
+    "Accountants and Auditors"
+   ],
+   "fields": [
+    "13"
+   ],
+   "zh": {
+    "t": "德勤澳洲因报告含 AI 编造内容，向政府部分退款",
+    "p": "这份 44 万澳元的政府报告里有编造的法官引语和不存在的参考文献，一位研究者找出最多 20 处错误。德勤称这些错误不影响报告的结论。"
+   },
+   "en": {
+    "t": "Deloitte Australia partly refunds the government over a report with AI-fabricated content",
+    "p": "The A$440,000 government report contained a fabricated quote from a judge and references to nonexistent work; a researcher found up to 20 errors. Deloitte said the errors did not change the report's findings."
+   }
+  },
+  {
+   "k": "signal",
+   "date": "2026-09",
+   "src": "Gartner",
+   "url": "https://www.gartner.com/en/documents/8368349",
+   "occ": [
+    "Business Intelligence Analysts"
+   ],
+   "fields": [
+    "15"
+   ],
+   "zh": {
+    "t": "Gartner 建议数据团队准备从 BI 仪表盘转向「分析 agent」",
+    "p": "企业分析正从拖拽式仪表盘转向自然语言提问，分析 agent 开始和静态仪表盘一起使用。"
+   },
+   "en": {
+    "t": "Gartner tells data teams to prepare for a shift from BI dashboards to analytics agents",
+    "p": "Enterprise analytics is moving from drag-and-drop dashboards to natural-language questions, as analytics agents begin to complement static dashboards."
+   }
+  },
+  {
+   "k": "check",
+   "date": "2026-01",
+   "src": "arXiv · ICML 2026",
+   "url": "https://arxiv.org/abs/2601.18119",
+   "occ": [
+    "Business Intelligence Analysts"
+   ],
+   "fields": [
+    "15"
+   ],
+   "zh": {
+    "t": "企业级 SQL 调试测试：最好的模型也只做对约三分之一",
+    "p": "在平均超过 140 行的真实风格企业 SQL 上，近 30 个模型里最好的 Claude-4-Sonnet 语法错误题对 36%、语义错误题对 32%，多数模型低于 20%。"
+   },
+   "en": {
+    "t": "Enterprise SQL debugging benchmark: even the best model gets about a third right",
+    "p": "On enterprise-style SQL averaging over 140 lines, the best of nearly 30 models, Claude-4-Sonnet, solved 36% of syntax-bug and 32% of semantic-bug tasks; most models scored below 20%."
+   }
+  },
+  {
+   "k": "signal",
+   "date": "2026-01",
+   "src": "CNN",
+   "url": "https://www.cnn.com/2026/01/23/tech/translation-language-jobs-ai-automation-intl",
+   "occ": [
+    "Interpreters and Translators"
+   ],
+   "fields": [
+    "27"
+   ],
+   "zh": {
+    "t": "译者因 AI 失去工作：有人收入少了七成",
+    "p": "一位为欧盟机构做翻译的译者说，机器翻译普及后收入减少约 70%；美国翻译协会会长称很多译者正在离开这一行。牛津学者估计，如果没有机器翻译，原本还会多出约 2.8 万个翻译岗位。"
+   },
+   "en": {
+    "t": "Translators are losing work to AI, some say income fell 70%",
+    "p": "A translator who worked for EU institutions says machine translation cut his income by about 70%; the American Translators Association's president says many are leaving the field. An Oxford economist estimates about 28,000 more translator jobs would have been added without machine translation."
+   }
+  },
+  {
+   "k": "check",
+   "date": "2026-10",
+   "src": "Times of San Diego",
+   "url": "https://timesofsandiego.com/tech/2026/10/24/ai-translation-california-courts-pilot-project-rfp/",
+   "occ": [
+    "Interpreters and Translators"
+   ],
+   "fields": [
+    "27"
+   ],
+   "zh": {
+    "t": "加州法院取消全州推广 AI 翻译的计划，要先审查准确性",
+    "p": "30 多个县级法院曾在柜台试用语音翻译工具；倡导团体通过公开记录整理出多起译错的例子，有职员更愿意用电话人工翻译。"
+   },
+   "en": {
+    "t": "California courts cancel a statewide AI translation rollout pending an accuracy review",
+    "p": "More than 30 county courts had piloted a voice translation tool at service counters; advocates documented many mistranslations through records requests, and some staff preferred a phone interpreting service."
+   }
+  },
+  {
+   "k": "signal",
+   "date": "2025-10",
+   "src": "MarTech",
+   "url": "https://martech.org/ai-is-changing-the-hiring-practices-of-marketing-agencies/",
+   "occ": [
+    "Graphic Designers"
+   ],
+   "fields": [
+    "27"
+   ],
+   "zh": {
+    "t": "57% 的营销代理公司放慢或暂停招聘新人，执行类工作交给 AI",
+    "p": "Sunup 调查了 225 位美国代理公司高管：所有公司都在用 AI，91% 预计 AI 会减少人手，基础设计和出图是常见用途之一。"
+   },
+   "en": {
+    "t": "57% of marketing agencies have slowed or paused entry-level hiring as AI takes execution work",
+    "p": "Sunup surveyed 225 US agency leaders: all of their agencies use AI, 91% expect it to reduce headcount, and basic design and image generation are among the common uses."
+   }
+  },
+  {
+   "k": "check",
+   "date": "2026-03",
+   "src": "Clutch",
+   "url": "https://clutch.co/resources/will-ai-replace-graphic-designers",
+   "occ": [
+    "Graphic Designers"
+   ],
+   "fields": [
+    "27"
+   ],
+   "zh": {
+    "t": "企业调查：只有 18% 说 AI 减少了对设计师的需求",
+    "p": "大多数企业已经在用 AI 设计工具，但主要用来加快出图；需要差异化的品牌和创意工作仍然交给设计师。"
+   },
+   "en": {
+    "t": "Business survey: only 18% say AI has reduced their need for human designers",
+    "p": "Most businesses already use AI design tools, but mainly to speed up production; differentiated brand and creative work still goes to designers."
+   }
+  },
+  {
+   "k": "signal",
+   "date": "2026-07",
+   "src": "Becker's Hospital Review",
+   "url": "https://www.beckershospitalreview.com/healthcare-information-technology/ai/12-health-systems-expanding-their-use-of-agentic-ai/",
+   "occ": [
+    "Registered Nurses"
+   ],
+   "fields": [
+    "29"
+   ],
+   "zh": {
+    "t": "AI 语音助手开始承担护士的宣教和随访电话",
+    "p": "Hippocratic AI 和克利夫兰诊所等医院合作推出 Nurse Co-Pilot，负责入院宣教、患者教育、照护者沟通和用药依从；WellSpan 的 AI 语音助手每月接打超过 16 万通患者电话。"
+   },
+   "en": {
+    "t": "AI voice assistants are taking over nurses' patient-education and follow-up calls",
+    "p": "Hippocratic AI's Nurse Co-Pilot, built with Cleveland Clinic and other systems, covers admission education, patient education, caregiver engagement and medication adherence; WellSpan's AI voice agent handles over 160,000 patient calls a month."
+   }
+  },
+  {
+   "k": "check",
+   "date": "2026-04",
+   "src": "Tech Policy Press",
+   "url": "https://techpolicy.press/the-nurses-union-breaking-ranks-to-fight-ai-in-hospitals",
+   "occ": [
+    "Registered Nurses"
+   ],
+   "fields": [
+    "29"
+   ],
+   "zh": {
+    "t": "护士工会调查：相当多护士不认同 AI 生成的风险评估和交班记录",
+    "p": "美国最大的护士工会 National Nurses United 在推动联邦层面的护患配比立法，工会主席不相信「AI 护士」能取代人的护理。"
+   },
+   "en": {
+    "t": "Nurses' union survey: many nurses disagree with AI-generated risk assessments and shift hand-offs",
+    "p": "National Nurses United, the largest US nurses' union, is pushing for federal safe-staffing ratios; its president is not convinced AI 'nurses' can replace human care."
+   }
+  },
+  {
+   "k": "signal",
+   "date": "2025-03",
+   "src": "The Robot Report",
+   "url": "https://www.therobotreport.com/rosendin-electric-tests-ulc-technologies-solar-construction-robots/",
+   "occ": [
+    "Electricians"
+   ],
+   "fields": [
+    "47"
+   ],
+   "zh": {
+    "t": "电气承包商 Rosendin 在光伏工地试用机器人安装组件",
+    "p": "机器人负责搬运和放置光伏板，但紧固和接线仍由现场工人完成。"
+   },
+   "en": {
+    "t": "Electrical contractor Rosendin tests robots that install solar panels",
+    "p": "Robots carry and set the panels; field workers still fasten them and make the electrical connections."
+   }
+  },
+  {
+   "k": "check",
+   "date": "2026-03",
+   "src": "Fortune",
+   "url": "https://www.fortune.com/2026/03/02/ai-data-centers-electrician-shortage-gen-z-training-careers",
+   "occ": [
+    "Electricians"
+   ],
+   "fields": [
+    "47"
+   ],
+   "zh": {
+    "t": "AI 数据中心反而让电工更紧缺",
+    "p": "未来十年预计需要 30 多万名新电工；微软总裁称电工短缺是拖慢其美国数据中心建设的头号问题。"
+   },
+   "en": {
+    "t": "AI data centers are making electricians scarcer, not obsolete",
+    "p": "More than 300,000 new electricians are projected to be needed over the next decade; Microsoft's president called the shortage the No. 1 problem slowing its US data center buildout."
+   }
+  },
+  {
+   "k": "signal",
+   "date": "2026-03",
+   "src": "Harvey (company blog)",
+   "url": "https://www.harvey.ai/en-US/blog/helping-law-firms-and-companies-collaborate-at-scale",
+   "occ": [
+    "Lawyers",
+    "Paralegals and Legal Assistants"
+   ],
+   "fields": [
+    "23"
+   ],
+   "zh": {
+    "t": "法律 AI 平台 Harvey 称已进入一半的美国百强律所",
+    "p": "Harvey 称客户超过 1,000 家、遍布 60 个国家，包括 Am Law 100 中的 50%。数字来自公司自己。"
+   },
+   "en": {
+    "t": "Legal AI platform Harvey says half of the Am Law 100 now use it",
+    "p": "Harvey says it has more than 1,000 customers in 60 countries, including 50% of the Am Law 100. The figures are the company's own."
+   }
+  }
+ ]
 }

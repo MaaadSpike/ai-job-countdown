@@ -183,7 +183,7 @@ index.html ── 证据栏：「这个职业」（人工挑选，AI 进展在�
 - **定时**：`.github/workflows/news.yml` 每天 UTC 14:17 运行，`news.json` 有变化才提交。用 `GITHUB_TOKEN` 提交的 commit 不会触发别的 workflow，所以上线后要设变量 `NEWS_AUTO_DEPLOY=true`，在同一个 workflow 里部署
 - **LLM 接口**：任何 OpenAI 兼容接口（OpenAI、DeepSeek、通义，或自己的 `vllm serve`），用标准库 urllib 调，不加依赖。prompt 要求只保留具体的能力进展或具体的局限证据，去掉融资、股价、观点文章，翻译不许加标题里没有的信息
 - **只存标题和链接**：自动新闻不存原文摘要，只有标题（和译文）、来源、日期、链接，点开看原文
-- **按职业实时搜索**：证据栏最下面有搜索框，默认关键词「职业名 AI」（中文界面用中文名、查中文版 Google News）。浏览器不能直接跨域请求 Google News，Google 的 Custom Search JSON API 也已不对新用户开放，所以用 Cloudflare Pages Function `functions/api/search.js` 在服务器端查 RSS，返回标题、来源、日期、链接，同一查询在边缘缓存 6 小时。`functions/` 必须在仓库根目录，`wrangler pages deploy web` 会自动带上；本地用 `npx wrangler pages dev web` 测试，`python -m http.server` 下会提示去 Google News 打开
+- **按职业实时搜索**：证据栏最下面有搜索框，默认关键词「职业名 AI」（中文界面用中文名、查中文版 Google News）。浏览器不能直接跨域请求 Google News，Google 的 Custom Search JSON API 也已不对新用户开放，所以用 Cloudflare Pages Function `functions/api/search.js` 在服务器端查 RSS：同时跑两组查询，一组加「取代 / 裁员 / 自动化」，一组加「出错 / 重新招人 / 不会取代 / 短缺」，再按标题关键词粗分成「AI 进展」和「现实检验」，两类都不沾的（招聘广告、课程、泛泛介绍）丢掉。页面上放在「这个职业」的人工新闻下面，标明「自动搜索 · 未经人工核实」，返回标题、来源、日期、链接，同一查询在边缘缓存 6 小时。`functions/` 必须在仓库根目录，`wrangler pages deploy web` 会自动带上；本地用 `npx wrangler pages dev web` 测试，`python -m http.server` 下会提示去 Google News 打开
 
 **`news.json` 格式**
 

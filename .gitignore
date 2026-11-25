@@ -13,6 +13,7 @@ data/
 eval_sample_meta.csv
 
 __pycache__/
+.wrangler/
 *.pyc
 .venv/
 venv/

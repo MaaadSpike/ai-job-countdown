@@ -73,7 +73,7 @@ A static site: one HTML file and two JSON data files (`web/occupations.json`, ab
 - **Seven-segment countdown** to the "in practice" date, with "AI capable" and "in practice" dates, plus the range across METR's doubling-time fits.
 - **Assumption controls**: reliability (50% or 80%), doubling time, real-world difficulty factor, adoption lag, extra lag for trust-based tasks, and the threshold (half or three quarters of work time).
 - **Task timeline**: each task's capability date and adoption lag. On-site tasks are marked as not covered by the trend.
-- **Field news**: AI news for the occupation's field (one of 22 SOC major groups), each item marked "AI progress" or "reality check". Hand-picked items for a few occupations sit on top; the rest is collected daily by `news/collect.py` (see below).
+- **Field news**: AI news for the occupation's field (one of 22 SOC major groups), each item marked "AI progress" or "reality check". Hand-picked items for a few occupations sit on top; the rest is collected daily by `news/collect.py` (see below). Below that, a search box looks up recent Google News coverage for the occupation (default keywords: occupation + AI, editable) through a small Cloudflare Pages Function, `functions/api/search.js`; no API key needed, results cached for 6 hours.
 - **Sharing**: a share image drawn in the browser (portrait 4:5 or square 1:1, Chinese or English) with a QR code back to the same occupation and assumptions; LinkedIn, X, the phone's share sheet, copy link and copy text. Links carry the assumptions (`?lang=en&d=2.9&k=8#15-1252.00`), so a shared link shows the same numbers.
 - **Bilingual**: Chinese and English. The language follows `?lang=zh|en`, then the last choice, then the browser language.
 
@@ -86,6 +86,7 @@ A static site: one HTML file and two JSON data files (`web/occupations.json`, ab
 | `forecast/` | METR trend fitting, backtests, countdown algorithm |
 | `web/` | Website, data build script, time-share formula, `news.json`, QR library (`vendor/`) |
 | `news/` | Field definitions and search terms, hand-picked news, daily news collector |
+| `functions/` | Cloudflare Pages Function for the live news search (`/api/search`) |
 | `tests/` | pytest suite |
 | `docs/` | Design doc (English and Chinese) |
 | `data/`, `runs/` | Third-party data and model outputs; not committed |
@@ -108,7 +109,8 @@ python estimate.py --tasks tasks.jsonl --out ../runs/full-v3.1 --max-tokens 600
 cd ../web
 python build_data.py                     # our time shares (default)
 python build_data.py --shares stanford   # comparison: Hatgis-Kessell et al.'s time shares
-python -m http.server 8000               # open http://localhost:8000
+python -m http.server 8000               # open http://localhost:8000 (no live news search)
+# or, from the repo root, with the news search endpoint:  npx wrangler pages dev web
 
 # 4. News (optional; a GitHub Action runs this daily)
 cd ..

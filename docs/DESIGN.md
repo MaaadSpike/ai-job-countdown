@@ -183,7 +183,7 @@ index.html ── evidence panel: "This occupation" (hand-picked, progress first
 - **Schedule**: `.github/workflows/news.yml` runs daily at 14:17 UTC and commits `news.json` only when it changed. Commits made with `GITHUB_TOKEN` do not trigger other workflows, so after launch set the variable `NEWS_AUTO_DEPLOY=true` to deploy from the same workflow
 - **LLM API**: any OpenAI-compatible API (OpenAI, DeepSeek, Qwen, or our own `vllm serve`), called with the standard library's urllib, no new dependency. The prompt keeps only concrete capability advances or concrete evidence of limits, drops funding, stock and opinion pieces, and forbids adding facts that are not in the headline
 - **Headlines and links only**: automatic items store the headline (and translation), source, date and link, not article text
-- **Why not fetch live in the browser**: Google News does not allow cross-origin requests, and a static site has nowhere to keep an API key; once a day is enough for this kind of news
+- **Live search per occupation**: a search box at the bottom of the evidence panel, defaulting to "occupation + AI" (the Chinese interface uses the Chinese name and the Chinese Google News edition). Browsers cannot fetch Google News cross-origin, and Google's Custom Search JSON API is closed to new customers, so a Cloudflare Pages Function, `functions/api/search.js`, queries the RSS feed server-side and returns headline, source, date and link, cached at the edge for 6 hours. `functions/` must sit at the repo root, where `wrangler pages deploy web` picks it up; test locally with `npx wrangler pages dev web` (under `python -m http.server` the page links to Google News instead)
 
 **`news.json` format**
 

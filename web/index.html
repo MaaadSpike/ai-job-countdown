@@ -189,6 +189,12 @@ dialog#share-dlg::backdrop{background:rgba(0,0,0,.72)}
 .dlg-img img{display:block;width:100%;height:auto;max-height:62dvh;object-fit:contain}
 .dlg-actions{display:flex;flex-wrap:wrap;gap:8px}
 .hint{font-size:12.5px;color:var(--muted);margin:0 0 12px}
+.k-news{background:var(--panel);color:var(--muted);border:1px solid var(--line)}
+.nsearch{display:flex;gap:8px}
+.nsearch input{flex:1;min-width:0;font:inherit;font-size:14px;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:3px;padding:8px 10px}
+.nsearch button{background:var(--panel-2);border:1px solid var(--line);color:var(--ink);border-radius:3px;padding:8px 14px;font-size:14px;font-weight:600;white-space:nowrap}
+.nsearch button:hover{border-color:var(--amber)}
+.nmore{font-size:12.5px;color:var(--amber)}
 </style>
 
 <div class="hazard" aria-hidden="true"></div>
@@ -295,6 +301,7 @@ dialog#share-dlg::backdrop{background:rgba(0,0,0,.72)}
     <section class="panel box" data-i18n-aria="newsAria" aria-label="新闻证据">
       <h2><span class="eyebrow">Evidence</span><span data-i18n="newsTitle">这个行业发生了什么</span></h2>
       <div class="news" id="news"></div>
+      <div class="news" id="news-search"></div>
     </section>
   </div>
 
@@ -396,7 +403,7 @@ const STR = {
     newsAria:"新闻证据", newsTitle:"这个行业发生了什么", tlAria:"任务时间线", tlTitle:"哪项工作先被 AI 接手",
     lgCap:"能力到位", lgLag:"落地期", lgOut:"趋势线不覆盖（需要现场操作）",
     shareAria:"分享", shareTitle:"发给同行", shareTextAria:"分享文案", copy:"复制文案", copied:"已复制", copySelect:"已选中，按 Ctrl/⌘+C",
-    newsOcc:"这个职业", newsField:"领域动态 · {f}", newsUpdated:"更新于 {d}", newsMore:"再看 {n} 条", newsLess:"收起",
+    newsOcc:"这个职业", searchH:"搜索最新报道", searchBtn:"搜索", searchAria:"搜索新闻的关键词", searching:"正在搜索…", searchNone:"没有找到相关报道，换个关键词试试。", searchFail:"这里暂时搜不到（本地用 python 预览时没有搜索接口），可以直接在 Google News 打开。", searchOpen:"在 Google News 打开「{q}」↗", kNews:"报道", newsField:"领域动态 · {f}", newsUpdated:"更新于 {d}", newsMore:"再看 {n} 条", newsLess:"收起",
     noFieldNews:"这个领域最近还没有收录到 AI 新闻。新闻每天自动更新，每条标注是「AI 进展」还是「现实检验」。",
     makeImg:"生成分享图（带二维码）", sysShare:"更多分享方式…", copyLink:"复制链接", linkCopied:"链接已复制",
     liNote:"文案已复制，在 LinkedIn 的帖子里粘贴即可。想带图的话，先生成并保存分享图，再在帖子里上传。",
@@ -459,7 +466,7 @@ const STR = {
     newsAria:"News evidence", newsTitle:"What's happening in this field", tlAria:"Task timeline", tlTitle:"Which tasks AI takes over first",
     lgCap:"AI capable", lgLag:"Adoption lag", lgOut:"Not covered by the trend (on-site work)",
     shareAria:"Share", shareTitle:"Send to a colleague", shareTextAria:"Share text", copy:"Copy text", copied:"Copied", copySelect:"Selected — press Ctrl/⌘+C",
-    newsOcc:"This occupation", newsField:"Field news · {f}", newsUpdated:"updated {d}", newsMore:"{n} more", newsLess:"Show less",
+    newsOcc:"This occupation", searchH:"Search recent coverage", searchBtn:"Search", searchAria:"News search keywords", searching:"Searching…", searchNone:"No coverage found. Try other keywords.", searchFail:"Search isn't available here (a local python preview has no search endpoint). Open it on Google News instead.", searchOpen:"Open \"{q}\" on Google News ↗", kNews:"News", newsField:"Field news · {f}", newsUpdated:"updated {d}", newsMore:"{n} more", newsLess:"Show less",
     noFieldNews:"No AI news collected for this field recently. News updates daily; each item is marked \"AI progress\" or \"reality check\".",
     makeImg:"Create share image (with QR)", sysShare:"More options…", copyLink:"Copy link", linkCopied:"Link copied",
     liNote:"Text copied. Paste it into your LinkedIn post. To add the image, create and save the share image, then upload it to the post.",
@@ -680,6 +687,46 @@ function siteBase(){
 }
 const shareURL = () => siteBase()+"?"+stateQuery()+"#"+state.occ;
 
+// ---------- 按职业实时搜新闻：/api/search（Cloudflare Pages Function，服务器端查 Google News RSS）
+let lastSearchKey = "";
+const SEARCH_CACHE = new Map();
+let searchSeq = 0;
+function searchTerm(o){
+  if(LANG==="zh" && o.zh) return o.zh.replace(/（.*?）/g,"");
+  const a = o.aliases.find(x=>/^[a-z][a-z .+-]*$/i.test(x) && (x.length>=5 || x.includes(" ")));
+  return a || o.en.split(",")[0];
+}
+const gnewsURL = q => "https://news.google.com/search?"+new URLSearchParams(LANG==="zh"?{q,hl:"zh-CN",gl:"CN",ceid:"CN:zh-Hans"}:{q,hl:"en-US",gl:"US",ceid:"US:en"});
+function setupSearch(){
+  const q = searchTerm(BY_CODE[state.occ])+" AI";
+  $("news-search").innerHTML = '<h3 class="news-h">'+esc(t("searchH"))+'<span>Google News</span></h3>'+
+    '<form class="nsearch" id="nsearch"><input id="nq" value="'+esc(q)+'" aria-label="'+esc(t("searchAria"))+'"><button type="submit">'+esc(t("searchBtn"))+'</button></form>'+
+    '<div class="news" id="nresults"></div>';
+  $("nsearch").addEventListener("submit",e=>{ e.preventDefault(); runSearch($("nq").value); });
+  runSearch(q);
+}
+function searchItem(n){
+  return '<article class="news-item compact"><span class="kind k-news">'+esc(t("kNews"))+'</span><strong>'+esc(n.t)+'</strong>'+
+    '<span class="src">'+esc(n.date)+' · <a href="'+esc(n.url)+'" target="_blank" rel="noopener">'+esc(n.src||"↗")+' ↗</a></span></article>';
+}
+async function runSearch(q){
+  q=q.trim(); if(q.length<2) return;
+  const box=$("nresults"), seq=++searchSeq, key=LANG+"|"+q.toLowerCase();
+  const open='<a class="nmore" href="'+esc(gnewsURL(q))+'" target="_blank" rel="noopener">'+esc(t("searchOpen",{q}))+'</a>';
+  box.innerHTML='<p class="empty">'+esc(t("searching"))+'</p>';
+  let items;
+  try{
+    if(!SEARCH_CACHE.has(key)){
+      const r=await fetch("api/search?"+new URLSearchParams({q,lang:LANG,days:"30"}));
+      if(!r.ok || !(r.headers.get("content-type")||"").includes("json")) throw new Error(r.status);
+      SEARCH_CACHE.set(key,(await r.json()).items||[]);
+    }
+    items=SEARCH_CACHE.get(key);
+  }catch(_){ if(seq===searchSeq) box.innerHTML='<p class="empty">'+esc(t("searchFail"))+'</p>'+open; return; }
+  if(seq!==searchSeq) return; // 已经有更新的搜索了
+  box.innerHTML=(items.length?items.slice(0,6).map(searchItem).join(""):'<p class="empty">'+esc(t("searchNone"))+'</p>')+open;
+}
+
 function render(){
   const r = compute();
   const thrTxt = state.thr===50?t("half"):t("threeQ");
@@ -720,6 +767,7 @@ function render(){
   SHARE.text = share; SHARE.r = r;
   $("share-text").value = share+"\n"+shareURL();
   if(state.occ!==lastNewsOcc){ state.newsAll=false; lastNewsOcc=state.occ; }
+  if(state.occ+LANG!==lastSearchKey){ lastSearchKey=state.occ+LANG; setupSearch(); }
   renderNews();
 
   const MAXY=10, pct = m => Math.min(100, m/12/MAXY*100);

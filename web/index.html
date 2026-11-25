@@ -61,7 +61,7 @@ button{font:inherit;cursor:pointer}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
 .chip{background:transparent;border:1px solid var(--line);color:var(--muted);border-radius:2px;padding:4px 11px;font-size:13px}
 .chip[aria-pressed="true"]{border-color:var(--red);color:var(--ink);background:var(--red-soft)}
-.msg{font-size:13px;color:var(--amber);min-height:1em;margin:0}
+.msg{font-size:13px;color:var(--amber);min-height:1em;margin:0;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
 .region-note{font-size:12px;color:var(--muted);margin:0}
 .console{position:relative;padding:22px 22px 18px;border:1px solid var(--line);border-radius:4px;background:var(--panel);overflow:hidden}
 .console::before{content:"";position:absolute;inset:0 0 auto 0;height:4px;background:repeating-linear-gradient(-45deg,var(--red) 0 10px,transparent 10px 20px)}
@@ -439,7 +439,7 @@ const STR = {
     collapse:"收起", expand:"展开全部 {n} 项任务",
     statusArrived:"按这组假设，这一刻已经到了", status99:"超过 99 年",
     loading:"正在载入 876 个职业的数据…", loadFail:"数据载入失败（{e}），请刷新页面重试。",
-    needInput:"先输入一个职业。", noMatch:"没找到这个职业。试试英文职业名，比如 nurse、accountant、translator。", matched:"匹配到：{o}"
+    needInput:"先输入一个职业。", noMatch:"没找到这个职业。试试英文职业名，比如 nurse、accountant、translator。", matched:"匹配到：{o}", suggest:"O*NET 里没有完全对应「{q}」的职业，最接近的是："
   },
   en: {
     title:"AI Job Countdown", tickerLabel:"Latest signals", tagline:"How long until AI <span>can do your job?</span>", proto:"Phase 1 · 876 occupations · durations are model estimates",
@@ -502,7 +502,7 @@ const STR = {
     collapse:"Show less", expand:"Show all {n} tasks",
     statusArrived:"Under these assumptions, this moment has already arrived", status99:"More than 99 years",
     loading:"Loading data for 876 occupations…", loadFail:"Couldn't load data ({e}). Please refresh the page.",
-    needInput:"Type an occupation first.", noMatch:"Occupation not found. Try another title, e.g. nurse, accountant, translator.", matched:"Matched: {o}"
+    needInput:"Type an occupation first.", noMatch:"Occupation not found. Try another title, e.g. nurse, accountant, translator.", matched:"Matched: {o}", suggest:"O*NET has no exact match for \"{q}\". Closest:"
   }
 };
 const MONTHS_EN=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
@@ -749,11 +749,14 @@ function render(){
   try{ history.replaceState(null,"","?"+stateQuery()+"#"+state.occ); }catch(_){}
 }
 
+// 返回 {o: 确定的匹配} 或 {cands: 最接近的几个}（让用户自己选，不再悄悄选错），都没有返回 null
+const STOP = new Set(["and","of","the","a","an","in","for","except","other","all"]);
+const tokens = s => (s.toLowerCase().match(/[a-z0-9+#]+|[⺀-鿿]+/g)||[]).filter(w=>!STOP.has(w));
 function match(q){
   q=q.trim().toLowerCase(); if(!q) return null;
-  const exact = OCC.find(o=>o.keys.includes(q)); if(exact) return exact;
-  if(/[^\x00-\x7f]/.test(q)){
-    // 中文：优先选「包含输入、且多出的字最少」的名字；同样短时优先有别名的常见职业
+  const exact = OCC.find(o=>o.keys.includes(q)); if(exact) return {o:exact};
+  if(/[^\x00-\x7f]/.test(q) && !/[a-z]/.test(q)){
+    // 纯中文：优先选「包含输入、且多出的字最少」的名字；同样短时优先有别名的常见职业
     let best=null, bestD=1e9;
     for(const o of OCC) for(const k of o.keys){
       if(!/[^\x00-\x7f]/.test(k)) continue;
@@ -761,17 +764,28 @@ function match(q){
       if(d<1e9 && o.aliases.length) d-=0.5;
       if(d<bestD){ best=o; bestD=d; }
     }
-    if(best) return best;
+    if(best) return {o:best};
   }
-  const words=q.split(/\s+/).filter(Boolean);
-  let best=null, bestScore=0;
+  // 英文或中英混合：按整词匹配（ai 不会再匹配到 airline），允许前缀（engineer → engineers）
+  const qt = tokens(q); if(!qt.length) return null;
+  const scored = [];
   for(const o of OCC){
-    const hay=o.keys.join(" | ");
-    let sc=0; for(const w of words) if(hay.includes(w)) sc+=w.length;
-    if(o.zh) sc+=0.5;
-    if(sc>bestScore){ best=o; bestScore=sc; }
+    let sc=0, hit=0;
+    for(const w of qt){
+      let v=0;
+      if(/[^\x00-\x7f]/.test(w)){ if(o.keys.some(k=>k.includes(w))) v=w.length*2; }
+      else if(o.words.has(w)) v=w.length+1;
+      else if(w.length>=3 && [...o.words].some(x=>x.startsWith(w) || (x.length>=4 && w.startsWith(x)))) v=w.length;
+      if(v){ sc+=v; hit++; }
+    }
+    if(hit) scored.push({o, hit, sc: sc+(o.aliases.length?0.6:0)+(o.zh?0.3:0)});
   }
-  return bestScore>=2?best:null;
+  scored.sort((a,b)=>b.hit-a.hit||b.sc-a.sc);
+  if(!scored.length) return null;
+  const top=scored[0];
+  // 所有词都对上才直接选；但标题很长又不常见（比如 product manager → Biofuels … Product Development Managers）时还是让用户挑
+  if(top.hit===qt.length && (top.o.aliases.length || tokens(top.o.en).length<=5)) return {o:top.o};
+  return {cands: scored.slice(0,6).map(x=>x.o)};
 }
 
 function buildTicker(){
@@ -817,7 +831,8 @@ function initialLang(){
 function init(data){
   OCC = data.occ.map(([code,en,zh,aliases,tasks])=>({code,en,zh,aliases,
     tasks: tasks.map(([name,h,share,type])=>({name,h,share,type})),
-    keys: [en,zh,...aliases].filter(Boolean).map(s=>s.toLowerCase())}));
+    keys: [en,zh,...aliases].filter(Boolean).map(s=>s.toLowerCase()),
+    words: new Set([en,...aliases].flatMap(tokens))}));
   BY_CODE = Object.fromEntries(OCC.map(o=>[o.code,o]));
   const fromHash = decodeURIComponent(location.hash.slice(1));
   state.occ = BY_CODE[fromHash] ? fromHash : OCC.find(o=>o.en==="Accountants and Auditors").code;
@@ -836,10 +851,15 @@ $("occ-form").addEventListener("submit",e=>{
   e.preventDefault();
   if(!OCC.length) return;
   if(!$("occ-input").value.trim()){ $("msg").textContent=t("needInput"); return; }
-  const o=match($("occ-input").value);
-  if(!o){ $("msg").textContent=t("noMatch"); return; }
-  $("msg").textContent = t("matched",{o:label(o)}); state.occ=o.code; state.showAll=false; render();
+  const q=$("occ-input").value.trim(), res=match(q);
+  if(!res){ $("msg").textContent=t("noMatch"); return; }
+  if(res.cands){
+    $("msg").innerHTML = esc(t("suggest",{q}))+' '+res.cands.map(o=>'<button type="button" class="chip" data-id="'+o.code+'">'+esc(shortName(o))+'</button>').join(" ");
+    return;
+  }
+  $("msg").textContent = t("matched",{o:label(res.o)}); state.occ=res.o.code; state.showAll=false; render();
 });
+$("msg").addEventListener("click",e=>{ const b=e.target.closest(".chip"); if(!b) return; state.occ=b.dataset.id; state.showAll=false; $("msg").textContent=t("matched",{o:label(BY_CODE[b.dataset.id])}); render(); });
 $("occ-input").addEventListener("input",()=>{ $("msg").textContent=""; });
 $("region").addEventListener("change",e=>{ state.region=e.target.value; if(OCC.length) render(); });
 $("rel-group").addEventListener("click",e=>{ const b=e.target.closest("button"); if(!b||!OCC.length) return; state.rel=+b.dataset.v; render(); });

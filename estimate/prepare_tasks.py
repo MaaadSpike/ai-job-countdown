@@ -18,14 +18,22 @@ import pandas as pd
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--xlsx", type=Path, default=Path("task_time_share_estimates.xlsx"))
+    ap.add_argument("--onet-ratings", type=Path,
+                    help="改从 O*NET 30.2 的 Task Ratings.xlsx 取任务（有频率和相关度评分的任务），不用 --xlsx")
     ap.add_argument("--out", type=Path, default=Path("tasks.jsonl"))
     ap.add_argument("--only", type=Path, help="只保留这个 CSV 里出现的 task_id（例如 M3 的 eval_sample.csv）")
     args = ap.parse_args()
 
-    d = pd.read_excel(args.xlsx, dtype={"Task ID": str, "Occupation ID": str})
-    d = d.rename(columns={"Task ID": "task_id", "Task Name": "task", "Occupation ID": "onet_code",
-                          "Occupation Name": "occupation"})
-    d = d[["task_id", "onet_code", "occupation", "task"]].drop_duplicates(["task_id", "onet_code"])
+    if args.onet_ratings:
+        from check_onet_subset import onet_rated_tasks
+        p = str(args.onet_ratings)
+        ratings = pd.read_excel(p) if p.endswith("xlsx") else pd.read_csv(p, sep="\t")
+        d = onet_rated_tasks(ratings)[["task_id", "onet_code", "occupation", "task"]]
+    else:
+        d = pd.read_excel(args.xlsx, dtype={"Task ID": str, "Occupation ID": str})
+        d = d.rename(columns={"Task ID": "task_id", "Task Name": "task", "Occupation ID": "onet_code",
+                              "Occupation Name": "occupation"})
+        d = d[["task_id", "onet_code", "occupation", "task"]].drop_duplicates(["task_id", "onet_code"])
     if args.only:
         keep = set(pd.read_csv(args.only, dtype={"task_id": str})["task_id"])
         d = d[d["task_id"].isin(keep)]

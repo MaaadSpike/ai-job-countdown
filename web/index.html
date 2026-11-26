@@ -364,7 +364,7 @@ dialog#share-dlg::backdrop{background:rgba(0,0,0,.72)}
       </div>
       <div>
         <h3 data-i18n="m2h">2 · 估计每项任务做一次要多久</h3>
-        <p data-i18n="m2p">让 Qwen2.5-32B 估计一位熟练从业者从开始到交付、不用 AI，做一次这项任务的总工时，并判断它是电脑上能完成的、依赖现场操作的，还是依赖人际信任的。每项采样 5 次取中位数。在 51 条人工标注的任务上，86% 的估计与人工判断相差不超过一档（8 档时长），任务类型一致率 86%。</p>
+        <p data-i18n="m2p">让 Qwen2.5-32B 估计一位熟练从业者从开始到交付、不用 AI，做一次这项任务的总工时，并判断它是电脑上能完成的、依赖现场操作的，还是依赖人际信任的。每项采样 5 次取中位数。在 51 条人工标注的任务上，86% 的估计与人工判断相差不超过一档（8 档时长），任务类型一致率 86%；这批任务用来调过 prompt。另外 50 条没参与调参的任务由 AI 标注者（Claude）按同一份规则标注，与它相差不超过一档的比例为 82%，类型一致 84%。</p>
       </div>
       <div>
         <h3 data-i18n="m3h">3 · 套上 METR 的能力曲线</h3>
@@ -420,7 +420,7 @@ const STR = {
     m1h:"1 · 把职业拆成任务",
     m1p:"任务清单来自 O*NET 30.2（876 个职业，17,517 项任务）。每项任务占工作时间的比例 = O*NET 调查里从业者报告的执行频率 × 相关度 × 做一次的时长（一次最多按一个工作日算），再在职业内部归一化。",
     m2h:"2 · 估计每项任务做一次要多久",
-    m2p:"让 Qwen2.5-32B 估计一位熟练从业者从开始到交付、不用 AI，做一次这项任务的总工时，并判断它是电脑上能完成的、依赖现场操作的，还是依赖人际信任的。每项采样 5 次取中位数。在 51 条人工标注的任务上，86% 的估计与人工判断相差不超过一档（8 档时长），任务类型一致率 86%。",
+    m2p:"让 Qwen2.5-32B 估计一位熟练从业者从开始到交付、不用 AI，做一次这项任务的总工时，并判断它是电脑上能完成的、依赖现场操作的，还是依赖人际信任的。每项采样 5 次取中位数。在 51 条人工标注的任务上，86% 的估计与人工判断相差不超过一档（8 档时长），任务类型一致率 86%；这批任务用来调过 prompt。另外 50 条没参与调参的任务由 AI 标注者（Claude）按同一份规则标注，与它相差不超过一档的比例为 82%，类型一致 84%。",
     m3h:"3 · 套上 METR 的能力曲线",
     m3p:"METR 测量 AI agent 能独立完成多长的任务：目前 80% 可靠度下约 3 小时，50% 可靠度下约 16 小时。一项任务要等的时间是 <code>翻倍周期 × log₂(任务时长 × 难度折扣 ÷ 当前上限)</code>。按到位先后累加时间占比，到你选的比例就是「能力到位」，再加落地期。",
     m4h:"这个数字不能说明什么",
@@ -483,7 +483,7 @@ const STR = {
     m1h:"1 · Break the occupation into tasks",
     m1p:"Tasks come from O*NET 30.2 (876 occupations, 17,517 tasks). A task's share of work time = how often workers report doing it in the O*NET survey × its relevance × how long one instance takes (capped at one workday per occurrence), normalized within the occupation.",
     m2h:"2 · Estimate how long each task takes",
-    m2p:"Qwen2.5-32B estimates the total hours a skilled worker needs to complete one instance of the task end to end, without AI, and classifies it as doable at a computer, dependent on being on site, or dependent on interpersonal trust. Each task is sampled 5 times and the median is used. On 51 human-labeled tasks, 86% of estimates are within one bin of the human judgment (8 duration bins), and task types agree 86% of the time.",
+    m2p:"Qwen2.5-32B estimates the total hours a skilled worker needs to complete one instance of the task end to end, without AI, and classifies it as doable at a computer, dependent on being on site, or dependent on interpersonal trust. Each task is sampled 5 times and the median is used. On 51 human-labeled tasks, 86% of estimates are within one bin of the human judgment (8 duration bins), and task types agree 86% of the time; these tasks were used to tune the prompt. On 50 other tasks not used for tuning, labeled by an AI annotator (Claude) with the same rules, 82% are within one bin and types agree 84% of the time.",
     m3h:"3 · Apply METR's capability curve",
     m3p:"METR measures how long a task AI agents can complete on their own: currently about 3 hours at 80% reliability and about 16 hours at 50%. The wait for a task is <code>doubling time × log₂(task hours × difficulty factor ÷ current horizon)</code>. Adding up work-time shares in order of arrival gives the date AI covers your chosen share; then add the adoption lag.",
     m4h:"What this number does not tell you",

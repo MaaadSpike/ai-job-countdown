@@ -59,7 +59,9 @@ Agreement with 51 human-labeled tasks (single annotator, 8 duration bins):
 | v3 | 94% | 0.70 | 0.64 | −0.50 bins | 86% |
 | **v3.1 (used)** | 86% | 0.70 | 0.72 | 0.00 bins | 86% |
 
-These 51 tasks were used to tune the prompt, so they are a development set. The final accuracy will be reported on a separate held-out set.
+These 51 tasks were used to tune the prompt, so they are a development set.
+
+**Held-out test set (items 54–103, not used for tuning).** Labeled by an AI annotator (Claude Opus 5.5) following the same written guidelines as the human annotator, without seeing the model's estimates. v3.1 is within one bin of these labels 82% of the time (quadratic weighted κ 0.67), with 84% type agreement and an average bias of +0.56 bins, mostly on short tasks. This is agreement with another model, not human-validated accuracy.
 
 - v2 inflated short tasks. v3 fixed that but halved long tasks, which would have made countdowns look earlier. v3.1 restricts the "don't inflate" rule to quick routine actions.
 - Hatgis-Kessell et al.'s *w* is within one bin of the same human labels only 51% of the time and is 1.45 bins too short on average. For the 214 tasks sitting at their 7-hour cap, our median estimate is 38 hours, and 86% are above 7 hours.
@@ -140,7 +142,7 @@ The tests cover prompt parsing, an end-to-end run with a mock backend (including
 - **METR's tasks are mostly software engineering.** The real-world difficulty factor is not calibrated yet; calibrating it is the main research question for the next phase.
 - **Short tasks (under an hour) are overestimated** by about one bin. They are already within AI's current range, so the countdown is barely affected.
 - **Task types are imperfect**, especially for supervising and evaluating staff, and for in-person care tasks that are labeled trust-based.
-- **Human validation** so far uses one annotator. A second annotator and a held-out set are in progress.
+- **Validation** uses one human annotator (development set) and one AI annotator (held-out set). There is no inter-annotator agreement yet.
 
 ## Data sources
 

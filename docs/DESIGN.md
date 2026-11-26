@@ -96,6 +96,8 @@ Key call: long tasks drive the countdown, while short tasks are already below AI
 
 On 51 human-labeled tasks, v3.1 is within one bin of the human judgment 86% of the time, with quadratic weighted kappa 0.70 and 86% type agreement. These labels were used to tune the prompt, so they are a development set.
 
+**Held-out test set.** Items 54–103 (50 tasks, not used for tuning) were labeled by an AI annotator, Claude Opus 5.5, following `annotate/GUIDELINES.md` without seeing M2's estimates. v3.1 is within one bin of these labels 82% of the time, quadratic weighted kappa 0.67, type agreement 84% (trust has the lowest F1, 0.70), average bias +0.56 bins; 9 of the 10 largest gaps are short tasks estimated too long, the same direction as on the development set. 82% is not higher than M2's 86% against the human, so model-to-model agreement does not appear inflated here, but it is still agreement between models and is not reported as accuracy. A batch version is `annotate/ai_label.py` (any OpenAI-compatible API).
+
 **Sampling.** 300 tasks, stratified across 22 SOC major groups, at most one task per occupation, fixed random seed; the first 20 form the calibration set.
 
 **What is labeled.** Two things per task:
@@ -112,7 +114,7 @@ The full rules are in `annotate/GUIDELINES.md`. The labeling tool is a Streamlit
 **Still to do**
 
 - A second annotator labels items 1–30 to measure inter-annotator agreement
-- Items 51–100 labeled as a held-out test set; the final accuracy is reported on it
+- ~~Items 51–100 labeled as a held-out test set~~: replaced by an AI annotator on items 54–103, results above
 - Type rules have a gap for supervising and evaluating staff; one more convention is needed
 
 ## Countdown algorithm
@@ -262,13 +264,13 @@ The largest uncertainty is the difficulty factor k: each ×4 delays the countdow
 | Time shares count at most one workday per occurrence | Occupations heavy in long work (software, research) run about 1 year early | Stated in the method; with the alternative time shares, 85% of occupations move less than half a year |
 | Short tasks (under an hour) run about 1 bin long | Small: they are already within AI's range | No more prompt tuning, to avoid overfitting |
 | Task types misclassified (supervising staff, in-person care) | Occupations such as nurses end up on the curve | Add a labeling rule; show the type so users can see it |
-| One annotator, whose labels were also used for tuning | Accuracy is optimistic | Second annotator on 30 items + a held-out set of 50 |
+| One human annotator, whose labels were also used for tuning | Accuracy is optimistic | Held-out set of 50 (AI annotator); human spot checks can be added later |
 | Users read "AI can do it" as "I will be replaced" | Anxiety or backlash | Show the two dates separately; keep "what this number does not tell you" on the page |
 | Automatic news is filtered by headline and may include off-topic or overstated stories | Uneven quality of field news | Strict LLM filter when configured; hand-picked news on top; every item links to the source |
 
 ## Roadmap
 
-v1 still needs a second annotator and deployment; v2 centers on calibrating the difficulty factor and on link previews.
+v1 still needs deployment (a second human annotator is now optional); v2 centers on calibrating the difficulty factor and on link previews.
 
 **v1 launch checklist**
 
@@ -279,8 +281,8 @@ v1 still needs a second annotator and deployment; v2 centers on calibrating the 
 - [x] pytest + GitHub Actions CI
 - [x] Share image (with QR code), system share, LinkedIn / X buttons; links carry the assumptions
 - [x] Field news: collected daily for 22 fields, hand-picked items on top
-- [ ] Second annotator labels items 1–30; compute inter-annotator agreement
-- [ ] Label items 51–100 as a held-out test set; update accuracy in the README and method
+- [ ] (Optional) Second annotator labels items 1–30; compute inter-annotator agreement
+- [x] Held-out test set, items 54–103 (AI annotator Claude Opus 5.5); README and method updated
 - [ ] Deploy to Cloudflare Pages: set secrets, take `occupations.json` out of `.gitignore`
 - [ ] Before making the repo public: no labels and no raw third-party data in it
 

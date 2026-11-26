@@ -39,6 +39,9 @@ def cohen_kappa(a: pd.Series, b: pd.Series) -> float:
 def main(path_a: str, path_b: str):
     a = pd.read_csv(path_a, dtype={"task_id": str})
     b = pd.read_csv(path_b, dtype={"task_id": str})
+    for path, df in ((path_a, a), (path_b, b)):
+        if df.empty:
+            sys.exit(f"{path} 里没有任何标注，先确认它已经标完")
     name_a, name_b = a["annotator"].iloc[0], b["annotator"].iloc[0]
     m = a.merge(b, on="task_id", suffixes=("_a", "_b"))
 

@@ -36,14 +36,20 @@ def weighted_kappa(a, b, k=8):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--estimates", type=Path, required=True)
-    ap.add_argument("--labels", type=Path, required=True, help="agreement.py 生成的 eval_labels.csv")
+    ap.add_argument("--labels", type=Path, required=True,
+                    help="agreement.py 生成的 eval_labels.csv，或单个标注者的 labels_<名字>.csv")
     ap.add_argument("--meta", type=Path, help="eval_sample_meta.csv（斯坦福的数值）")
     args = ap.parse_args()
 
     est = pd.DataFrame([json.loads(l) for l in args.estimates.open(encoding="utf-8")])
     est = est[est["n_valid"] > 0]
     lab = pd.read_csv(args.labels, dtype={"task_id": str})
-    lab = lab[lab["status"] == "agreed"].dropna(subset=["duration_bin", "task_type"])
+    if "status" in lab.columns:  # agreement.py 生成的 eval_labels.csv
+        lab = lab[lab["status"] == "agreed"]
+    else:  # 单个标注者的 labels_<名字>.csv（比如 ai_label.py 的输出）
+        print(f"标注来自单个标注者：{', '.join(map(str, lab['annotator'].dropna().unique()))}（下文的「人工」指这份标注）")
+        lab = lab[lab["skipped"] == 0]
+    lab = lab.dropna(subset=["duration_bin", "task_type"])
     m = lab.merge(est, on="task_id", suffixes=("_human", "_model"))
     if m.empty:
         raise SystemExit("M2 结果和人工标注没有重合的任务：确认 M2 跑过 eval_tasks.jsonl")

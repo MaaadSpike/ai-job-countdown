@@ -36,7 +36,7 @@ The tasks are sorted by that waiting time, and their shares of work time are add
 
 | Quantity | Source | Notes |
 |---|---|---|
-| Tasks and occupations | [O\*NET 30.2](https://www.onetcenter.org) (CC BY 4.0) | 876 occupations, 17,525 tasks. Phase 1 uses the same task subset as Hatgis-Kessell et al. (2026). |
+| Tasks and occupations | [O\*NET 30.2](https://www.onetcenter.org) (CC BY 4.0) | 876 occupations, 17,525 tasks (the same subset as Hatgis-Kessell et al. (2026); every task is an O\*NET rated task with identical text). |
 | Hours for one instance of each task | **Our estimates**: Qwen2.5-32B-Instruct-AWQ on vLLM (`estimate/`) | End to end, by a skilled worker, without AI. Median of 5 samples. |
 | Task type | Same model run | Computer-based, trust-based (needs in-person communication), or on-site. |
 | Share of work time | **Our formula** (`web/own_shares.py`) | O\*NET frequency × O\*NET relevance × min(hours, 7), normalized within each occupation |
@@ -99,12 +99,12 @@ A static site: one HTML file and two JSON data files (`web/occupations.json`, ab
 # 1. Data (data/ and runs/ are not in the repo; create them):
 #    data/Task Ratings.xlsx               <- O*NET 30.2: https://www.onetcenter.org/dl_files/database/db_30_2_excel.zip
 #    data/task_time_share_estimates.xlsx  <- https://github.com/Stephanehk/Estimating-Time-Spent-On-Work
-#                                            (task list for step 2, and the optional comparison)
+#                                            (optional comparison only)
 
 # 2. Estimate task durations (needs a GPU; ~4 hours on one A100 40GB)
 cd estimate
 bash setup.sh
-python prepare_tasks.py --xlsx ../data/task_time_share_estimates.xlsx --out tasks.jsonl
+python prepare_tasks.py --onet-ratings "../data/Task Ratings.xlsx" --out tasks.jsonl   # task list from O*NET alone
 python estimate.py --tasks tasks.jsonl --out ../runs/full-v3.1 --max-tokens 600
 
 # 3. Build the website data and preview

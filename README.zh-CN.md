@@ -36,7 +36,7 @@ METR 时间跨度趋势（forecast/）──────────────
 
 | 数据 | 来源 | 说明 |
 |---|---|---|
-| 任务和职业 | [O\*NET 30.2](https://www.onetcenter.org)（CC BY 4.0） | 876 个职业、17,525 项任务。第一期用的任务子集和 Hatgis-Kessell et al. (2026) 相同。 |
+| 任务和职业 | [O\*NET 30.2](https://www.onetcenter.org)（CC BY 4.0） | 876 个职业、17,525 项任务（和 Hatgis-Kessell et al. (2026) 是同一个子集；每项都是 O\*NET 中有评分的任务，原文一致）。 |
 | 每项任务做一次要多久 | **自己估计**：vLLM 上的 Qwen2.5-32B-Instruct-AWQ（`estimate/`） | 熟练从业者、端到端、不用 AI；每项采样 5 次取中位数 |
 | 任务类型 | 同一次模型运行 | 电脑可完成、依赖人际信任、需要现场操作 |
 | 工作时间占比 | **自己的公式**（`web/own_shares.py`） | O\*NET 执行频率 × O\*NET 相关度 × min(单次时长, 7 小时)，在职业内部归一化 |
@@ -99,12 +99,12 @@ METR 时间跨度趋势（forecast/）──────────────
 # 1. 数据（data/ 和 runs/ 不在仓库里，需要自己建）：
 #    data/Task Ratings.xlsx               ← O*NET 30.2：https://www.onetcenter.org/dl_files/database/db_30_2_excel.zip
 #    data/task_time_share_estimates.xlsx  ← https://github.com/Stephanehk/Estimating-Time-Spent-On-Work
-#                                            （第 2 步的任务清单，以及可选的对照）
+#                                            （仅用于可选的对照）
 
 # 2. 估计任务时长（需要 GPU，一张 A100 40GB 约 4 小时）
 cd estimate
 bash setup.sh
-python prepare_tasks.py --xlsx ../data/task_time_share_estimates.xlsx --out tasks.jsonl
+python prepare_tasks.py --onet-ratings "../data/Task Ratings.xlsx" --out tasks.jsonl   # 只靠 O*NET 生成任务清单
 python estimate.py --tasks tasks.jsonl --out ../runs/full-v3.1 --max-tokens 600
 
 # 3. 生成网站数据并本地预览

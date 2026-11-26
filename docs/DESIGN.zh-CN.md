@@ -249,7 +249,7 @@ v1 已实现：
 **数据与授权**
 
 - O\*NET：CC BY 4.0，允许商业使用，需注明出处
-- Hatgis-Kessell et al.：仓库没有 LICENSE，只作学术引用和对照，不进入网站数据；但第一期的任务清单是从他们的 xlsx 导出的（任务文字本身来自 O\*NET）
+- Hatgis-Kessell et al.：仓库没有 LICENSE，只作学术引用和对照，不进入网站数据；第一期的任务清单是从他们的 xlsx 导出的，但 `estimate/check_onet_subset.py` 确认全部 17,525 项都是 O\*NET 30.2 中有评分的任务、原文一致，可以只靠 O\*NET 重建（`prepare_tasks.py --onet-ratings`）。O\*NET 还有 426 项有评分的任务（18 个职业）没估计。网站方法说明里附了 O\*NET 的 CC BY 4.0 署名
 - 标注结果和模型输出不提交，避免标注者看到彼此或模型的答案
 
 **算力。** Lambda Cloud 按需租 A100 40GB（1.99 美元/小时），venv 和 19 GB 模型缓存放在 `m2-data` 文件系统上。跑完必须 Terminate，曾经空转约 15 小时。
@@ -299,6 +299,6 @@ v1 剩下部署一件事（第二位人工标注者改为可选）；v2 的重�
 
 - [ ] 难度折扣默认 ×4 是否合适，还是默认 ×1 并更显眼地提示「未校准」？
 - [ ] 公开的域名：用 `*.pages.dev`，还是买一个独立域名？
-- [ ] 以后可能商业化的话，是否仍要发 GitHub issue 向 Hatgis-Kessell et al. 询问授权（任务清单目前从他们的 xlsx 导出）？
+- [x] ~~Hatgis-Kessell et al. 任务清单的授权~~：不再需要，清单可以只靠 O\*NET 重建（`check_onet_subset.py` 已验证）
 - [ ] 第二位标注者如果一直没空，v1 是否以单人标注上线，并在方法说明里写明？
 - [ ] 仓库何时从 private 改为 public：和网站同时，还是等论文初稿之后？

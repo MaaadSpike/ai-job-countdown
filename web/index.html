@@ -150,6 +150,8 @@ button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{ou
 .method p,.method li{font-size:13.5px;color:var(--muted);margin:0}
 .method ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px}
 .method a{color:var(--amber)}
+.credit{font-size:12px;color:var(--muted);margin:18px 0 0;padding-top:12px;border-top:1px solid var(--line)}
+.credit a{color:var(--amber)}
 code{font-family:var(--f-mono);font-size:12.5px;background:var(--panel-2);padding:1px 4px;border-radius:2px}
 @media (max-width:520px){.dates{grid-template-columns:1fr}}
 @media (prefers-reduced-motion:reduce){
@@ -381,6 +383,7 @@ dialog#share-dlg::backdrop{background:rgba(0,0,0,.72)}
         </ul>
       </div>
     </div>
+    <p class="credit" data-i18n-html="onetCredit">本站使用 <a href="https://www.onetcenter.org/database.html" target="_blank" rel="noopener">O*NET 30.2 数据库</a>的信息，来源：美国劳工部就业与培训管理局（USDOL/ETA），按 <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a> 授权使用。O*NET® 是 USDOL/ETA 的商标。本站修改了部分信息：增加了模型估计的任务时长和类型、由 O*NET 评分计算的时间占比，以及职业中文名；USDOL/ETA 未批准、认可或测试这些修改。</p>
   </section>
 </div>
 
@@ -428,7 +431,7 @@ const STR = {
     m4b:"需要现场操作的任务不计入；依赖人际信任的任务计入，但落地期更长。",
     m4c:"时间占比里，每次执行最多按一个工作日算，耗时几百小时的长任务分量会偏小。所以软件、研究这类长任务多的职业，倒计时可能偏早约一年。",
     m4d:"METR 的题目以软件工程为主，推到其他行业要打折扣，折扣多大还没校准。",
-    m4e:"任务时长是模型估计。短任务（1 小时以内）往往被估长，但它们本来就在 AI 当前能力范围内，不影响倒计时；人工校验仍在扩大样本。英文任务描述直接来自 O*NET。",
+    m4e:"任务时长是模型估计。短任务（1 小时以内）往往被估长，但它们本来就在 AI 当前能力范围内，不影响倒计时；验证样本还不大（见第 2 步）。英文任务描述直接来自 O*NET。", onetCredit:'本站使用 <a href="https://www.onetcenter.org/database.html" target="_blank" rel="noopener">O*NET 30.2 数据库</a>的信息，来源：美国劳工部就业与培训管理局（USDOL/ETA），按 <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a> 授权使用。O*NET® 是 USDOL/ETA 的商标。本站修改了部分信息：增加了模型估计的任务时长和类型、由 O*NET 评分计算的时间占比，以及职业中文名；USDOL/ETA 未批准、认可或测试这些修改。',
     unitY:"年", unitD:"天", months:"{n} 个月", years:"{n} 年", plusYears:"+{n} 年",
     half:"一半", threeQ:"四分之三", oThr50:"一半工作", oThr75:"四分之三",
     types:["电脑可完成","依赖人际信任","需要现场操作"],
@@ -491,7 +494,7 @@ const STR = {
     m4b:"Tasks that require being on site are excluded; trust-based tasks are included but with a longer adoption lag.",
     m4c:"Time shares count at most one workday per occurrence, which underweights tasks that take hundreds of hours. For occupations heavy in such work, like software and research, the countdown may run about a year early.",
     m4d:"METR's tasks are mostly software engineering. Extending the trend to other fields needs a discount whose size is not yet calibrated.",
-    m4e:"Task durations are model estimates. Short tasks (under an hour) tend to be overestimated, but they are already within AI's current range, so the countdown is unaffected. Human validation is being expanded. Task descriptions are O*NET's original English text.",
+    m4e:"Task durations are model estimates. Short tasks (under an hour) tend to be overestimated, but they are already within AI's current range, so the countdown is unaffected. Validation samples are still small (see step 2). Task descriptions are O*NET's original English text.", onetCredit:'This site includes information from the <a href="https://www.onetcenter.org/database.html" target="_blank" rel="noopener">O*NET 30.2 Database</a> by the U.S. Department of Labor, Employment and Training Administration (USDOL/ETA). Used under the <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a> license. O*NET® is a trademark of USDOL/ETA. AI Job Countdown has modified all or some of this information: it adds model-estimated task durations and types, time shares computed from O*NET ratings, and Chinese occupation names. USDOL/ETA has not approved, endorsed, or tested these modifications.',
     unitY:"y", unitD:"d", months:"{n} mo", years:"{n} yr", plusYears:"+{n} yr",
     half:"half", threeQ:"three quarters", oThr50:"Half", oThr75:"Three quarters",
     types:["Computer-based","Trust-based","On-site"],

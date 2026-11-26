@@ -249,7 +249,7 @@ Repo `MaaadSpike/ai-job-countdown` (private). Every push runs lint and 19 tests;
 **Data and licensing**
 
 - O\*NET: CC BY 4.0, commercial use allowed with attribution
-- Hatgis-Kessell et al.: no LICENSE in the repo; used only for academic citation and comparison, not in the website data. The phase-1 task list was, however, exported from their xlsx (the task text itself comes from O\*NET)
+- Hatgis-Kessell et al.: no LICENSE in the repo; used only for academic citation and comparison, not in the website data. The phase-1 task list was exported from their xlsx, but `estimate/check_onet_subset.py` confirms all 17,525 tasks are O\*NET 30.2 rated tasks with identical text, so the list can be rebuilt from O\*NET alone (`prepare_tasks.py --onet-ratings`). O\*NET has 426 more rated tasks (18 occupations) we have not estimated yet. The site carries the O\*NET CC BY 4.0 attribution in its method section
 - Labels and model outputs are not committed, so annotators never see each other's or the model's answers
 
 **Compute.** A100 40GB rented on demand from Lambda Cloud ($1.99/hour); the venv and the 19 GB model cache live on the `m2-data` filesystem. Instances must be terminated after a run; one once sat idle for about 15 hours.
@@ -299,6 +299,6 @@ v1 still needs deployment (a second human annotator is now optional); v2 centers
 
 - [ ] Is ×4 the right default difficulty factor, or should the default be ×1 with a more prominent "not calibrated" warning?
 - [ ] Public domain: `*.pages.dev`, or buy a dedicated domain?
-- [ ] Given possible commercial use later, should we still open a GitHub issue asking Hatgis-Kessell et al. about licensing (the task list is currently exported from their xlsx)?
+- [x] ~~Licensing of the Hatgis-Kessell et al. task list~~: no longer needed; the list is reproducible from O\*NET alone (checked by `check_onet_subset.py`)
 - [ ] If the second annotator never has time, does v1 launch with a single annotator, stated in the method?
 - [ ] When does the repo go from private to public: together with the website, or after a paper draft?

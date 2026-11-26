@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-25T22:27Z",
+ "updated": "2026-11-26T23:00Z",
  "fields": {
   "11": {
    "zh": "管理",
@@ -91,6 +91,162 @@
   }
  },
  "items": [
+  {
+   "id": "e10d2a792132",
+   "k": "signal",
+   "date": "2026-11-26",
+   "src": "Superpower Daily",
+   "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxNZnh2di1rYVYzTnB6TVI5ZjBhMXdIQ250RWNzNC1hQUNFRjdNQVBaU3BtSDVtTFhPVTNZYmRvdFVGOEw4R3h2T2dnZHh1TnhpWXRjYWVmVlkwanNlbklyZmZZRU1wYjdLdG5rVm1IdlZFMUFRRDJVY295RXQtNEpGQ1REM2VNeHFCNy1Hdi1scHNELVZFMHhIRXpOMzhiaVVoNjVLRndWZnY?oc=5",
+   "fields": [
+    "43"
+   ],
+   "en": {
+    "t": "Mawj raises Series A for AI customer service in Saudi and Gulf dialects"
+   }
+  },
+  {
+   "id": "db00207239ee",
+   "k": "signal",
+   "date": "2026-11-26",
+   "src": "WBUR",
+   "url": "https://news.google.com/rss/articles/CBMidEFVX3lxTE5oTk94eXR5RDNaSmFyVENaYWFoZG14X2NmMmZjQ1hTX2tNTWpvRWoxcWZkOEJyemVLd3M1VEJVSUlpT3UtVEVTSzZlU2hJMW9yUHlDeFpEdEZFS0plSm9Td1hxcmVGSm9yWHAwODRaNnJoSzM4?oc=5",
+   "fields": [
+    "21"
+   ],
+   "en": {
+    "t": "Will AI chatbots help more men seek mental health care?"
+   }
+  },
+  {
+   "id": "dae5b20fc8d9",
+   "k": "signal",
+   "date": "2026-11-26",
+   "src": "Howl.Link",
+   "url": "https://news.google.com/rss/articles/CBMiO0FVX3lxTFBDbW1hdXg2Z3lWWnV0OEpWSW0wUTlScW44MUtiT0JvLU5NQ1cwaXlRbmlQR19Ec1JNNnk4?oc=5",
+   "fields": [
+    "49"
+   ],
+   "en": {
+    "t": "Transformer Attention Mechanics, Agentic Drift, and Defensive Hardening for AI Systems + Video"
+   }
+  },
+  {
+   "id": "d5f5cee1c230",
+   "k": "signal",
+   "date": "2026-11-26",
+   "src": "EY",
+   "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxPMUFiaE0tTUFyWjZLUURXcXdiazltVmF0TWEwaW5CemhzTC00ZllSWmZYMThBck55YktaWHVmSG5Xb3d6VmhabDBtRlBrcjRaV3d5T2J0Q0xGMVNnZ2JfWG82QmxLU2lNbUVyUGlxQk1KWk9OdjRqcmd2d29fcW95M0w3QUhEVWJHUG1WR2J4bG1HMjVNUjVQMEFOc05mZU11cmtWVXNEZzVIYnRWanYzQ1p1d1NSRG1XR3o0?oc=5",
+   "fields": [
+    "43"
+   ],
+   "en": {
+    "t": "How GCCs are powering AI-native customer service"
+   }
+  },
+  {
+   "id": "c8a68d8f6ff7",
+   "k": "signal",
+   "date": "2026-11-26",
+   "src": "AiThority",
+   "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxNM2Q3Z2R0dGZjSUFuVmYxLThxTm9KZFZWdVlvYVJ2Um52SEFDRi1lWkZKTVY5anVMUHB0bkRyWFdsSF9oaGhRVjBNQnBRV3dDejlfbmRfQzdRR0loREVkWVQ5LXNLYnpoTk9XZGt5S3dwaVVQUmtaZ01ISjZCdE1qQ1ZvZ3NLTXZXOGZ0MFV5QnVFOGxKRVlWNEh5OTdLVUhia2xFYmdB?oc=5",
+   "fields": [
+    "27"
+   ],
+   "en": {
+    "t": "DeepL introduces Aure v2, its fastest Voice AI translation model"
+   }
+  },
+  {
+   "id": "a25edc82ae63",
+   "k": "signal",
+   "date": "2026-11-26",
+   "src": "CTech",
+   "url": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE94ZkNoZk1OeW4wby05bUFrQ29iWXB2dl92RkxvMU5UQ0pDXzN0SzkyWVA2enNtVEdIV2JzZWdSWHBXSzJlZ0lYN1pCMGdWQkVpdkZLaGx4cWVyUUpUZURNd3k4X1JVN2c?oc=5",
+   "fields": [
+    "15"
+   ],
+   "en": {
+    "t": "AI is increasingly replacing software developers, while lawyers are using it to work smarter"
+   }
+  },
+  {
+   "id": "8850a358c335",
+   "k": "signal",
+   "date": "2026-11-26",
+   "src": "Dealroom",
+   "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxQLWJ1NkRXM09kQ1UyR3pfY3dsbEdaSGgyVHp5MEh5cGNLRXFiYk85bGFrSy11Ti10c200d3NUMWhoX2xqemFrVnBreDN5a3pGWU01Sm9CalVvaFZ6ZlcwazF1UGdTS0FsallKbzRiTnBNcEM2QnVTZU9lWGlVWW1RSEJsUGg5SjZmam5ZeHhDN2V0WENheTRkbjllQXdFQkJPRXhlUzc0ZWtnejRwVmlUUFhCbTVFWTBKRTZEdQ?oc=5",
+   "fields": [
+    "13"
+   ],
+   "en": {
+    "t": "Lendable's Victoria van Lennep: beating the banks with AI underwriting and £4M of equity"
+   }
+  },
+  {
+   "id": "875340e6acd0",
+   "k": "signal",
+   "date": "2026-11-26",
+   "src": "Bioengineer.org",
+   "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxNak5nX0dwcHJsTG9VMzlUY0lmNmhzd2dma0lOck05SjZSM045d1FxNXRRWGtHOGZ1UUtqNnRfZllPVnNIQWZVZlBHUmhpeHFpYURxVEl1VDdjYzB3dzY4ZU9MUWdtcURPa3pfVnYwUEJsb2hSR2pPaDFPX1VUS3FpclpTWlR0cTZqUnYzRmk5bDNrWWVlRFIwanA4aklIekR6a0ExcXBONmJFcVdBSnlwVXZNM3pzUQ?oc=5",
+   "fields": [
+    "19"
+   ],
+   "en": {
+    "t": "Physics-Guided Artificial Intelligence Reconstructs Fluid Flow From Imperfect Imaging Data"
+   }
+  },
+  {
+   "id": "7c984b847268",
+   "k": "signal",
+   "date": "2026-11-26",
+   "src": "Fall River Herald News",
+   "url": "https://news.google.com/rss/articles/CBMi_AFBVV95cUxOajh0dEMyTjlKVUtPRUVqVFhxVk9NRWJpaWdiWlN2Z3BkZm9Eamh4LWF6N2JIWS1WaC1DUEhNT2hleFJCTFBFb0FJZ2UzMUNWaEJEV0pUTlMtR0RfZXBkb092R3dfbllhYThHYWx0Q3hqVExvMU9xOGphRHZ6N3VqaGVfanZHc29lOVJ2ODl3TXJNeEFTT1B3SzlKOUZyR0hKOFFTNTNRcUt0NjBsc0lpUWdJcEQ3NVJueFBxUnZqWEx0SFFSdDFfTEJGeV9sVGUtZjd6a2FCZE9JSHh6Wm5Jcm1VVElZSERMZlFKWmJzTUNKY2tZM1RaLTlLSHU?oc=5",
+   "fields": [
+    "43"
+   ],
+   "en": {
+    "t": "Rhino Precision Marketing Addresses the Importance of Business Configuration Before AI Receptionists Handle Calls"
+   }
+  },
+  {
+   "id": "5df8bebc9a49",
+   "k": "signal",
+   "date": "2026-11-26",
+   "src": "The Guardian",
+   "url": "https://news.google.com/rss/articles/CBMizAFBVV95cUxNOFk1a3hxaXJETVRkR2o1aEFpWHBaVDdaV3hRMHlXYXdxRUR4YkJpSGVrVVVMMGV2X2R1UndhR0RvbkUxUVVIaTFfNzAxdmpUSTFTY01DaWozSVBwXzZzMGlERXRPX2dyRXNaRzVkWHlSVmpvZ0k3Y3puVnVaMk5FenpqUnNtNnloV0dVZ2tzUXRTYkhQLVA5dEg4U2FqUFZsU0FvMHJ1amd5Z2hndDQ0dFJnUnp3Tml6QzY0OVpReXFJSzJ5VWRtQ1dVc1U?oc=5",
+   "fields": [
+    "23"
+   ],
+   "en": {
+    "t": "Dozens of court cases in England and Wales affected by undisclosed AI use in 2026"
+   }
+  },
+  {
+   "id": "4ea4dcfe2052",
+   "k": "signal",
+   "date": "2026-11-26",
+   "src": "Forbes",
+   "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxOd0tBWVBZVU5Cc2Rxam5lN3dhQXh3S2dOay1PWE9XWEE0c05MejI3M3RMR0N2ZFZHU0t5d1NuUV95MWZaREJiQVJQNmxXOGhfbmRZemwzTHlKWC1NbTNfYlJrRmFyVXJ2TUNqRlF1a19vdHZUVllERkVRMkM5R0hGd0R5c0RpS24zV0lqUTRCNHQ5NFZibEQwUnUxUDE2dTE3Y01DdHFRZGNQNU9qWEEtNHVhbENaLTFpZnc?oc=5",
+   "fields": [
+    "43"
+   ],
+   "en": {
+    "t": "AI Customer Service: Who Carries The Burden Of Being Understood?"
+   }
+  },
+  {
+   "id": "06c3db148c2a",
+   "k": "signal",
+   "date": "2026-11-26",
+   "src": "Mexico Business News",
+   "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxNbzNMX3lvbDFIaXdaUWNxcTZJWXdJMndOaEFxZDhNT0FadUxkeWxCcldMcThzVU5xYUZCdEVxS3pJaEd4QlNWdmVVV2oyQXFESWtlM25oRDhnWGpPTEtiQmFibHZPdnhkS01wMWREQTRIaGZLNGNtaFk5VWZVWEhkN0FXYmRIU213cjU4Y21QN0RBRmZj?oc=5",
+   "fields": [
+    "15"
+   ],
+   "en": {
+    "t": "How Companies Measure Real AI Coding Tool Adoption"
+   }
+  },
   {
    "id": "ffcfdf1d42d3",
    "k": "signal",
@@ -261,6 +417,19 @@
    }
   },
   {
+   "id": "03334553c3c7",
+   "k": "signal",
+   "date": "2026-11-25",
+   "src": "Genpact",
+   "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxPT2l5bkNCQTJFYWhnSkxDc0wwdy01T2JZREpvTFZKeW53aWVMOEJSZndReUVmUU5kWDNoUVdPM0R5QmM0UXpGSkpzMlRaQXROc1dmWXlyTElNV081ekdCZnNCQTJpZFdXSW4wX2doZmZweWl3TmYtOExabVBBN3U0eDV5dUNvdThnbnlMU3Y1dEl3Qk1SdHc?oc=5",
+   "fields": [
+    "13"
+   ],
+   "en": {
+    "t": "Why insurers must explain AI underwriting decisions upfront"
+   }
+  },
+  {
    "id": "02e834683c59",
    "k": "signal",
    "date": "2026-11-25",
@@ -271,6 +440,19 @@
    ],
    "en": {
     "t": "‘I don’t know what world will be like’ when AI understands physics: top physicist"
+   }
+  },
+  {
+   "id": "ee7a8610efe1",
+   "k": "signal",
+   "date": "2026-11-24",
+   "src": "Phys.org",
+   "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTE1UUDhjcmNvR2pmaHJuYm1Ha0d0NFkxVGZVRlVVRm5PcVJCN3drVnA1U1RJTFpjNmN6TnNNSEJXZDVSV2JhR01fU3dTcWxGRjc1Z253WDROVWc2b0NuYVpCZ0lvWVhYVV9hYXdkOQ?oc=5",
+   "fields": [
+    "15"
+   ],
+   "en": {
+    "t": "AI has solved a host of big math problems—here's why this threatens the whole field of mathematics"
    }
   },
   {
@@ -326,6 +508,19 @@
    }
   },
   {
+   "id": "90b2fe5ada6c",
+   "k": "signal",
+   "date": "2026-11-24",
+   "src": "24/7 Wall St.",
+   "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxQRjcxVHB3ZUlwb3ZRTnh2SXh1VDhqc1hlWmc0TTZOQUhjRURUWEZ2cnJrTC05WEJzR1VxUExpVkJhTkxZN0pvUmFhRjRfSlFoMVZ2Y1lCZ3U5Y2RaUWZldXotTHI1VTkxUlFiT05XSXlJX0tnbHMwcnZMOHRrZDV4V3gwWklMMDFGMjBEQ2J3Z2dlcjFJajV5UC1hZFo1TGpGZU16dFlBM1R0alE2Tl92eExydEhHdXNfcUxrUg?oc=5",
+   "fields": [
+    "53"
+   ],
+   "en": {
+    "t": "Walmart’s Robot Warehouse Partner Symbotic Just Had Its First Profitable Year"
+   }
+  },
+  {
    "id": "771f002323ee",
    "k": "signal",
    "date": "2026-11-24",
@@ -336,6 +531,32 @@
    ],
    "en": {
     "t": "GPT-6 models demonstrate intrinsic protein-design capabilities"
+   }
+  },
+  {
+   "id": "590d507c970f",
+   "k": "signal",
+   "date": "2026-11-24",
+   "src": "The London School of Economics and Political Science",
+   "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxPZVl6cFJLbzg2Z09ocmNoTjRWRFZaS0NtcU9QbEtuWWRESkthQlNjVEg5YlQ0VEpKTGdWekI3bkFvb09jTGNXd19NN090VGhHQV9JTWNuc1JQVnA3NnVkWmVOYWdEeVpXVFJ3V0c2LXNoSk9RYUo2WEo5NDVrNDhBM1BkVXctclhPcWJzUEVEbHFObTg?oc=5",
+   "fields": [
+    "27"
+   ],
+   "en": {
+    "t": "Journalism in the age of AI: what kind of future do we want?"
+   }
+  },
+  {
+   "id": "4c28a012b663",
+   "k": "signal",
+   "date": "2026-11-24",
+   "src": "The Economist",
+   "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxPT0pfZ3BqWkJKa09pU1REalcwZEw4MXBqbHJzNGxCaGFjSFJIajJnTUxEa3pjT2JqS0tuaGRuUFhTV2xEUDA4Y0JHSnVwT3huckNSTE5zS1FjMHZydVk3c3NXLWNHVHNzeHozZm9XM2xoWHNxeDlZZFI0ZU5fVDJBeEZaSG1oZzhlQ0F2Z2FYNEVLLWx1SzY5TTZn?oc=5",
+   "fields": [
+    "15"
+   ],
+   "en": {
+    "t": "AI will inspire a golden age of mathematics"
    }
   },
   {
@@ -365,6 +586,19 @@
    }
   },
   {
+   "id": "f3c7a4c57d58",
+   "k": "check",
+   "date": "2026-11-23",
+   "src": "Queens Daily Eagle",
+   "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxON0xjbzRjMHUxZ0g2SlNSREJjTE91bXJ5T1g3SkQzSFhSRFUwM3NZZ1otNm5mcXppMDdRSFlZamlGUDlSZlozeVowTFlDVW1zSEtDaU9zd1ZSM1k5S0ZqTm5jY3VPckpwSnFJQW9LcVdoSG5JVlVHbEJUc3dBX05ick1rRHZqR04tY3hWbXZaR0tJY2pmOGhkZWc5WUtkVW9HbFNiVXo1aVh2bnliOHB4X3JR?oc=5",
+   "fields": [
+    "23"
+   ],
+   "en": {
+    "t": "New bill aims to hold NY judges accountable for AI-generated court errors"
+   }
+  },
+  {
    "id": "e0bdf113c498",
    "k": "signal",
    "date": "2026-11-23",
@@ -388,6 +622,19 @@
    ],
    "en": {
     "t": "AI-driven technique could help engineers design analog chips faster and with less expense"
+   }
+  },
+  {
+   "id": "c633a9ae1169",
+   "k": "signal",
+   "date": "2026-11-23",
+   "src": "Norton Rose Fulbright",
+   "url": "https://news.google.com/rss/articles/CBMi7gFBVV95cUxQeDFFZy1zSm5WRG1hZlFQaXlLei1IcEZ5S2Y2N3UtRzN0RnBjYnZxODNIYUFTS2dXMXZyUEw4NndUQ2tOSmYzOUM5UjVyWlBDVllWWF9vbTU2eUxjblY4SFUwbFQ1MXJxQXhRbVRaU0VVQXdfVHc4dXE0bFoxRFNYVnphcXZFNllQX1FmSTFia0hrR1NCSl96YVZOTmlMTFlNMDNnSGdxZUhqZkZ6dUJyMFhIbS1iMXliT0hUSjJrWXlMS2pJSE82T3I3VkV2UDJuajFaamd3QTVQalJ6bHJfMWxkRlNmSVVEaklEakl3?oc=5",
+   "fields": [
+    "13"
+   ],
+   "en": {
+    "t": "AI due diligence in buy-side PE transactions: The new AI risks buyers are underwriting | United States | Global law firm"
    }
   },
   {
@@ -427,6 +674,19 @@
    ],
    "en": {
     "t": "One in four students turn to AI for mental health support"
+   }
+  },
+  {
+   "id": "9a4f25b15947",
+   "k": "signal",
+   "date": "2026-11-23",
+   "src": "World Meteorological Organization WMO",
+   "url": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxOY3RrWGhTa2o3UUlUOS14a09fSWhZM3hUUmc4WFRBNXd4ajZwOFQ3OEtadEUwa0FpR1pIUFJPZlRjMUZPeXF4azJjcGxJcW9UYTBDYWZSY3l1aGNCcVFNNDBDaXNzbXdmMHFvWDBoWVFKdzA0VEMyR2Y1cDVDbl9TN3RLckMtbVJ4b3VteXdkME4tRHdPV0xqRGRHR2cwYkVKR2RSWElLb05JYVY0UzVEUWpWTTZZY2VRZGdmZzljX0lMRk9jRVUxalFYbWdQWE8t?oc=5",
+   "fields": [
+    "45"
+   ],
+   "en": {
+    "t": "AIM for Scale and partners expand AI weather forecasting training to strengthen national weather services for farmers"
    }
   },
   {
@@ -521,6 +781,32 @@
    }
   },
   {
+   "id": "0d66467d4b72",
+   "k": "signal",
+   "date": "2026-11-23",
+   "src": "Cox Automotive Inc.",
+   "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTE1tdHU1ekRJRmZsVElJcGt4RVFoeFViUmQ2U2JnVkl6eEdwUzU5aEROcmY1TmRlNU04WXFoOFFyZkpvUERaTF9VZ2JnRVFJc0xuUmhkRXNBS2lfMWdYQmN5ZzZ5R0dUMTRVOE5OVA?oc=5",
+   "fields": [
+    "41"
+   ],
+   "en": {
+    "t": "AI in Auto Retail Tracker - Cox Automotive Retail"
+   }
+  },
+  {
+   "id": "b3c18e314c6d",
+   "k": "signal",
+   "date": "2026-11-22",
+   "src": "digitimes",
+   "url": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxQSzhFSjhybllvWWpDRlpEemF1UkZTOXZ3ejh0al9FdGVMWGxWaE85OEpwOEdzcDVYeWZ3VDMtVm1hRTZZdXh1UWx1cmo1SEtEeEotT2xDVEtCQXBJTlhuaUVROTltUW52SmpuVzJ6VTgxdnNYZE1zWHhUbUVyN2o2azA2ZHN5LXJpYkEw?oc=5",
+   "fields": [
+    "49"
+   ],
+   "en": {
+    "t": "Samsung Electro-Mechanics reduces Samsung revenue reliance as AI demand accelerates"
+   }
+  },
+  {
    "id": "837c11dda14a",
    "k": "signal",
    "date": "2026-11-22",
@@ -573,6 +859,32 @@
    }
   },
   {
+   "id": "fd6ec98529c5",
+   "k": "signal",
+   "date": "2026-11-20",
+   "src": "FashionNetwork France",
+   "url": "https://news.google.com/rss/articles/CBMixgFBVV95cUxPOEdSR0g5Y0RqZE9CQU1WUzUwZTZ6ZF9ha2xxSmlPTlBSTnBXOHhLNXBjeDdNRGFxR1RqbnVqNnhCTnB0dnhJNjNPeFJOcFZsUEZYMXRmWm9RSTM5amdjZ3pTNFlxVnVHNVVGZFdsUXFrYU5CemdhRGdkLVZDSlJ6WUtTbUctS2g2Tk1tTUpERWF1NDhXOEZNYk91a2NmczVITmFIMlNHZ0lFdDVCbkZxN01nVjF6OWVPVU9TV20zcXZpQlRFWEE?oc=5",
+   "fields": [
+    "11"
+   ],
+   "en": {
+    "t": "What if AI were in fact forcing fashion executives to make even more decisions?"
+   }
+  },
+  {
+   "id": "d019919b174b",
+   "k": "signal",
+   "date": "2026-11-20",
+   "src": "UC Davis College of Engineering",
+   "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxOTWhzTFo3b3J3ak1TWnZ4NUpxRUNqVlBteWpnLVM1cVI0NnFseUhjUXNDcUdSdjdfY3ZFRHl2R0FxMk1NMWczM21QSXFwREo1eG9NM2VWLXpHMDJXalVnVkR1bDAwZDlSMXF0THRlODd5VFpMcXRON1FNZXlWSkxaQlR1d01qdElCVm83UUEtWWh3VUU?oc=5",
+   "fields": [
+    "17"
+   ],
+   "en": {
+    "t": "Engineers, Clinicians Partner to Advance Human Health with AI"
+   }
+  },
+  {
    "id": "ca8d6d39d576",
    "k": "check",
    "date": "2026-11-20",
@@ -609,6 +921,19 @@
    ],
    "en": {
     "t": "John Deere acquires Orchard Robotics, an AI farming startup with Seattle ties"
+   }
+  },
+  {
+   "id": "426bf7ff9cff",
+   "k": "signal",
+   "date": "2026-11-20",
+   "src": "Bain & Company",
+   "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxQX2k3Y0ZUYUZ5d2VIYXhUZEdTWW5uZkUya3I3RnczZ2ZCQktBLUdHcXVkRzk0MURaZEM4N25WbnB4MnMzblFrVmhMTlBtc1JRSDNiVUlmVkpLNlFvVjJ2eGRxbldRMVZzWXZQUlc4eFVFX05vR3FNdlhtZ0RRdlF3NzMyLWZSenhFemljR2Izdw?oc=5",
+   "fields": [
+    "41"
+   ],
+   "en": {
+    "t": "AI Is the New Search. Here’s How Retailers Win the Answer"
    }
   },
   {
@@ -661,6 +986,19 @@
    ],
    "en": {
     "t": "Community-Focused Academic Brings AI Tools to Colorado Farmers"
+   }
+  },
+  {
+   "id": "c7d3b53ae9f0",
+   "k": "signal",
+   "date": "2026-11-19",
+   "src": "Today's Parent",
+   "url": "https://news.google.com/rss/articles/CBMifkFVX3lxTE95Q3Q1WGZTMkJQenEzT2hKcDNtQlpWNWJmamtZOE1Qc21VdXpPLWVHaVJkOVlpbjBPZU12UXBMRjMteU9MekJmQldYOEpNOHZvLVQzRGl3cFlpbTViWmdXT05wem5wT2plVDUyc2Q4UkVERUZLVHpPUzBvdlR5Zw?oc=5",
+   "fields": [
+    "53"
+   ],
+   "en": {
+    "t": "I Handed My December Logistics To AI"
    }
   },
   {
@@ -859,6 +1197,58 @@
    }
   },
   {
+   "id": "60305a3926d8",
+   "k": "signal",
+   "date": "2026-11-18",
+   "src": "Deutsche Telekom",
+   "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxNVlhucjRNbWt4by1ZTjhCckkwZHBIU1VVUGdkVEJqc29xNjlBU3dPX3Zra3R6dzA1VGxnVnhhOVV4MmlDc0xMekVjLUNybF9LTUVDaVhXRlhKWmN3VC1YQ2VyaUtkcnlFckYzdEJHM2hKcmZlZnhfTE8xRVNhSDdnbG5IemxMa05IdEJJaVl1OGhPRkViN29NVDlDNms5VllhWDBrMnNVVFVnenV2VGJN?oc=5",
+   "fields": [
+    "51"
+   ],
+   "en": {
+    "t": "microagi trains robots for European industry at Telekom’s AI factory"
+   }
+  },
+  {
+   "id": "4eaeed562187",
+   "k": "check",
+   "date": "2026-11-18",
+   "src": "Maryland Matters",
+   "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxQOW9yNW5LTDVTbldrTk9WYkdGNW9ycWJpT1J5QVlneml4ekJHX3hKeTJ3XzFfdXBDYm5DdElIQW1SN3pxdXl2Z0JqZ01PNDM5X09HNEV5Uzl1bTBOY0g3MjJYQlVHUTdmdW1sU21LcVhiUUpfZjBhVVRsNmNDc0pCNFhodWlHNkM4Q3AzdUlVcFJETnBtWEQteHRUbnd6X3p1WjdBQ3FScTlOc2k0ZUczY0I4dw?oc=5",
+   "fields": [
+    "33"
+   ],
+   "en": {
+    "t": "Baltimore County schools, police sued for AI software ‘bag of chips’ mistake"
+   }
+  },
+  {
+   "id": "31ecfb453bea",
+   "k": "signal",
+   "date": "2026-11-18",
+   "src": "Automotive World",
+   "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxOSGNIcFYyTXhYNnZjaFBEVm5hWGNYNjdBdHNmTDU1SDlaaHM3ZEVBS08zbXlFbzZMUmpIOU14bjlGTkRua0lUMTZUM2lDSEFuY3prQmV3SnVBaHE0YnJ2REZvYU9MYk1OU3dfN2RkcHB4TkVjMGg5ZWJFLW84dVY1X24ybU9uN05wZmwyMWF1czJkdzQ?oc=5",
+   "fields": [
+    "53"
+   ],
+   "en": {
+    "t": "Pony.ai robotaxi and robotruck revenues surge in Q3"
+   }
+  },
+  {
+   "id": "302eea69647c",
+   "k": "signal",
+   "date": "2026-11-18",
+   "src": "USC Viterbi School of Engineering",
+   "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxQYjE1eWZvaWFObUFSbHNhZFkxSXhmMmU4ZVhUTkt0anJPaUZZaVpLZ0hDenEzd2lveUlWQXh0eW00Q1JGOWczTGVpOUk4clVpY0lHN1AxTXY0YXlWWThIem5xcm90ZzhKMU1uQ2x4c010UVpBU1haaV91S1VuSE5FT3NobG44clBScFRQVGR6V2x2R3VPYnRCR2R2cWQxdkRIMDhNU21YdFhudVo3NHhUZVRn?oc=5",
+   "fields": [
+    "17"
+   ],
+   "en": {
+    "t": "USC Engineers Develop AI-Powered Ring That Detects Stress With Light"
+   }
+  },
+  {
    "id": "21f0af7e0554",
    "k": "signal",
    "date": "2026-11-18",
@@ -898,6 +1288,19 @@
    }
   },
   {
+   "id": "f91c497d5ef2",
+   "k": "signal",
+   "date": "2026-11-17",
+   "src": "Innovation News Network",
+   "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxPNExLVWpUa0Y4NFFBUkhBTUxIdjFCcmNMTEp5Q3o5X2xQbzZLaDMzYWFRNExnRzB3ckdIZzl5cnNtcVY0SUFiNjl6ajVhRm1kOGJsQi01RG9IbGNIdEdfaF85T3EtZ0J3ZmlfUk5QejNNb3VvRWwtdjJZRVZRRTRNREZZLXBOMGV0d1lVVFJGRTZvRExveGp4Xw?oc=5",
+   "fields": [
+    "29"
+   ],
+   "en": {
+    "t": "AI surgery is finding value beyond the autonomous robot"
+   }
+  },
+  {
    "id": "dc68cbd63365",
    "k": "signal",
    "date": "2026-11-17",
@@ -908,6 +1311,45 @@
    ],
    "en": {
     "t": "FBI warns hackers weaponizing ARTEX AI framework to automate attacks on energy, manufacturing, telecom"
+   }
+  },
+  {
+   "id": "d771b90fde79",
+   "k": "signal",
+   "date": "2026-11-17",
+   "src": "Bloomberg Law News",
+   "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxPUGpCMVZHMV9DSTl0OE5KcEMtOXo3bVRXRG9aYjVxdGJHUGRtQjl3TVJEdXFWNmpubGxUZ1FiTUlFSWhBVDVHa2ZfRWFIVk1Pc2J4UXdMNy15aVdYYjdzaTdZYUFYYmNhNlRBTTdfb04zNXR2d2VZSDhmY3lRQlpUdmtEYjNiUGVLRlhsRjQ3czJuR2dCMTI5d3NoR2ktWDZ3c3Z6WUJBbmhEUQ?oc=5",
+   "fields": [
+    "23"
+   ],
+   "en": {
+    "t": "Use of AI Leads Two DOJ Lawyers to Face Potential Bar Discipline"
+   }
+  },
+  {
+   "id": "a28b6bfcb2a2",
+   "k": "signal",
+   "date": "2026-11-17",
+   "src": "Marketplace.org",
+   "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxPLW5iVlRqUm1oZGJaNEdNSkVMNUpHd0dvMWdLN2NEWndDbFQ2UER3WDQ2QnBoZFFhdXFXSmxFbHhKZDhPUDVMdG1BekxfSWZyVGR2LUFjMlBZcnE0c1gzUzNHakZFYU52a2JYY0pJOEVOdkRZc0NJQkN1SDQ1YzRmYzVvMlYxcXJsbHp1OVhrRUZ4b2s?oc=5",
+   "fields": [
+    "47"
+   ],
+   "en": {
+    "t": "Import prices are up for AI components, construction materials, and more"
+   }
+  },
+  {
+   "id": "9c4fb171b5a0",
+   "k": "signal",
+   "date": "2026-11-17",
+   "src": "Turner Construction Company",
+   "url": "https://news.google.com/rss/articles/CBMipAFBVV95cUxOVHJUc1JUa0lUc3M5ZFBremwzRGFpZS1ZTWhzUUVHQmR6QkxpVW1abUtVeGNleVlGbmc5SjZZM0tnV0gwYVEyN1RFcE1yOTJ3TlBUZFZWTkpGcjJ4ZWR4TEI5UkdudXFCbmhVNnNROUZ1NUhJM2k4aDctZDJha0FyVEs1cmxScmZpd2VmQTd6YzdtTmc4MHAtcVpTUUJPVkkydUV2ag?oc=5",
+   "fields": [
+    "47"
+   ],
+   "en": {
+    "t": "AI in Construction: Smarter Construction Project Management"
    }
   },
   {
@@ -963,6 +1405,45 @@
    }
   },
   {
+   "id": "17e6eb23bcdd",
+   "k": "signal",
+   "date": "2026-11-17",
+   "src": "MedTech Dive",
+   "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxQdjdrRjREc1RBclYtUEhzT2NLS1NnRmhieFlnT0h3YXV0RTBXWTZUZHZka3N2bVpwemhpbzVmaEJVZXpDa090SzZEN0NKekNkMjVkZHFKTV9qOTZtVloxWXUzQ2p3eEgySU9qR0dWVDFuZXNWX2NOUFFtcGt1WjBHMXFCd3kzQV9EdXpxTDJZNkZFMGtOZUZKUm9TdGJuSC1CRVpKX1IyQ0R1c2QxVUE?oc=5",
+   "fields": [
+    "29"
+   ],
+   "en": {
+    "t": "Medtronic’s Hugo robot gets expanded FDA clearance in general surgery"
+   }
+  },
+  {
+   "id": "f5348ec78b4c",
+   "k": "signal",
+   "date": "2026-11-16",
+   "src": "Yahoo Finance",
+   "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxQQnBLLVkyWHpWX2FCNlg0QjdQQjBtZUQ1Y1lBc3VJd2FDeHhUZnJXUnJVdFVZbE50SVU2TU9MZE9QYmRjUklTYnNqeE5Kb3ZJWWxUQkxHeFYyTmd2SEFiS1ExRnhLc1RFaVFJaUF4NHdkN3VSTW14S0JrVXo5ZGgwRno3Y3N0M1pnTU9kOXdRWW4ta2NObWZyRDdhYjZJdGVRMWJuZW9n?oc=5",
+   "fields": [
+    "47"
+   ],
+   "en": {
+    "t": "Terabase Launches the First AI Construction Execution System for Utility-Scale Solar, Adding AI-Native Project Oversight, Equipment Tracking and Energy Intelligence"
+   }
+  },
+  {
+   "id": "be4a6f5d2dbb",
+   "k": "signal",
+   "date": "2026-11-16",
+   "src": "Industrial Cyber",
+   "url": "https://news.google.com/rss/articles/CBMi9wFBVV95cUxPTk1QUHhqa2VISl9DX3VHNGt6cUthdTRTYTJhUHk0ODk2ejdjY3IxNkFhcXRfZlNXc3RIbElVMDdXN2lYTkx0TEdZT3F1SjVzcUNNQ3V0d2xoMjRXT1FqbTZiYWw5TGtYQ1pNdERUZHRkZ1JBcnNyVlhHSWFnM0dTZ1g0d2l1a05qQ01LSEZIOTNVZmQ0b3plTWVBXzlsNE15TWdpNDVhdHVEYnNNV1FpbDgwUlhyOTRPaXIyWm1WV0NlMmVzdWVQTTJ2TGRxLVRmVV9GdFFHVnJXTWdnVG1DSENaNnNfM0Z0VnBGVjZ2aThPSmdOZDhN?oc=5",
+   "fields": [
+    "51"
+   ],
+   "en": {
+    "t": "Manufacturing AI adoption doubles as data governance gaps, shadow AI and emerging cybersecurity threats rise, Netskope finds"
+   }
+  },
+  {
    "id": "a6c54e580dde",
    "k": "signal",
    "date": "2026-11-16",
@@ -1012,6 +1493,19 @@
    ],
    "en": {
     "t": "This New Cool Course Traces the Evolution of US Mental Health Policy, from Asylums to AI Therapists"
+   }
+  },
+  {
+   "id": "7b88d9ba46b1",
+   "k": "signal",
+   "date": "2026-11-16",
+   "src": "Star Tribune",
+   "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxPbTVNckR5RmNOZ01QNkpsdHNXaUFXanNHd3VianNpT2ZhanNHVlYwV0k5c1BWS3JydlBMQngxUmpDSzdLQjFEMm9tWlFkalRHMl9lc2RyUW1JZU51LVBXOGxodmVzc0JETU9XSmdva1pfVEtJMC05bTBsYkJpWDNnM2plUUpOc2JPQUxNUVZRWW9EcUhISm1mdUZ4amVsX25CZVdGa05B?oc=5",
+   "fields": [
+    "35"
+   ],
+   "en": {
+    "t": "The good, the bad and the uncanny of AI in Twin Cities restaurants"
    }
   },
   {
@@ -1077,6 +1571,19 @@
    ],
    "en": {
     "t": "Helping robots fit into the human workplace"
+   }
+  },
+  {
+   "id": "700783b64869",
+   "k": "signal",
+   "date": "2026-11-13",
+   "src": "CEPR",
+   "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxNSWZTbFZfZTg1M3pHMkw5b2ZKeExablZTWEplSkptRk01VmFqd0o0czBQWElzQlJuT3lqNE9qVWs2X3ZZM3J4N2JpNC1vdThzdllwbWFhTm5yZFR6VnVacFgtaDhuRWl2VkxyX1lCTGVaUE9jZk5TRm05eEJ5OHB2bzJJT0g?oc=5",
+   "fields": [
+    "29"
+   ],
+   "en": {
+    "t": "AI and the geography of expert work: Evidence from radiology"
    }
   },
   {

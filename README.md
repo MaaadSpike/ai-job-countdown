@@ -36,7 +36,7 @@ The tasks are sorted by that waiting time, and their shares of work time are add
 
 | Quantity | Source | Notes |
 |---|---|---|
-| Tasks and occupations | [O\*NET 30.2](https://www.onetcenter.org) (CC BY 4.0) | 876 occupations, 17,525 tasks (the same subset as Hatgis-Kessell et al. (2026); every task is an O\*NET rated task with identical text). |
+| Tasks and occupations | [O\*NET 30.2](https://www.onetcenter.org) (CC BY 4.0) | 876 occupations, 17,517 tasks (the same subset as Hatgis-Kessell et al. (2026); every task is an O\*NET rated task with identical text). |
 | Hours for one instance of each task | **Our estimates**: Qwen2.5-32B-Instruct-AWQ on vLLM (`estimate/`) | End to end, by a skilled worker, without AI. Median of 5 samples. |
 | Task type | Same model run | Computer-based, trust-based (needs in-person communication), or on-site. |
 | Share of work time | **Our formula** (`web/own_shares.py`) | O\*NET frequency × O\*NET relevance × min(hours, 7), normalized within each occupation |
@@ -49,7 +49,7 @@ The tasks are sorted by that waiting time, and their shares of work time are add
 
 ## Results so far
 
-**Duration estimates.** 17,525 tasks on one A100 40GB took 3.96 hours at 1,261 output tokens/s, about $0.45 per 1,000 tasks at $1.99/hour.
+**Duration estimates.** 17,517 tasks on one A100 40GB took 3.96 hours at 1,261 output tokens/s, about $0.45 per 1,000 tasks at $1.99/hour.
 
 Agreement with 51 human-labeled tasks (single annotator, 8 duration bins):
 

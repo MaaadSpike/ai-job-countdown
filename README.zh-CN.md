@@ -149,3 +149,7 @@ pytest -q
 - O\*NET 30.2 Database，美国劳工部就业与培训管理局（CC BY 4.0）
 - METR，*Time Horizon 1.1*
 - 仅作对照：Hatgis-Kessell, Aguirre, Wan & Bommasani (2026), *Estimating Time Spent on Work Tasks*, arXiv:2608.05172
+
+## 许可
+
+代码：[MIT](LICENSE)。来自 O\*NET 的数据（任务清单、附在任务上的时长估计、`web/occupations.json`）仍按 CC BY 4.0。This project includes information from the O\*NET 30.2 Database by the U.S. Department of Labor, Employment and Training Administration (USDOL/ETA), used under CC BY 4.0. O\*NET® is a trademark of USDOL/ETA. This project has modified all or some of this information. USDOL/ETA has not approved, endorsed, or tested these modifications.

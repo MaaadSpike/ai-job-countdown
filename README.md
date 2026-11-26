@@ -149,3 +149,7 @@ The tests cover prompt parsing, an end-to-end run with a mock backend (including
 - O\*NET 30.2 Database, U.S. Department of Labor, Employment and Training Administration (CC BY 4.0)
 - METR, *Time Horizon 1.1*
 - Comparison only: Hatgis-Kessell, Aguirre, Wan & Bommasani (2026), *Estimating Time Spent on Work Tasks*, arXiv:2608.05172
+
+## License
+
+Code: [MIT](LICENSE). Data derived from O\*NET (task lists, the duration estimates attached to them, and `web/occupations.json`) remains under CC BY 4.0. This project includes information from the O\*NET 30.2 Database by the U.S. Department of Labor, Employment and Training Administration (USDOL/ETA), used under CC BY 4.0. O\*NET® is a trademark of USDOL/ETA. This project has modified all or some of this information. USDOL/ETA has not approved, endorsed, or tested these modifications.

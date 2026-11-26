@@ -408,7 +408,7 @@ const STR = {
     newsAria:"新闻证据", newsTitle:"这个行业发生了什么", tlAria:"任务时间线", tlTitle:"哪项工作先被 AI 接手",
     lgCap:"能力到位", lgLag:"落地期", lgOut:"趋势线不覆盖（需要现场操作）",
     shareAria:"分享", shareTitle:"发给同行", shareTextAria:"分享文案", copy:"复制文案", copied:"已复制", copySelect:"已选中，按 Ctrl/⌘+C",
-    newsOcc:"这个职业", searchH:"这个职业的最新报道", curatedTag:"人工挑选", autoTag:"自动搜索 · 未经人工核实", searchBtn:"搜索", searchAria:"搜索新闻的关键词", searching:"正在搜索…", searchNone:"最近 30 天没有找到讲 AI 影响这个工作的报道。换个关键词试试，或者在 Google News 看全部结果。", searchHint:"按标题关键词粗分：提到取代、裁员、自动化的算「AI 进展」，提到出错、重新招人、不会取代、人手短缺的算「现实检验」。分类可能有错，点开原文判断。", searchFail:"这里暂时搜不到（本地用 python 预览时没有搜索接口），可以直接在 Google News 打开。", searchOpen:"在 Google News 打开「{q}」↗", kNews:"报道", newsField:"领域动态 · {f}", newsUpdated:"更新于 {d}", newsMore:"再看 {n} 条", newsLess:"收起",
+    newsOcc:"这个职业", searchH:"这个职业的最新报道", curatedTag:"人工挑选", autoTag:"自动搜索 · 未经人工核实", searchBtn:"搜索", searchAria:"搜索新闻的关键词", searching:"正在搜索…", searchNone:"最近 30 天没有找到讲 AI 影响这个工作的报道。换个关键词试试，或者在 Google News 看全部结果。", searchHint:"按标题关键词粗分：提到取代、裁员、自动化的算「AI 进展」，提到出错、重新招人、不会取代、人手短缺的算「现实检验」。分类可能有错，点开原文判断。", searchFail:"新闻源暂时没有响应，可以稍后再试，或者直接在 Google News 打开。", searchVia:"结果来自 {s}", searchOpen:"在 Google News 打开「{q}」↗", kNews:"报道", newsField:"领域动态 · {f}", newsUpdated:"更新于 {d}", newsMore:"再看 {n} 条", newsLess:"收起",
     noFieldNews:"这个领域最近还没有收录到 AI 新闻。新闻每天自动更新，每条标注是「AI 进展」还是「现实检验」。",
     makeImg:"生成分享图（带二维码）", sysShare:"更多分享方式…", copyLink:"复制链接", linkCopied:"链接已复制",
     liNote:"文案已复制，在 LinkedIn 的帖子里粘贴即可。想带图的话，先生成并保存分享图，再在帖子里上传。",
@@ -471,7 +471,7 @@ const STR = {
     newsAria:"News evidence", newsTitle:"What's happening in this field", tlAria:"Task timeline", tlTitle:"Which tasks AI takes over first",
     lgCap:"AI capable", lgLag:"Adoption lag", lgOut:"Not covered by the trend (on-site work)",
     shareAria:"Share", shareTitle:"Send to a colleague", shareTextAria:"Share text", copy:"Copy text", copied:"Copied", copySelect:"Selected — press Ctrl/⌘+C",
-    newsOcc:"This occupation", searchH:"Latest coverage for this occupation", curatedTag:"Hand-picked", autoTag:"Automatic search · not verified", searchBtn:"Search", searchAria:"News search keywords", searching:"Searching…", searchNone:"No coverage in the last 30 days about AI affecting this work. Try other keywords, or see all results on Google News.", searchHint:"Roughly sorted by headline keywords: replacing, layoffs or automation count as \"AI progress\"; errors, rehiring, \"won't replace\" or shortages count as \"reality check\". Labels can be wrong; open the article to judge.", searchFail:"Search isn't available here (a local python preview has no search endpoint). Open it on Google News instead.", searchOpen:"Open \"{q}\" on Google News ↗", kNews:"News", newsField:"Field news · {f}", newsUpdated:"updated {d}", newsMore:"{n} more", newsLess:"Show less",
+    newsOcc:"This occupation", searchH:"Latest coverage for this occupation", curatedTag:"Hand-picked", autoTag:"Automatic search · not verified", searchBtn:"Search", searchAria:"News search keywords", searching:"Searching…", searchNone:"No coverage in the last 30 days about AI affecting this work. Try other keywords, or see all results on Google News.", searchHint:"Roughly sorted by headline keywords: replacing, layoffs or automation count as \"AI progress\"; errors, rehiring, \"won't replace\" or shortages count as \"reality check\". Labels can be wrong; open the article to judge.", searchFail:"The news sources aren't responding right now. Try again later, or open it on Google News.", searchVia:"Results from {s}", searchOpen:"Open \"{q}\" on Google News ↗", kNews:"News", newsField:"Field news · {f}", newsUpdated:"updated {d}", newsMore:"{n} more", newsLess:"Show less",
     noFieldNews:"No AI news collected for this field recently. News updates daily; each item is marked \"AI progress\" or \"reality check\".",
     makeImg:"Create share image (with QR)", sysShare:"More options…", copyLink:"Copy link", linkCopied:"Link copied",
     liNote:"Text copied. Paste it into your LinkedIn post. To add the image, create and save the share image, then upload it to the post.",
@@ -720,17 +720,19 @@ async function runSearch(q){
   const box=$("nresults"), seq=++searchSeq, key=LANG+"|"+q.toLowerCase();
   const open='<a class="nmore" href="'+esc(gnewsURL(q))+'" target="_blank" rel="noopener">'+esc(t("searchOpen",{q}))+'</a>';
   box.innerHTML='<p class="empty">'+esc(t("searching"))+'</p>';
-  let items;
+  let items, source;
   try{
     if(!SEARCH_CACHE.has(key)){
       const r=await fetch("api/search?"+new URLSearchParams({q,lang:LANG,days:"30"}));
       if(!r.ok || !(r.headers.get("content-type")||"").includes("json")) throw new Error(r.status);
-      SEARCH_CACHE.set(key,(await r.json()).items||[]);
+      const d=await r.json();
+      SEARCH_CACHE.set(key,{items:d.items||[],source:d.source||""});
     }
-    items=SEARCH_CACHE.get(key);
+    ({items,source}=SEARCH_CACHE.get(key));
   }catch(_){ if(seq===searchSeq) box.innerHTML='<p class="empty">'+esc(t("searchFail"))+'</p>'+open; return; }
   if(seq!==searchSeq) return; // 已经有更新的搜索了
-  box.innerHTML=(items.length?items.slice(0,8).map(searchItem).join(""):'<p class="empty">'+esc(t("searchNone"))+'</p>')+open;
+  const via=source?'<p class="hint" style="margin:0">'+esc(t("searchVia",{s:source}))+'</p>':'';
+  box.innerHTML=(items.length?items.slice(0,8).map(searchItem).join(""):'<p class="empty">'+esc(t("searchNone"))+'</p>')+via+open;
 }
 
 function render(){

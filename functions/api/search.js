@@ -1,10 +1,14 @@
 // Cloudflare Pages Function：GET /api/search?q=software+engineer+AI&lang=en&days=30[&impact=0]
-// 在服务器端查 Google News RSS（浏览器不能直接跨域请求它），返回 JSON。不需要 API key。
+// 在服务器端查新闻（浏览器不能直接跨域请求这些源），返回 JSON。不需要 API key。
+// 新闻源按顺序尝试，前一个失败就换下一个：
+//   1. Google News RSS —— 常常拒绝 Cloudflare 的服务器（返回 503），失败后 1 小时内跳过
+//   2. Bing News RSS
+//   3. GDELT DOC API（免费的全球新闻库，专门给程序用；只跑一次合并查询，因为它限速）
 // 默认（impact=1）跑两组查询，按标题关键词粗分：
 //   signal「AI 进展」：取代、裁员、自动化、岗位……
 //   check 「现实检验」：出错、幻觉、重新招人、不会取代、短缺……
-// 只看标题、不调模型，分类会有错；页面上标明「自动搜索，未经人工核实」。以后可以在这里加一步 LLM 分类。
-// 同一个查询在 Cloudflare 边缘缓存 6 小时，避免频繁请求 Google。
+// 只看标题、不调模型，分类会有错；页面上标明「自动搜索，未经人工核实」。
+// 同一个查询在 Cloudflare 边缘缓存 6 小时。返回里的 source 说明这次用的是哪个源，tried 记录失败的源。
 // 部署：functions/ 要在仓库根目录（wrangler 运行的目录），`wrangler pages deploy web` 会自动带上。
 // 本地测试：在仓库根目录运行 `npx wrangler pages dev web`（python -m http.server 不会运行这个函数）。
 
@@ -64,14 +68,24 @@ function tag(block, name) {
   return m ? decode(m[1]) : "";
 }
 
+// Bing 的链接是 bing.com/news/apiclick.aspx?...&url=<原文>，取出原文地址
+export function unwrap(link) {
+  try {
+    const u = new URL(link);
+    const real = /(^|\.)bing\.com$/.test(u.hostname) && u.searchParams.get("url");
+    if (real && /^https?:\/\//i.test(real)) return real;
+  } catch (_) { /* 不是合法 URL，原样返回，后面会被过滤 */ }
+  return link;
+}
+
 export function parseRss(xml, limit = 10) {
   const out = [];
   for (const m of xml.matchAll(/<item>([\s\S]*?)<\/item>/g)) {
     const b = m[1];
     let t = tag(b, "title");
-    const src = tag(b, "source");
+    const src = tag(b, "source") || tag(b, "News:Source");
     if (src && t.endsWith(" - " + src)) t = t.slice(0, -(src.length + 3)).trim();
-    const url = tag(b, "link");
+    const url = unwrap(tag(b, "link"));
     const d = new Date(tag(b, "pubDate"));
     if (!t || !/^https?:\/\//.test(url) || isNaN(d)) continue;
     out.push({ t, src, url, date: d.toISOString().slice(0, 10) });
@@ -80,11 +94,109 @@ export function parseRss(xml, limit = 10) {
   return out;
 }
 
-async function fetchRss(q, lang, days) {
-  const url = "https://news.google.com/rss/search?" + new URLSearchParams({ q: `${q} when:${days}d`, ...EDITIONS[lang] });
-  const r = await fetch(url, { headers: { "User-Agent": UA } });
-  if (!r.ok) throw new Error("upstream " + r.status);
-  return parseRss(await r.text(), 50);
+const TIMEOUT_MS = 8000;
+
+async function get(url) {
+  const r = await fetch(url, {
+    headers: { "User-Agent": UA, Accept: "application/rss+xml, application/xml, application/json;q=0.9, */*;q=0.5" },
+    signal: AbortSignal.timeout(TIMEOUT_MS),
+  });
+  if (!r.ok) { const e = new Error("HTTP " + r.status); e.status = r.status; throw e; }
+  return r.text();
+}
+
+function rssOrThrow(xml) {
+  if (!/<rss[\s>]|<item>/.test(xml)) throw new Error("not RSS (probably a bot check page)");
+  return parseRss(xml, 50);
+}
+
+async function googleNews(q, lang, days) {
+  return rssOrThrow(await get("https://news.google.com/rss/search?" +
+    new URLSearchParams({ q: `${q} when:${days}d`, ...EDITIONS[lang] })));
+}
+
+const BING = { en: { setlang: "en-US", cc: "US" }, zh: { setlang: "zh-Hans", cc: "CN" } };
+async function bingNews(q, lang) {
+  return rssOrThrow(await get("https://www.bing.com/news/search?" +
+    new URLSearchParams({ q, format: "rss", count: "50", qft: 'sortbydate="1"', ...BING[lang] })));
+}
+
+// GDELT：短于 3 个字母的词会被拒绝，把 AI 换成 "artificial intelligence"，其他短词去掉
+export function gdeltQuery(q, lang) {
+  const words = (q.match(/"[^"]+"|\S+/g) || [])
+    .map(w => /^ai$/i.test(w) ? '"artificial intelligence"' : w)
+    .filter(w => w.startsWith('"') || !/^[\x00-\x7f]{1,2}$/.test(w));
+  const extra = lang === "zh" ? "" :
+    ' (replace OR layoffs OR automation OR jobs OR hiring OR workforce OR errors OR mistakes OR rehire OR shortage OR backlash)';
+  return words.join(" ") + extra + " sourcelang:" + (lang === "zh" ? "chinese" : "english");
+}
+
+export function parseGdelt(text, limit = 75) {
+  let data;
+  try { data = JSON.parse(text); } catch (_) { throw new Error("GDELT: " + text.trim().slice(0, 100)); }
+  const out = [];
+  for (const a of data.articles || []) {
+    const m = /^(\d{4})(\d{2})(\d{2})/.exec(a.seendate || "");
+    const t = decode(String(a.title || ""));
+    if (!m || !t || !/^https?:\/\//.test(a.url || "")) continue;
+    out.push({ t, src: a.domain || "", url: a.url, date: `${m[1]}-${m[2]}-${m[3]}` });
+    if (out.length >= limit) break;
+  }
+  return out;
+}
+
+async function gdelt(q, lang, days) {
+  return parseGdelt(await get("https://api.gdeltproject.org/api/v2/doc/doc?" + new URLSearchParams({
+    query: gdeltQuery(q, lang), mode: "artlist", format: "json", maxrecords: "75",
+    timespan: `${Math.min(days, 90)}d`, sort: "datedesc",
+  })));
+}
+
+// 每个源：impact 时怎么查（返回若干组结果），普通搜索怎么查
+const SOURCES = [
+  { name: "google", label: "Google News",
+    impact: (q, lang, days) => Promise.all(["signal", "check"].map(g => googleNews(`${q} ${QUERY[g][lang]}`, lang, days))),
+    plain: (q, lang, days) => googleNews(q, lang, days) },
+  { name: "bing", label: "Bing News",
+    impact: (q, lang) => Promise.all(["signal", "check"].map(g => bingNews(`${q} ${QUERY[g][lang]}`, lang))),
+    plain: (q, lang) => bingNews(q, lang) },
+  { name: "gdelt", label: "GDELT",
+    impact: async (q, lang, days) => [await gdelt(q, lang, days)],
+    plain: (q, lang, days) => gdelt(q, lang, days) },
+];
+
+const SKIP_TTL = 3600; // 被拦（403/429/503）的源，1 小时内不再试
+const skipKey = name => new Request("https://cache.internal/skip/" + name);
+
+export function withinDays(items, days, now = Date.now()) {
+  const cut = new Date(now - days * 864e5).toISOString().slice(0, 10);
+  return items.filter(it => it.date >= cut);
+}
+
+// 依次试每个源；返回 { source, items, tried }
+export async function searchAll(q, lang, days, impact, { cache = null, sources = SOURCES, now = Date.now(), waitUntil = p => p } = {}) {
+  const tried = [];
+  let empty = null;
+  for (const s of sources) {
+    if (cache && await cache.match(skipKey(s.name))) { tried.push({ source: s.name, error: "skipped (blocked recently)" }); continue; }
+    try {
+      let items;
+      if (impact) items = mergeGroups((await s.impact(q, lang, days)).map(g => withinDays(g, days, now)));
+      else items = withinDays(await s.plain(q, lang, days), days, now).slice(0, 10);
+      if (items.length) return { source: s.label, items, tried };
+      tried.push({ source: s.name, error: "0 results" });
+      empty = empty || { source: s.label, items, tried };
+    } catch (e) {
+      tried.push({ source: s.name, error: String(e.message || e) });
+      if (cache && [403, 429, 503].includes(e.status)) {
+        waitUntil(cache.put(skipKey(s.name), new Response("1", { headers: { "Cache-Control": `max-age=${SKIP_TTL}` } })));
+      }
+    }
+  }
+  if (empty) return empty; // 有源正常返回但没有相关报道
+  const err = new Error("all news sources failed");
+  err.tried = tried;
+  throw err;
 }
 
 // 两组结果合并、去重、分类，每类最多 per 条，按日期倒序
@@ -114,24 +226,17 @@ export async function onRequestGet(context) {
   const hit = await cache.match(key);
   if (hit) return hit;
 
-  let items;
+  let res;
   try {
-    if (impact) {
-      const groups = await Promise.all([
-        fetchRss(`${q} ${QUERY.signal[lang]}`, lang, days),
-        fetchRss(`${q} ${QUERY.check[lang]}`, lang, days),
-      ]);
-      items = mergeGroups(groups);
-    } else {
-      items = (await fetchRss(q, lang, days)).slice(0, 10);
-    }
+    res = await searchAll(q, lang, days, impact, { cache, waitUntil: p => context.waitUntil(p) });
   } catch (e) {
-    return json({ error: String(e.message || e) }, 502);
+    return json({ error: String(e.message || e), tried: e.tried || [] }, 502);
   }
 
-  const resp = json({ q, lang, days, impact, items }, 200, { "Cache-Control": "public, max-age=1800" });
+  const ttl = res.items.length ? 21600 : 1800; // 空结果只缓存半小时
+  const resp = json({ q, lang, days, impact, ...res }, 200, { "Cache-Control": "public, max-age=1800" });
   context.waitUntil(cache.put(key, new Response(resp.clone().body, {
-    headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "public, max-age=21600" },
+    headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": `public, max-age=${ttl}` },
   })));
   return resp;
 }

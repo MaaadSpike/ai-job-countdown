@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-26T23:00Z",
+ "updated": "2026-11-27T22:44Z",
  "fields": {
   "11": {
    "zh": "管理",
@@ -91,6 +91,175 @@
   }
  },
  "items": [
+  {
+   "id": "f202f28cdb6b",
+   "k": "signal",
+   "date": "2026-11-27",
+   "src": "QA Financial",
+   "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxPeXQ2dzIxMUtUSjE4cnpkZjc2dzRDR2w0VV9FMjRyaWhWQ1Z6bWgwU1JPY21pempnYm00SVUyaXhqZzBUUmptY1I2ZWFMTVVmSHBxYXFLOGZPQy1YYkJhNmpNa19zMVkwczIwWUJXQW0yQ3ZUVUt4RnpjVnlDcG9WaFE0RVZwWGI4Yk1Hd1JoSFVDbjhu?oc=5",
+   "fields": [
+    "13"
+   ],
+   "en": {
+    "t": "QA Forum: Hiscox’s AI underwriting pilot exposes model testing gap"
+   }
+  },
+  {
+   "id": "ea87c16f3797",
+   "k": "signal",
+   "date": "2026-11-27",
+   "src": "The Asian Banker",
+   "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxNRlJPa3dJdERJakx0ck5UTjFpbTZaS3BOYXFKOUpVSU9QYl81WFFSTDNPaXBWU0lMMXI2WDE5S1pNMFBndzI3QmpCamljX3RaREJLeXFURjMzaW03RV9uQTcwX2VWMmNGQTNoSk9DYk9sNE1hdUg4dEFxMGtqcVNrcE9xdnVMX2tyRDlhSFRfWUZDNmFyZE0wbUxTSENfZzJRYXQ5bWdkR0k3Z1Ja?oc=5",
+   "fields": [
+    "43"
+   ],
+   "en": {
+    "t": "What can banks delegate to AI agents in customer service?"
+   }
+  },
+  {
+   "id": "dec6ce095a43",
+   "k": "signal",
+   "date": "2026-11-27",
+   "src": "South China Morning Post",
+   "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxPYUJVQW80Vk1pX0tzaEdkTmxIUmZITDZweW5JUEgzdHg5d0R2czE2R1dOWDlGYXZPNTBfNnJJcnJTLVY1NjJJZ2VGeU5vVmhKLVBCMkFUODk4Y2F3ZmJWS25IcnJOZUNYcWF3eTgxdmQ3N0xacUlES2hOSDhqblRCaVNDWFBycXdsMFF6S3AxaU0wazVCQUdRZ0IzWHluT3FCdjJHbzg0TWQtSjJCZFNqV3cxbkxQcmM4MFHSAboBQVVfeXFMUFVsU2Z2V2xQbmhtZTllaFdra0QwV3dhdGxRX1ZTQS1uY1dCUHp4RVdqcjN5eElKY1JvSnFPVU1YclFhNWlqTG1WYjhtTWdiVlhZV2p2Y1VFYmVNWDFGbENwOGNxMHJkLVZ5SFp0NzJ3LXhfMEZQRnZrLXpwYklqMC1hWmJrTTREVnFWS05rZy1lQTZrcVB1UHNSSmstYXExS0M5aXVDUEQzQk9tOFhhTVpsMUNTdzlIMXhB?oc=5",
+   "fields": [
+    "19"
+   ],
+   "en": {
+    "t": "China’s Tencent makes AI drug discovery breakthrough with Nature paper"
+   }
+  },
+  {
+   "id": "cfa363531efa",
+   "k": "signal",
+   "date": "2026-11-27",
+   "src": "NPR",
+   "url": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxPNXc0dnFQdmxBZFcwZVU4SFVHV1ZLNEV1Y0pBcXFkZjRLYmlQZVZ4Rzc2UUhDM2RaVnRuWEh0a3FkOW1HZ0VqTXdwcG5vLXpxSUMzNjJMM2VXT2VoN1hHSzZQLXlVbHBlbnRsNjJ4amdkOGp3ZU45LXZGY29vMlVNSzVuRUN5a0NaWklzdHpseXBiQnR3XzR6NEZyeEdsWWQ5TlNmTGxWWjhCTzAzYS01Qk01YlBzU3k1YXRWeWJkSHZFYjQ?oc=5",
+   "fields": [
+    "47"
+   ],
+   "en": {
+    "t": "What happens when the AI construction boom lands in one of Spain’s driest regions?"
+   }
+  },
+  {
+   "id": "be39942e504d",
+   "k": "signal",
+   "date": "2026-11-27",
+   "src": "TechInformed",
+   "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxPLWtqS3kyNU9wYXctMEc1ZEpRaTc4cDlOcENXeG00WEZ1ZkFqUkNTSDUydVRyYUVyakl3S3VRa1BGbDQwT2QyV24weFktQXhCWnJhaHZ1S3Zaa1NIMF9oQ2ZISWpYRHVscHR4dVQ5UXJJZDVJejRVeXYyM0NBYXBqenBqTVl1QQ?oc=5",
+   "fields": [
+    "15"
+   ],
+   "en": {
+    "t": "Efficiency gains from AI coding can be lost in review"
+   }
+  },
+  {
+   "id": "a5fef516195a",
+   "k": "signal",
+   "date": "2026-11-27",
+   "src": "Bloomberg Law News",
+   "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxNYmFHQU1FZElvbVlPOXpHSTF2Rkx6V09QbmpubmxJbzdrdDA2SXREYTAzdVphQ0xHUTktSWVTLUpvWWJhdVhqM1NYVDMwc0k1ZE9qc3NhT3AzQ3FYQXVmWjJ1c3FDVkYzTVkxbFJ1VXFkNWcwejRmckhPdU5mbno5SnkyX292VHZ2MW9ZbXU4YldtY28tRkpWNy1qTkJlVGN4OGxLSmZ3d291a2VuNmNGSg?oc=5",
+   "fields": [
+    "41"
+   ],
+   "en": {
+    "t": "Retail Self-Checkouts Targeted in Fight to Shield Jobs From AI"
+   }
+  },
+  {
+   "id": "822ca904fa20",
+   "k": "signal",
+   "date": "2026-11-27",
+   "src": "Roofing Contractor",
+   "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxPaGY1eDZrbkxEZ2ZXcmhVTEdrd1lqWHdWZkZxMmE5MGZmbVFQaFlLTXFmVWE1Wk4tdnFWR0J2UHdBOHJvUklNajhKd2F5c1dURFdHaWtIY0dzdTVydVlRSXVUdDR0V0lfTE05VzI5a3g3T1ljVWlkVEQ0ajltV3dZRFVsTHNaVGNJS0gyLXBEbDlVUFNuN1hkZ2RubmcwLVVEcUppRlhBY3BKQQ?oc=5",
+   "fields": [
+    "43"
+   ],
+   "en": {
+    "t": "Allstar Expands AI Customer Service to 10 Roofing Brands"
+   }
+  },
+  {
+   "id": "617d51ad4c9a",
+   "k": "signal",
+   "date": "2026-11-27",
+   "src": "The Guardian",
+   "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxOeDNCYVhQbUE2MU94UkxyalQyWkk3aFNpSk53aTRTaG5YZVp4ME5CdU1wcEVIaFhmam9NdVRweks0Q1M4ZUpMTV9pcnVEWlcwT0NKVUNySE9WcHJLYTd1TVpzZXVGdWQ1eUFhQmFTakVZZkNpelIxa2xVdkxZNFJ6eExEN3ZZQQ?oc=5",
+   "fields": [
+    "41"
+   ],
+   "en": {
+    "t": "‘It’s not helping’: calls for guardrails and regulations as AI use rises at US retailers"
+   }
+  },
+  {
+   "id": "5ce16b210d23",
+   "k": "signal",
+   "date": "2026-11-27",
+   "src": "The Decoder",
+   "url": "https://news.google.com/rss/articles/CBMipAFBVV95cUxPTEcyV0FUdmNHclVidGdNNGhyUFdUbVR0aWtadFJoc1hjOE1uaW9TM3VZenBvanFtVDhtbGRrMUJkREVMSmVVVU8wZzZvd19mU1p2S3JLb2tUb2k4XzNBOXYyVDA2ZjExQUxqTG5wRlZlQkRxWFdBdE5GTzZ0MVczUE1uaW1OVEUxZy1WVjZjZXE4UldqeXBVcDdTeVJJeTJFV0o3Vw?oc=5",
+   "fields": [
+    "15"
+   ],
+   "en": {
+    "t": "Rockstar's AI dilemma: Can GTA 6's staggered release model survive coding agents?"
+   }
+  },
+  {
+   "id": "543f976977a4",
+   "k": "signal",
+   "date": "2026-11-27",
+   "src": "EdTech Magazine",
+   "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxQU0NwVUU2MldVUW41UEFhRGx0NndRN3pkR2I4cXBZc3FlQ0lyQUU5cEczOW90WlBmWUw2WVhwa2RSSndnN2RocWFWY0EzNTNEV19CZy1PY3VXWUVRLWRQNmpVWEtQU2d6VHhpOE1LRTZkOGlCaVR6MGlJQ2hFRzVsSjdzUl9aZVBPeFJTbWowWXBsUEpsclRiaUowSnJsZGtnaEVCNHV3REUzRC03?oc=5",
+   "fields": [
+    "25"
+   ],
+   "en": {
+    "t": "Why Districts Should Introduce AI to Teachers and Staff Before Students"
+   }
+  },
+  {
+   "id": "4607c3dd35f1",
+   "k": "signal",
+   "date": "2026-11-27",
+   "src": "Beinsure",
+   "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxNeG5OVHpURHZQUjB0YTl6QkRWNGp6cmExSl90aExGVTEyY0xtLWM5THViRk5ZR2lxR3RVWmZxMWFyS0NTT2hwQjU3dGFmTGJaWDRwRy0tdUtVZUM2eVoyWTNnY0FaN19tSkk3eVpucEpUVVN3OXVOWExwYkg3YlhoalNRRE9qbGZmYVNENkQ3MnBSNW5rRG5xdENB?oc=5",
+   "fields": [
+    "13"
+   ],
+   "en": {
+    "t": "PartnerRe and New York Life expand AI use in insurance underwriting"
+   }
+  },
+  {
+   "id": "0cfe9b27c402",
+   "k": "signal",
+   "date": "2026-11-27",
+   "src": "Howl.Link",
+   "url": "https://news.google.com/rss/articles/CBMiO0FVX3lxTFBrbW9qNWZldkVpVjk3N2VXQ1d2WFNwWk1OdXJEd0VyamFSZTFPMGJTOGxoTXFaVGNYMWJN?oc=5",
+   "fields": [
+    "15"
+   ],
+   "en": {
+    "t": "AI Coding Agents at Scale: Enforcing Architectural Guardrails, Runtime Verification, and Formal Checks in 2026 + Video"
+   }
+  },
+  {
+   "id": "051723ee598c",
+   "k": "signal",
+   "date": "2026-11-27",
+   "src": "Word In Black",
+   "url": "https://news.google.com/rss/articles/CBMickFVX3lxTE1lVnF5T0xmUnNuVFdVNHlIRVlKZFFiSEhHb3NhaF9DbEpraEludDJURTF1ZnBGZjU0R0NUVUhtR1NvUWpqQ0dsVzhQeDl3UWgxbzFVWlNxUDFBckFpeGhFR0phRTF4WGVadmo3MzdnTEdmQQ?oc=5",
+   "fields": [
+    "21"
+   ],
+   "en": {
+    "t": "12/9 Event: AI & Our Mental Health"
+   }
+  },
   {
    "id": "e10d2a792132",
    "k": "signal",
@@ -300,6 +469,19 @@
    }
   },
   {
+   "id": "c38b45b4137d",
+   "k": "signal",
+   "date": "2026-11-25",
+   "src": "National Jurist",
+   "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxNc2VqQXl5QVlybTA5VUhyQm5FRXJLSnlHNk9NNjhOQzcyZlpLTlpKYWZMeHljLTZXM19RaWE1bE43M252Nkl4WVh3c1ZxX19MRURBVFBvRGxzOHRsdkdTSGZzdDlma0ZwazlNYXZUc2xMdGxTNGFHQ3MxbGl1QXdHYTA3R21sTUxTS19IZFZ2a1J6cWNtUzJUX2tXbV9PRXRp?oc=5",
+   "fields": [
+    "23"
+   ],
+   "en": {
+    "t": "Why practicing U.S. lawyers are returning to law school in the Age of AI"
+   }
+  },
+  {
    "id": "a62ca07def6e",
    "k": "signal",
    "date": "2026-11-25",
@@ -323,6 +505,19 @@
    ],
    "en": {
     "t": "Seton Hall students create AI video editing startup"
+   }
+  },
+  {
+   "id": "9cb1f122fa0d",
+   "k": "signal",
+   "date": "2026-11-25",
+   "src": "Slator",
+   "url": "https://news.google.com/rss/articles/CBMiekFVX3lxTE1sYlFMR3RBYUI1MEJLc3J2d29NTG9tWDd0SDAybzBqMlBod3NVWUp5aC1WUmM3T0FIVVZTRUlFMTZsb2doQVpaNS1pQ29EeENJeWsyeEMwbnFremZQUkZDTzE1S25GSmdZU1BObTMyVnBfc01ZdS1VYXJn?oc=5",
+   "fields": [
+    "27"
+   ],
+   "en": {
+    "t": "Canadians in Spat Over Government AI Translation Tool"
    }
   },
   {
@@ -443,6 +638,19 @@
    }
   },
   {
+   "id": "f8e658393758",
+   "k": "signal",
+   "date": "2026-11-24",
+   "src": "CIO Dive",
+   "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxNejZlZm9nT3E0OXVsRDJaYnJPMVpXNi1Cb0sxUTdjOXZULWNwS2FRcWVoUFV6cUwtLW5vc0V0LWRGRlYtN3Z2XzFKeUlIU08yak4xcFV5LURxMEMtakU3d0hKdUtKSGFpOFRMd0tpRHp0eWZ2MEF5R2Z4TzZLd3lNQ2YzY1g3TkpHa1FNVUJpSGZ6NERUa1JKOHlGRE5hMHlJV2FSc0ZkZw?oc=5",
+   "fields": [
+    "11"
+   ],
+   "en": {
+    "t": "Executives get more AI training than other workers, hurting adoption"
+   }
+  },
+  {
    "id": "ee7a8610efe1",
    "k": "signal",
    "date": "2026-11-24",
@@ -453,6 +661,19 @@
    ],
    "en": {
     "t": "AI has solved a host of big math problems—here's why this threatens the whole field of mathematics"
+   }
+  },
+  {
+   "id": "e3b0e586f343",
+   "k": "signal",
+   "date": "2026-11-24",
+   "src": "BigGo Finance",
+   "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE1ZMFJlNkhFN2M2NlRxTnB4OUozc3F6SFctR2VPR29tOVJ0bmV0eGN4U1VrVEphb0phaHFFUUhhMm93QkhpNjlTOVppN0R5V0I0bndBUXpKMGEwWHpXa2puSjFqV0tRa214YmVuWmZwOXJ6dGpBMmc?oc=5",
+   "fields": [
+    "49"
+   ],
+   "en": {
+    "t": "South Korea's Samsung Electro-Mechanics Promotes 15 Executives on AI Component Boom, Largest Round in 5 Years"
    }
   },
   {
@@ -518,6 +739,19 @@
    ],
    "en": {
     "t": "Walmart’s Robot Warehouse Partner Symbotic Just Had Its First Profitable Year"
+   }
+  },
+  {
+   "id": "8365b5a5e8e1",
+   "k": "signal",
+   "date": "2026-11-24",
+   "src": "Bethesda Magazine",
+   "url": "https://news.google.com/rss/articles/CBMia0FVX3lxTFBHdjUta3puUng4STNvQWRYYy1IdXE0SGtOUl9qSDhNVVBvdWFXQ1BzQmZpYlZEMlNkdlMzenZLcUhSRzFkamxjUlZpVWJYeDhLdGFmQXpqYlNrRThKUEl3UVZCV0VITEptNGdN?oc=5",
+   "fields": [
+    "25"
+   ],
+   "en": {
+    "t": "School district’s draft regulations would give teachers autonomy on if, how AI tools are used in class"
    }
   },
   {
@@ -664,6 +898,19 @@
    }
   },
   {
+   "id": "a7cc2a8692f5",
+   "k": "signal",
+   "date": "2026-11-23",
+   "src": "Cox Automotive Inc.",
+   "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTE1tdHU1ekRJRmZsVElJcGt4RVFoeFViUmQ2U2JnVkl6eEdwUzU5aEROcmY1TmRlNU04WXFoOFFyZkpvUERaTF9VZ2JnRVFJc0xuUmhkRXNBS2lfMWdYQmN5ZzZ5R0dUMTRVOE5OVA?oc=5",
+   "fields": [
+    "41"
+   ],
+   "en": {
+    "t": "AI in Auto Retail Tracker"
+   }
+  },
+  {
    "id": "a0ed1340cc4f",
    "k": "signal",
    "date": "2026-11-23",
@@ -739,6 +986,19 @@
    ],
    "en": {
     "t": "Retail’s fastest AI return right now sits behind the storefront"
+   }
+  },
+  {
+   "id": "28d8273a7136",
+   "k": "signal",
+   "date": "2026-11-23",
+   "src": "USA Today",
+   "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxPdjhreV9vUnUzdDZvckxTX25xcFVxX1VmVm56T2NyRHVzZnBVNElCOTJjY3Y2V3RvNVBwNWt5ekctTE5xR1F0MGVldmZBU0RyRDJybzZfMlNtV0pGN3VEenpyS2wtdzNFWkJ5RDJPMFpzQVhDeUhCczhaSDVQWjZ1ZFNxaXRKeE5qblo4NkJkcDRqUXp0eGIxUExSY0ZOcnZfeF96SWdIZjRwMUpIb0Y0ZzVxV3l5Zw?oc=5",
+   "fields": [
+    "11"
+   ],
+   "en": {
+    "t": "AI executives celebrate Huang’s return, safety experts worry"
    }
   },
   {
@@ -820,6 +1080,19 @@
    }
   },
   {
+   "id": "2d581b43a3a9",
+   "k": "signal",
+   "date": "2026-11-22",
+   "src": "The Hill",
+   "url": "https://news.google.com/rss/articles/CBMib0FVX3lxTE1EUnhhYUR0YVhhbXNVY01qeEJSZzZ5MXlUa2FFQUw0Y0E3Y1ZzaDJVb2FIZmhhMjJyQlZ4TkpGWkN2bWY1OGtNLWkzMVhGeHVPYkhFYjVweUt2MzFRYUtZcDVMQld5bmpmWHZnUzJLa9IBdEFVX3lxTE9lR0wxSlZVNTRjMjQ3cHliQnp0WkRJYW0zdnpKVG9ZRkZqcXoxMUdkYXlDTlpaMm9fTm1EWTRJdDM5NWJWYXhjNXREb3NUTldNc1ZRR3hWZTRDWXpkcFNadjZSTVZSOEN5Rkk2alRRbVFnODZR?oc=5",
+   "fields": [
+    "45"
+   ],
+   "en": {
+    "t": "Democratic lawmaker says next Congress will focus on using AI to improve healthcare, jobs, agriculture"
+   }
+  },
+  {
    "id": "a7d2869fca7b",
    "k": "signal",
    "date": "2026-11-21",
@@ -882,6 +1155,19 @@
    ],
    "en": {
     "t": "Engineers, Clinicians Partner to Advance Human Health with AI"
+   }
+  },
+  {
+   "id": "ce70d84c335c",
+   "k": "signal",
+   "date": "2026-11-20",
+   "src": "Oncology Nursing News",
+   "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxQRWlJcDBienl0VklqSWFUYk4tRy1EWE9PMDZNRXpHTlZ1SUpVRGlmeEsxQy0tbThsX1Y4akhYRVJLcHBNQ2h1U1k0NGxDWDVpc2ZkNHdQQVJIZGpqT0N5aFMxcTRYUGs1SE9tWVFXdEdQTG1BdTVmRVI5c2U1TUY3SVBuSTU3bFh6MF9VTkJwNFdLbDJTdF9IakhKRHR4S0FnbW55ZWExN1FkS0Y3?oc=5",
+   "fields": [
+    "29"
+   ],
+   "en": {
+    "t": "AI Can Help Find Patients for Lung Screening, but Nurses Stay in the Loop"
    }
   },
   {
@@ -1090,6 +1376,19 @@
    ],
    "en": {
     "t": "Hospitality executives debate AI's impact on distribution"
+   }
+  },
+  {
+   "id": "488271102b20",
+   "k": "signal",
+   "date": "2026-11-19",
+   "src": "Yahoo",
+   "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxOMHhvUXFvSlVzWDBTZ0Q1MDlJZ08yWkVnRzlIR0FteVM4MFNqM1dycEE2bWNSUGVVdTFON2Y3Q25NYjZ6ejBaREpQWW1qZ2V2NGh1NUx1US1nRk10ZzhzSG9pWGJhUXRwVnlLUzNrMlFVamZaX1VWZ3VVbUoyNjVxM2prcjhLVTZmeG1fQTdLNWthbjh2cFNsOFV6VVpBTnlOM0tEYXZvLVA1czA?oc=5",
+   "fields": [
+    "37"
+   ],
+   "en": {
+    "t": "This Premium Ecovacs Cleaning Robot Is Over $400 Off for Black Friday"
    }
   },
   {
@@ -1441,6 +1740,19 @@
    ],
    "en": {
     "t": "Manufacturing AI adoption doubles as data governance gaps, shadow AI and emerging cybersecurity threats rise, Netskope finds"
+   }
+  },
+  {
+   "id": "b12064d5e33c",
+   "k": "signal",
+   "date": "2026-11-16",
+   "src": "Florida International University",
+   "url": "https://news.google.com/rss/articles/CBMif0FVX3lxTE42TnZSQVFwLWQwZFFzTERlZE1Pa3NWYlBQQ0tGZUZrb3RRYnpXMlpPRFljSUllUjRnMnRjaDFoeWhzQ3dSRWpqSkRFTWR4Q2tMZ3BwMHFiTk5HQWpNT0kzR2otaWNGZlFSckNLb1k0Y3k0LWNVOWt0enRPajBiUGs?oc=5",
+   "fields": [
+    "33"
+   ],
+   "en": {
+    "t": "Under surveillance: AI takes aim at mosquito eggs"
    }
   },
   {
